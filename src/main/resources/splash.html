@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link type="text/css" media="all" href="./static/css/splash.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">IKnowASpot</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container">
+    <div class="site"></div>
+    <div class="hero-unit overlay">
+        <p>
+            Welcome to the IKnowASpot location search application!
+            Get started quickly by signing up.
+        </p>
+        <p>
+            <a href="/signup" th:href="@{/signup}" class="btn btn-large btn-success">Sign up</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>
