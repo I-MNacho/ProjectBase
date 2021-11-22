@@ -12,6 +12,10 @@ public class HomeController {
     public String homeMessage() {
         return "This is the landing page!";
     }
+    @GetMapping("/index")
+    public String getIndexPage() {
+        return "index";
+    }
 
 }
 

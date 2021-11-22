@@ -4,7 +4,7 @@ import com.codeup.iknowaspot.models.Spot;
 import com.codeup.iknowaspot.models.User;
 import com.codeup.iknowaspot.repositories.SpotRepository;
 import com.codeup.iknowaspot.repositories.UserRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,9 +46,9 @@ public class SpotController {
     //inserting spot
     @PostMapping("/spot/create")
     public String insert(@ModelAttribute Spot spot) {
-        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User author = usersDao.getById(principal.getId());
-        spot.setUser(author);
+//        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User author = usersDao.getById(principal.getId());
+//        spot.setUser(author);
         spotsDao.save(spot);
         return "redirect:/spots";
     }
