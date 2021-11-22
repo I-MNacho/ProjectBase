@@ -13,6 +13,10 @@ class HomeController {
     String index(Principal principal) {
         return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
     }
+    @GetMapping("/index")
+    public String getIndexPage() {
+        return "index";
+    }
 
 }
 

@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="head">
+    <meta charset="UTF-8" />
+    <title>Home</title>
 </head>
 <body>
-
+<nav class="mb-1 col-12" th:fragment="navbar" style="background-color: white; box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);">
+    <div class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/index">IKnowASpot</a>
+            </div>
+            <div class="nav navbar-nav navbar-right">
+                <div>
+                    <a th:href="@{/login}" class="btn btn-secondary">Login</a>
+                    <a th:href="@{/register}" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
 </body>
-</html>
