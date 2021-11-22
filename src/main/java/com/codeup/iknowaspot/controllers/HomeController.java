@@ -4,13 +4,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller
-public class HomeController {
+import java.security.Principal;
 
-    @GetMapping("/splash")
-    @ResponseBody
-    public String homeMessage() {
-        return "This is the landing page!";
+@Controller
+class HomeController {
+
+    @GetMapping("/")
+    String index(Principal principal) {
+        return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
     }
     @GetMapping("/index")
     public String getIndexPage() {
