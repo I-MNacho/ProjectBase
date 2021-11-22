@@ -1,0 +1,25 @@
+.site {
+    
+}
+
+.overlay {
+  z-index: 1000;
+  background: #13bbd973;
+  font-family: Poppins;
+  flex-direction: column;
+  text-align: center;
+  font-size: 18pt;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+h4 {
+  width: 100%;
+  text-align: right;
+
+}
