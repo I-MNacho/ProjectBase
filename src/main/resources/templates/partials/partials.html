@@ -5,7 +5,7 @@
     <title>Home</title>
 </head>
 <body>
-<nav th:fragment="navbar" style="background-color: white; box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);">
+<nav class="mb-1 col-12" th:fragment="navbar" style="background-color: white; box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);">
     <div class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -13,8 +13,8 @@
             </div>
             <div class="nav navbar-nav navbar-right">
                 <div>
-                    <button class="btn btn-secondary">Login</button>
-                    <button class="btn btn-primary">Register</button>
+                    <a th:href="@{/login}" class="btn btn-secondary">Login</a>
+                    <a th:href="@{/register}" class="btn btn-primary">Register</a>
                 </div>
             </div>
         </div>
