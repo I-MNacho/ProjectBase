@@ -47,8 +47,8 @@ public class SpotController {
     @PostMapping("/spot/create")
     public String insert(@ModelAttribute Spot spot) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User author = usersDao.getById(principal.getId());
-        spot.setUser(author);
+//        User author = usersDao.getById(principal.getId());
+//        spot.setUser(author);
         spotsDao.save(spot);
         return "redirect:/spots";
     }
