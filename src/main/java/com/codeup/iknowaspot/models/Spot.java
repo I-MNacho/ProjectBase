@@ -3,7 +3,7 @@ package com.codeup.iknowaspot.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "spots")
 public class Spot {
 
     @Id
@@ -16,6 +16,12 @@ public class Spot {
     @Column(columnDefinition = "TEXT NOT NULL")
     private String description;
 
+    @Column(columnDefinition = "DOUBLE")
+    private double latitude;
+
+    @Column(columnDefinition = "DOUBLE")
+    private double longitude;
+
     @ManyToOne
     @JoinColumn (name = "user_id")
     private User user;
@@ -23,14 +29,12 @@ public class Spot {
     public Spot() {
     }
 
-    public Spot(String title, String body) {
+    public Spot(String title, String description, User user, Double latitude, Double longitude) {
         this.title = title;
-        this.description = body;
-    }
-    public Spot(String title, String body, User user) {
-        this.title = title;
-        this.description = body;
+        this.description = description;
         this.user = user;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getTitle() {
@@ -63,5 +67,21 @@ public class Spot {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
