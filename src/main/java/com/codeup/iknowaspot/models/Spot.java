@@ -1,7 +1,7 @@
 package com.codeup.iknowaspot.models;
 
 import javax.persistence.*;
-//hey
+
 @Entity
 @Table(name = "posts")
 public class Spot {
