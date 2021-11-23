@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 public class SpotController {
 
+    //Dao's
     private SpotRepository spotsDao;
     private UserRepository usersDao;
 
@@ -37,7 +38,7 @@ public class SpotController {
 
     //create spot
     @GetMapping("/spot/create")
-    public String create(Model model) {
+    public String createSpot(Model model) {
         model.addAttribute("spot", new Spot());
         return "spot/create";
     }
@@ -54,9 +55,9 @@ public class SpotController {
     }
 
 
-    //delete function
+    //delete Spot
     @PostMapping("/home_page_goes_here/{id}/delete")
-    public String deletePost(@PathVariable long id) {
+    public String deleteSpot(@PathVariable long id) {
         spotsDao.deleteById(id);
         return "redirect:/back_to_homepage";
     }
