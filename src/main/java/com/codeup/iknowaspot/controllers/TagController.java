@@ -1,6 +1,5 @@
 package com.codeup.iknowaspot.controllers;
 
-import com.codeup.iknowaspot.models.Event;
 import com.codeup.iknowaspot.models.Tag;
 import com.codeup.iknowaspot.models.User;
 import com.codeup.iknowaspot.repositories.EventRepository;
