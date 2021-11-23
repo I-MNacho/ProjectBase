@@ -3,7 +3,7 @@ package com.codeup.iknowaspot.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "spots")
 public class Spot {
 
     @Id

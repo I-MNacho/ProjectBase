@@ -12,18 +12,16 @@ public class RegisterController {
 //        this.userDao = userDao;
 //        this.passwordEncoder = passwordEncoder;
 //    }
-
-//    @GetMapping("/sign-up")
-//    public String showSignupForm(Model model){
-//        model.addAttribute("user", new User());
-//        return "/sign-up";
-//    }
-
-//    @PostMapping("/sign-up")
-//    public String saveUser(@ModelAttribute User user){
-////        String hash = passwordEncoder.encode(user.getPassword());
-////        user.setPassword(hash);
-////        userDao.save(user);
-////        return "redirect:/login";
-//    }
+    @GetMapping("/register")
+    public String getRegisterPage(Model model) {
+        model.addAttribute("user", new User());
+        return "register-form";
+    }
+    @PostMapping("/sign-up")
+    public String saveUser(@ModelAttribute User user){
+//        String hash = passwordEncoder.encode(user.getPassword());
+//        user.setPassword(hash);
+//        userDao.save(user);
+        return "redirect:/login";
+    }
 }
