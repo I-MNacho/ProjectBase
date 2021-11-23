@@ -9,7 +9,6 @@ body {
 
 .overlay {
   z-index: 1000;
-  background: #13bbd973;
   font-family: Poppins;
   flex-direction: column;
   text-align: center;
