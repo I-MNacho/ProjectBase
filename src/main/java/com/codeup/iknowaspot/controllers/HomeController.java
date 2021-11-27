@@ -10,12 +10,21 @@ import java.security.Principal;
 class HomeController {
 
     @GetMapping("/")
-    String index(Principal principal) {
-        return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
+    public String getSplashPage() {
+        return "splash";
     }
     @GetMapping("/index")
     public String getIndexPage() {
         return "index";
+    }
+    @GetMapping("/aboutus")
+    public String getAboutUsPage() {
+        return "about-us";
+    }
+
+    @GetMapping("/login")
+    public String getLoginPage() {
+        return "user-login";
     }
 
 }
