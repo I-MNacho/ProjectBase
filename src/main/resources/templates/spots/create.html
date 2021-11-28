@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Save a Spot</title>
+</head>
+<body>
+<form action="#" th:action="@{/spots/create}" th:object="${spot}" method="POST" >
+
+    <label for="title">I Know A Spot...</label>
+    <input id="title" name="title" type="text" th:field="${spot.title}"/>
+
+    <label for="description">Describe your spot!...</label>
+    <textarea id="description" name="description" th:field="${spot.description}"/>
+<!--basic form for saving a spot... more needs to be added-->
+</form>
+
+</body>
+</html>
