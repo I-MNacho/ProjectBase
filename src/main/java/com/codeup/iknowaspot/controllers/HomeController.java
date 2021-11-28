@@ -6,11 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 class HomeController {
 
-//    @GetMapping("/splash")
-//    public String getSplashPage() {
-//        return "splash";
-//    }
-
     @GetMapping("/index")
     public String getIndexPage() {
         return "index";
