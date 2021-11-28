@@ -39,6 +39,11 @@ marker.on('dragend', function() {
         lng: marker.getLngLat().lng }
     reverseGeocode(coord, MAPBOX_API_TOKEN).then(function (data){
         $(".place").html(data.features[0].place_name);
+        $(".place").append(`
+            <div>
+                <button>Create a Spot</button>
+            </div>
+        `)
         refreshCards();
     });
 });
