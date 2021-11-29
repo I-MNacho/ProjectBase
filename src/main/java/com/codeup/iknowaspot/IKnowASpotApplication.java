@@ -17,7 +17,7 @@ public class IKnowASpotApplication extends WebSecurityConfigurerAdapter {
     }
 
     // https://spring.io/guides/tutorials/spring-boot-oauth2/
-    // Allows routes for users authenticated with github
+    // allows routes for users authenticated with github
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off

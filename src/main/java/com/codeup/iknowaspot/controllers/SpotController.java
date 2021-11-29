@@ -48,7 +48,7 @@ public class SpotController {
     }
 
     //create spot mapping
-    // Takes latitude and longitude as url parameters to create Spot model
+    // takes latitude and longitude as url parameters to create Spot model
     @GetMapping("/spots/create")
     public String createSpot(@RequestParam(name="lat") Double lat, @RequestParam(name="lng") Double lng, Model model) {
         Spot spot = new Spot();
