@@ -6,13 +6,16 @@
 </head>
 <body>
 <form action="#" th:action="@{/spots/create}" th:object="${spot}" method="POST" >
+    <input id="latitude" name="latitude" type="hidden" th:field="${spot.latitude}"/>
+    <input id="longitude" name="longitude" type="hidden" th:field="${spot.longitude}"/>
 
     <label for="title">I Know A Spot...</label>
     <input id="title" name="title" type="text" th:field="${spot.title}"/>
 
     <label for="description">Describe your spot!...</label>
     <textarea id="description" name="description" th:field="${spot.description}"/>
-<!--basic form for saving a spot... more needs to be added-->
+    <button>Submit</button>
+<!--basic form for submitting a spot and saving it to the database... more needs to be added-->
 </form>
 
 </body>

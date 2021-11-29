@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 class HomeController {
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String getIndexPage() {
         return "index";
     }
@@ -18,7 +18,9 @@ class HomeController {
 
     @GetMapping("/login")
     public String getLoginPage() {
-        return "user-login";
+        // Redirects to github login url
+        // https://spring.io/guides/tutorials/spring-boot-oauth2/
+        return "redirect:/oauth2/authorization/github";
     }
 
 }
