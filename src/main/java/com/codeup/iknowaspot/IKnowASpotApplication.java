@@ -23,7 +23,7 @@ public class IKnowASpotApplication extends WebSecurityConfigurerAdapter {
         // @formatter:off
         http
                 .authorizeRequests(a -> a
-                        .antMatchers("/", "/error", "/webjars/**").permitAll()
+                        .antMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(e -> e
