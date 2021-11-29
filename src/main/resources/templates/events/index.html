@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Spots</title>
+    <title>Events</title>
 </head>
 <body>
 <table>
@@ -13,12 +13,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${spots.empty}">
-        <td colspan="2"> No Spots Available </td>
+    <tr th:if="${events.empty}">
+        <td colspan="2"> No  Available </td>
     </tr>
-    <tr th:each="spot : ${spots}">
-        <td><span th:text="${spot.title}"> Title </span></td>
-        <td><span th:text="${spot.description}"> Description </span></td>
+    <tr th:each="spot : ${events}">
+        <td><span th:text="${event.title}"> Title </span></td>
+        <td><span th:text="${event.description}"> Description </span></td>
     </tr>
     </tbody>
 </table>

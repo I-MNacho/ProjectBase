@@ -1,4 +1,5 @@
 package com.codeup.iknowaspot.controllers;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
