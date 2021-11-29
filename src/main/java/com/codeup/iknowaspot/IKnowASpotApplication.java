@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class IKnowASpotApplication extends WebSecurityConfigurerAdapter {
+public class IKnowASpotApplication{
 
     public static void main(String[] args) {
         SpringApplication.run(IKnowASpotApplication.class, args);
@@ -18,18 +18,18 @@ public class IKnowASpotApplication extends WebSecurityConfigurerAdapter {
 
     // https://spring.io/guides/tutorials/spring-boot-oauth2/
     // allows routes for users authenticated with github
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
-        http
-                .authorizeRequests(a -> a
-                        .antMatchers("/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .exceptionHandling(e -> e
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                )
-                .oauth2Login();
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        // @formatter:off
+//        http
+//                .authorizeRequests(a -> a
+//                        .antMatchers("/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .exceptionHandling(e -> e
+//                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+//                )
+//                .oauth2Login();
         // @formatter:on
-    }
+
 }
