@@ -7,7 +7,7 @@ mapboxgl.accessToken = MAPBOX_API_TOKEN;
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
-    center: [-98.491142, 29.424349] ,
+    center: [-98.491142, 29.424349],
     zoom: 3,
     pitch: 60
 });
@@ -34,11 +34,18 @@ geocoder.on('result', function(data) {
 });
 //On dragend from our marker
 marker.on('dragend', function() {
-    var coord = {
+    const coord = {
         lat: marker.getLngLat().lat,
-        lng: marker.getLngLat().lng }
+        lng: marker.getLngLat().lng
+    };
     reverseGeocode(coord, MAPBOX_API_TOKEN).then(function (data){
         $(".place").html(data.features[0].place_name);
+        // Creates a button that when clicked goes to the /spots/create route with the latitude and longitude passed as query parameters
+        $(".place").append(`
+            <div>
+                <a href="/spots/create?lat=${coord.lat}&lng=${coord.lng}">Create a Spot</a>
+            </div>
+        `)
         refreshCards();
     });
 });
