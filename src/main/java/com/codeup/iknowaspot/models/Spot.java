@@ -22,6 +22,9 @@ public class Spot {
     @Column(columnDefinition = "DOUBLE")
     private double longitude;
 
+    @Column(columnDefinition = "INTEGER")
+    private double githubId;
+
     @ManyToOne
     @JoinColumn (name = "user_id")
     private User user;
@@ -83,5 +86,13 @@ public class Spot {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public double getGithubId() {
+        return githubId;
+    }
+
+    public void setGithubId(int githubId) {
+        this.githubId = githubId;
     }
 }

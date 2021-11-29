@@ -2,20 +2,25 @@ package com.codeup.iknowaspot.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.security.Principal;
 
 @Controller
 class HomeController {
 
     @GetMapping("/")
-    String index(Principal principal) {
-        return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
-    }
-    @GetMapping("/index")
     public String getIndexPage() {
         return "index";
+    }
+
+    @GetMapping("/aboutus")
+    public String getAboutUsPage() {
+        return "about-us";
+    }
+
+    @GetMapping("/login")
+    public String getLoginPage() {
+        // Redirects to github login url
+        // https://spring.io/guides/tutorials/spring-boot-oauth2/
+        return "redirect:/oauth2/authorization/github";
     }
 
 }
