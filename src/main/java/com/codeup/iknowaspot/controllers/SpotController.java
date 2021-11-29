@@ -8,7 +8,6 @@ import com.codeup.iknowaspot.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,8 +60,9 @@ public class SpotController {
 
     //inserting spot
     @PostMapping("/spots/create")
-    public String insert(@AuthenticationPrincipal OAuth2User principal, @ModelAttribute Spot spot) {
-        spot.setGithubId((int) principal.getAttribute("id"));
+//    public String insert(@AuthenticationPrincipal OAuth2User principal, @ModelAttribute Spot spot) {
+    public String insert(@ModelAttribute Spot spot) {
+//        spot.setGithubId((int) principal.getAttribute("id"));
         spotsDao.save(spot);
         return "redirect:/spots";
     }
