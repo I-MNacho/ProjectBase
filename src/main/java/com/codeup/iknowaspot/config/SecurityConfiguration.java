@@ -30,44 +30,49 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder()) // How to encode and verify passwords
         ;
     }
+//}
+//    @Override
+//    protected void configure(HttpSecurity security, AuthenticationManagerBuilder auth) throws Exception {
+//        auth
+//                .userDetailsService(usersLoader) // How to find users by their username
+//                .passwordEncoder(passwordEncoder()) // How to encode and verify passwords
+//                .and()
+//        security.csrf()
+//                .disable()
+//                .httpBasic()
+//                .disable()
+//                .authorizeRequests()
+//                .anyRequest()
+//                .permitAll();
+//    }
+//}
+
     @Override
-    protected void configure(HttpSecurity security) throws Exception {
-        security.csrf()
-                .disable()
-                .httpBasic()
-                .disable()
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                /* Login configuration */
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/posts") // user's home page, it can be any URL
+                .permitAll() // Anyone can go to the login page
+                /* Logout configuration */
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login?logout") // append a query string value
+                /* Pages that can be viewed without having to log in */
+                .and()
+                /* Pages that require authentication */
                 .authorizeRequests()
-                .anyRequest()
-                .permitAll();
+                .antMatchers(
+                        "/posts/create", // only authenticated users can create ads
+                        "/posts/{id}/edit" // only authenticated users can edit ads
+                )
+                .authenticated()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/", "/posts", "/about", "/sign-up") // anyone can see the home and the ads pages
+                .permitAll()
+
+        ;
     }
 }
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                /* Login configuration */
-//                .formLogin()
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/posts") // user's home page, it can be any URL
-//                .permitAll() // Anyone can go to the login page
-//                /* Logout configuration */
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/login?logout") // append a query string value
-//                /* Pages that can be viewed without having to log in */
-//                .and()
-//                /* Pages that require authentication */
-//                .authorizeRequests()
-//                .antMatchers(
-//                        "/posts/create", // only authenticated users can create ads
-//                        "/posts/{id}/edit" // only authenticated users can edit ads
-//                )
-//                .authenticated()
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/", "/posts", "/about", "/sign-up") // anyone can see the home and the ads pages
-//                .permitAll()
-//
-//        ;
-
-//}
