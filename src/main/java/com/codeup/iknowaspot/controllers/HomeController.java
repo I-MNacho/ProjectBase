@@ -16,12 +16,5 @@ class HomeController {
         return "about-us";
     }
 
-    @GetMapping("/login")
-    public String getLoginPage() {
-        // Redirects to github login url
-        // https://spring.io/guides/tutorials/spring-boot-oauth2/
-        return "redirect:/oauth2/authorization/github";
-    }
-
 }
 
