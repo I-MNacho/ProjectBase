@@ -7,6 +7,8 @@ import com.codeup.iknowaspot.repositories.UserRepository;
 //import org.springframework.security.core.context.SecurityContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +31,6 @@ public class SpotController {
         this.usersDao = userDao;
     }
 
-    //empty constructor
-    public SpotController() {
-    }
-
     //getters and setters
     public SpotRepository getSpotDao() {
         return spotsDao;
@@ -40,6 +38,13 @@ public class SpotController {
 
     public void setSpotDao(SpotRepository spotDao) {
         this.spotsDao = spotDao;
+    }
+
+    // mapping for spots list page mapped to "spots/index.html"
+    @GetMapping("/spots")
+    public String index(Model model) {
+        model.addAttribute("spots", spotsDao.findAll());
+        return "spots/index";
     }
 
     //create spot mapping
@@ -56,15 +61,8 @@ public class SpotController {
 
     //inserting spot
     @PostMapping("/spots/create")
-    public String insert(@ModelAttribute Spot spot) {
-        LOGGER.warn("Title: " + spot.getTitle());
-        LOGGER.warn("Description: " + spot.getDescription());
-        LOGGER.warn("Longitude: " + spot.getLongitude());
-        LOGGER.warn("Longitude: " + spot.getLongitude());
-
-//        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        User author = usersDao.getById(principal.getId());
-//        spot.setUser(author);
+    public String insert(@AuthenticationPrincipal OAuth2User principal, @ModelAttribute Spot spot) {
+        spot.setGithubId((int) principal.getAttribute("id"));
         spotsDao.save(spot);
         return "redirect:/spots";
     }
