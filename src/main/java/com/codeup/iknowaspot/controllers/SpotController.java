@@ -59,7 +59,11 @@ public class SpotController {
 
     @GetMapping("/spots/update")
     public String updateSpot(){
+//        needs spot id
+//        needs all info thats on the spot
+//        needs to be able to keep same id
 
+        return "spots/index";
     }
 
 
