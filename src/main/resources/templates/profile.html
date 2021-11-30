@@ -1,6 +1,6 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<html xmlns:th="http://www.thymeleaf.org">
 
 <head lang="en">
     <title>Your profile</title>
@@ -8,8 +8,9 @@
 <body>
     <h2 class="indigo-text center">Personal info</h2>
 
-    <form th:action="@{/profile}" method="post"></form>
+    <div sec:authentication="name"></div>
+    <div th:text="${user.email}"></div>
+
 
 </body>
 </html>
-
