@@ -1,6 +1,6 @@
 "use strict";
 var placeName;
-mapboxgl.accessToken = MAPBOX_API_TOKEN;
+mapboxgl.accessToken = MapboxAPIKey;
 
 //This adds the mapbox to our file
 //Set center to San Antonio, TX on start.
