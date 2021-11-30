@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 class HomeController {
 
     @GetMapping("/")
-    public String getIndexPage() {
+    public String getIndexPage(Model model) {
+        model.addAt
         return "index";
     }
 
