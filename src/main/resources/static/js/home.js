@@ -7,7 +7,7 @@ function hideSplashScreen() {
 (() => {
    // https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
    // Use localStorage api to save whether or not the user has visited the page in the browser
-   // const storage = localStorage;
+   const storage = localStorage;
    // get "visited" value from local storage
    const hasVisited = false;
    const splashPage = document.getElementById("splash");

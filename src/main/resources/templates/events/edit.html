@@ -11,8 +11,8 @@
 <body>
 <nav th:replace="partials/partials.html :: navbar"></nav>
 <!--${event} = event atr from controller -->
-<form action="#" th:action="@{/events/create}" th:object="${event}" method="POST" >
-
+<form action="#" th:action="@{/events/edit}" th:object="${event}" method="POST" >
+ <input id="id" name="id" type="hidden" th:field="${event.id}"/>
     <label for="title">I Have An Event..</label>
     <input id="title" name="title" type="text" th:field="${event.title}"/>
 

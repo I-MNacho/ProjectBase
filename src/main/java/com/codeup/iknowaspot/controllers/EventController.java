@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class EventController {
 
     //Dao's
@@ -20,9 +22,6 @@ public class EventController {
     private UserRepository usersDao;
     private SpotRepository spotsDao;
 
-    //constructors
-    public EventController() {
-    }
 
     public EventController(EventRepository eventsDao, UserRepository usersDao, SpotRepository spotsDao) {
         this.eventsDao = eventsDao;
@@ -56,31 +55,61 @@ public class EventController {
     }
 
     //create event
-    @GetMapping("/event/create")
+    @GetMapping("/events")
+    public String listEvent(Model model) {
+        //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
+        model.addAttribute("events", eventsDao.findAll());
+        //page shows to this bc its mapped here:  //
+        return "events/index";
+    }
+
+    //create event
+    @GetMapping("/events/create")
     public String createEvent(Model model) {
+        //creating a new event obj and assg atrb = assn obj atb
         model.addAttribute("event", new Event());
-        return "event/create";
+        //page shows to this bc its mapped here:  //
+        return "events/create";
     }
 
-
-    //delete event
-    @PostMapping("/home_page_goes_here/{id}/delete")
-    public String deleteEvent(@PathVariable long id) {
-        eventsDao.deleteById(id);
-        return "redirect:/back_to_homepage";
-    }
 
     //inserting event
-    @PostMapping("/event/create")
+    // postmapping request will insert the event into the DB
+    @PostMapping("/events/create")
     public String insertEvent(@ModelAttribute Event event) {
 //        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        User author = usersDao.getById(principal.getId());
 //        spot.setUser(author);
         eventsDao.save(event);
-        return "redirect:/spots";
+        return "redirect:/events";
+    }
+
+    // edit event
+    @GetMapping("/events/edit/{id}")
+    public String editEvent(@PathVariable long id, Model model){
+        //creating the event & setting the id & setting atrb
+        model.addAttribute("event", eventsDao.findById(id));
+//      just updating i.e ^^^^^
+        return "events/edit";
     }
 
 
+    // edit event
+    @PostMapping("/events/edit")
+    public String editEvent(@ModelAttribute Event event){
+      eventsDao.save(event);
+//      just updating i.e ^^^^^
+      return "redirect:/events";
+    }
+
+
+    //delete event
+
+    @GetMapping("/events/delete/{id}")
+    public String deleteEvent(@PathVariable long id) {
+        eventsDao.deleteById(id);
+        return "redirect:/events";
+    }
 
 
 }
