@@ -57,11 +57,15 @@ public class SpotController {
         return "spots/create";
     }
 
-    @GetMapping("/spots/update")
-    public String updateSpot(){
-//        needs spot id
+    @GetMapping("/spots/{id}/update")
+    public String updateSpot(@PathVariable long id){
+        //spot id to be updated
+        spotsDao.getById(id);
 //        needs all info thats on the spot
+
+
 //        needs to be able to keep same id
+
 
         return "spots/index";
     }
