@@ -1,6 +1,6 @@
 "use strict";
 var placeName;
-mapboxgl.accessToken = MAPBOX_API_TOKEN;
+mapboxgl.accessToken = MapboxAPIKey;
 
 //This adds the mapbox to our file
 //Set center to San Antonio, TX on start.
@@ -38,7 +38,7 @@ marker.on('dragend', function() {
         lat: marker.getLngLat().lat,
         lng: marker.getLngLat().lng
     };
-    reverseGeocode(coord, MAPBOX_API_TOKEN).then(function (data){
+    reverseGeocode(coord, MapboxAPIKey).then(function (data){
         $(".place").html(data.features[0].place_name);
         // Creates a button that when clicked goes to the /spots/create route with the latitude and longitude passed as query parameters
         $(".place").append(`
@@ -102,7 +102,7 @@ reverseGeocode({
         lat: marker.getLngLat().lat,
         lng: marker.getLngLat().lng
     },
-    MAPBOX_API_TOKEN).then(function (data){
+    MapboxAPIKey).then(function (data){
     $(".place").html(data.features[0].place_name);
     refreshCards();
 });
