@@ -57,6 +57,11 @@ public class SpotController {
         return "spots/create";
     }
 
+    @GetMapping("/spots/update")
+    public String updateSpot(){
+
+    }
+
 
     //inserting spot
     @PostMapping("/spots/create")
