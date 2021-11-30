@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> lang="en">
 <head th:fragment="head">
     <meta charset="UTF-8" />
     <title>Home</title>
@@ -12,8 +12,12 @@
                 <a class="navbar-brand" href="/">IKnowASpot</a>
                 <a th:href="@{/index}" class="btn btn-success">Spots</a>
                 <a th:href="@{/aboutus}" class="btn btn-outline-info">About Us</a>
-            </div>
+<!--                    This content is only shown to authenticated users.-->
 
+<!--                    User ID: <span th:text="${#authentication.principal.id}"/>-->
+<!--                    Username: <span th:text="${#authentication.principal.username}"/>-->
+<!--                    Email: <span th:text="${#authentication.principal.email}"/>-->
+            </div>
             <form>
                 <span class="d-inline-flex">
                     <div th:replace="partials/search-bar.html"></div>
@@ -21,9 +25,24 @@
             </form>
 
             <div class="nav navbar-nav navbar-right">
-                <div>
-                    <a th:href="@{/login}" class="btn btn-secondary">Login</a>
-                    <a th:href="@{/register}" class="btn btn-primary">Register</a>
+<!--                Logged out user-->
+                <div sec:authorize="isAnonymous()">
+                    <div>
+                        <a th:href="@{/login}" class="btn btn-secondary">Login</a>
+                        <a th:href="@{/register}" class="btn btn-primary">Register</a>
+                    </div>
+                </div>
+<!--                Logged in User-->
+                <div sec:authorize="isAuthenticated()">
+                    <div class="dropleft">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                            <span th:text="${#authentication.principal.username}"></span>
+                        </button>
+                        <div class="dropdown-menu position-absolute" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="/profile">View Profile</a>
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
