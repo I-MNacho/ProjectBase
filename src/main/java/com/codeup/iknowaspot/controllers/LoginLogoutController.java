@@ -10,7 +10,7 @@ public class LoginLogoutController  {
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "/login";
+        return "login";
     }
 
     @PostMapping("/logout")
