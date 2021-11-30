@@ -94,7 +94,7 @@ public class EventController {
     }
 
 
-    // edit event
+    // update event
     @PostMapping("/events/edit")
     public String editEvent(@ModelAttribute Event event){
       eventsDao.save(event);
