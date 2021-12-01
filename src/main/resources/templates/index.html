@@ -11,12 +11,12 @@
 <body class="container-fluid">
 <div class="row no-gutters everything-container">
     <nav th:replace="partials/partials.html :: navbar"></nav>
-    <div class="container splash" sec:authorize="isAnonymous()">
-    <div th:replace="partials/splash.html"></div>
+<!--    <div class="container splash" sec:authorize="isAnonymous()">-->
+<!--    <div th:replace="partials/splash.html"></div>-->
 </div>
-    <div class="container splash" sec:authorize="isAuthenticated()" style="display: none">
-    <div th:replace="partials/splash.html"></div>
-</div>
+<!--    <div class="container splash" sec:authorize="isAuthenticated()" style="display: none">-->
+<!--    <div th:replace="partials/splash.html"></div>-->
+<!--</div>-->
     <div class="col-7 mb-3">
         <div id="geocoder" class="geocoder col-12"></div>
         <div id="map" class="m-1"></div>
