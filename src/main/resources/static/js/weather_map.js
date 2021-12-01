@@ -8,7 +8,7 @@ const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [-98.491142, 29.424349],
-    zoom: 3,
+    zoom: 9,
     pitch: 60
 });
 //This adds the geocoder function to the map
@@ -24,7 +24,7 @@ var marker = new mapboxgl.Marker({
     draggable: true,
 })
     .setLngLat([-98.48358471539157, 29.418933660422695])
-    .addTo(map);
+    // .addTo(map);
 //On 'result' from the geocoder search box
 geocoder.on('result', function(data) {
     console.log(data);

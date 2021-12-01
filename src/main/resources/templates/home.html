@@ -10,15 +10,22 @@
 </head>
 <body class="container-fluid">
 <div class="row no-gutters everything-container">
-    <nav th:replace="partials/partials.html :: navbar"></nav>
-    <div th:replace="partials/splash.html"></div>
+    <nav th:replace="partials/navbar.html :: navbar"></nav>
+<!--    <div th:replace="partials/splash.html"></div>-->
     <div class="col-7 mb-3">
         <div id="geocoder" class="geocoder col-12"></div>
         <div id="map" class="m-1"></div>
     </div>
     <div class="col-5 no-gutters card-col">
-        <div class="card mt-1 mb-2 ml-2 mr-2 pl-3 pr-3 text-white bg-info text-center place"></div>
-        <div class="row insert-cards mb-1"></div>
+        <div class="card mt-1 mb-2 ml-2 mr-2 pl-3 pr-3 text-white bg-info text-center place">Click on a map marker to view the details.</div>
+        <div class="card mb-1 mb-2 ml-2 mr-2 text-center d-flex align-items-center">
+            Welcome to IKnowASpot!<br>
+            <span>
+            Click on a map marker to view the details.<br>
+                </span>
+            If you'd like to create a spot please login.
+            <button class="btn btn-secondary" style="width: 50%">Login</button>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -29,6 +36,17 @@
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
 <script src="/js/keys.js"></script>
 <script src="/js/weather_map.js"></script>
-<script src="/js/home.js"></script>
+<!--<script src="/js/home.js"></script>-->
+<script th:inline="javascript">
+    var spots;
+    spots = [[${spots}]];
+
+    spots.forEach((spot)=>{
+        console.log(spot);
+        new mapboxgl.Marker()
+            .setLngLat([spot.longitude, spot.latitude])
+            .addTo(map);
+    });
+</script>
 </body>
 </html>
