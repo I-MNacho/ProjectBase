@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
 <body>
+<nav th:replace="partials/partials.html :: navbar"></nav>
 <table>
     <thead>
     <tr>
@@ -16,9 +21,19 @@
     <tr th:if="${events.empty}">
         <td colspan="2"> No  Available </td>
     </tr>
-    <tr th:each="spot : ${events}">
+<!--    //foreach for every event theres a event atrb & it will make a tr-->
+<!--    ln 20 is refrencing the events in list all events in controller -->
+    <tr th:each="event : ${events}">
         <td><span th:text="${event.title}"> Title </span></td>
         <td><span th:text="${event.description}"> Description </span></td>
+<!--        @, $ = redirecting so youre injecting a rout into var youre putting the actual event id into -->
+        <td><a th:href="@{|events/edit/${event.id}|  }"> Edit </a></td>
+<!--        lining up the html to -->
+        <td><a th:href="@{|events/delete/${event.id}|  }"> Delete </a></td>
+
+
+
+
     </tr>
     </tbody>
 </table>
