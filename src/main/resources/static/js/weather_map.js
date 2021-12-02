@@ -33,22 +33,22 @@ geocoder.on('result', function(data) {
     refreshCards();
 });
 //On dragend from our marker
-marker.on('dragend', function() {
-    const coord = {
-        lat: marker.getLngLat().lat,
-        lng: marker.getLngLat().lng
-    };
-    reverseGeocode(coord, MAPBOX_API_TOKEN).then(function (data){
-        $(".place").html(data.features[0].place_name);
-        // Creates a button that when clicked goes to the /spots/create route with the latitude and longitude passed as query parameters
-        $(".place").append(`
-            <div>
-                <a href="/spots/create?lat=${coord.lat}&lng=${coord.lng}">Create a Spot</a>
-            </div>
-        `)
-        refreshCards();
-    });
-});
+// marker.on('dragend', function() {
+//     const coord = {
+//         lat: marker.getLngLat().lat,
+//         lng: marker.getLngLat().lng
+//     };
+//     reverseGeocode(coord, MAPBOX_API_TOKEN).then(function (data){
+//         $(".place").html(data.features[0].place_name);
+//         // Creates a button that when clicked goes to the /spots/create route with the latitude and longitude passed as query parameters
+//         $(".place").append(`
+//             <div>
+//                 <a href="/spots/create?lat=${coord.lat}&lng=${coord.lng}">Create a Spot</a>
+//             </div>
+//         `)
+//         refreshCards();
+//     });
+// });
 //This function clears and inputs the cards using data from geocoder
 function refreshCards(){
     $(".insert-cards").html("");
@@ -98,32 +98,32 @@ function refreshCards(){
     });
 }
 // Initialization of marker and refresh cards
-reverseGeocode({
-        lat: marker.getLngLat().lat,
-        lng: marker.getLngLat().lng
-    },
-    MAPBOX_API_TOKEN).then(function (data){
-    $(".place").html(data.features[0].place_name);
-    refreshCards();
-});
+// reverseGeocode({
+//         lat: marker.getLngLat().lat,
+//         lng: marker.getLngLat().lng
+//     },
+//     MAPBOX_API_TOKEN).then(function (data){
+//     $(".place").html(data.features[0].place_name);
+//     refreshCards();
+// });
 
 // Geocode and reverseGeocode functions
-function geocode(search, token) {
-    var baseUrl = 'https://api.mapbox.com';
-    var endPoint = '/geocoding/v5/mapbox.places/';
-    return fetch(baseUrl + endPoint + encodeURIComponent(search) + '.json' + "?" + 'access_token=' + token)
-        .then(function(res) {
-            return res.json();
-        })
-}
-function reverseGeocode(coordinates, token) {
-    var baseUrl = 'https://api.mapbox.com';
-    var endPoint = '/geocoding/v5/mapbox.places/';
-    return fetch(baseUrl + endPoint + coordinates.lng + "," + coordinates.lat + '.json' + "?" + 'access_token=' + token)
-        .then(function(res) {
-            return res.json();
-        })
-}
+// function geocode(search) {
+//     var baseUrl = 'https://api.mapbox.com';
+//     var endPoint = '/geocoding/v5/mapbox.places/';
+//     return fetch(baseUrl + endPoint + encodeURIComponent(search) + '.json' + "?" + 'access_token=' + MAPBOX_API_TOKEN)
+//         .then(function(res) {
+//             return res.json();
+//         })
+// }
+// function reverseGeocode(coordinates, token) {
+//     var baseUrl = 'https://api.mapbox.com';
+//     var endPoint = '/geocoding/v5/mapbox.places/';
+//     return fetch(baseUrl + endPoint + coordinates.lng + "," + coordinates.lat + '.json' + "?" + 'access_token=' + token)
+//         .then(function(res) {
+//             return res.json();
+//         })
+// }
 
 //Functions for correct formatting of strings
 

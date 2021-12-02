@@ -17,14 +17,16 @@
         <div id="map" class="m-1"></div>
     </div>
     <div class="col-5 no-gutters card-col">
-        <div class="card mt-1 mb-2 ml-2 mr-2 pl-3 pr-3 text-white bg-info text-center place">Click on a map marker to view the details.</div>
-        <div class="card mb-1 mb-2 ml-2 mr-2 text-center d-flex align-items-center">
-            Welcome to IKnowASpot!<br>
-            <span>
-            Click on a map marker to view the details.<br>
-                </span>
-            If you'd like to create a spot please login.
-            <button class="btn btn-secondary" style="width: 50%">Login</button>
+        <div class="card mt-1 mb-2 ml-2 mr-2 pl-3 pr-3 text-white bg-info text-center">IKnowASpot</div>
+        <div class="card mb-1 mb-2 ml-2 mr-2 text-center d-flex align-items-center justify-content-center" id="main-view" style="height: 95%">
+<!--            The welcome partial will be displayed by default-->
+            <span id="welcome"style="display: block">
+                <span th:replace="partials/welcome-to-iknowaspot.html :: welcome-to-iknowaspot" style="display: block"></span>
+            </span>
+<!--            The create-a-spot partial will be displayed-->
+            <span id="create-a-spot"style="display: none">
+                <span th:replace="partials/create-a-spot.html :: create-a-spot"></span>
+            </span>
         </div>
     </div>
 </div>
@@ -38,15 +40,98 @@
 <script src="/js/weather_map.js"></script>
 <!--<script src="/js/home.js"></script>-->
 <script th:inline="javascript">
-    var spots;
-    spots = [[${spots}]];
-
+<!--    Create spots object from thymeleaf spot model-->
+    var spots = [[${spots}]];
+    //For each spot, place a pin on the map
     spots.forEach((spot)=>{
-        console.log(spot);
         new mapboxgl.Marker()
             .setLngLat([spot.longitude, spot.latitude])
             .addTo(map);
     });
+
+
+
+//When click on create a spot button, show the view for create a spot and disable other views
+    function showCreateASpotViewLoggedIn(){
+        document.getElementById("welcome").style.display = "none";
+        document.getElementById("create-a-spot").style.display = "block";
+        const center = map.getCenter();
+        createASpotMarker.setLngLat([
+            center.lng,
+            center.lat
+        ]).addTo(map);
+        reverseGeocodeFromCreateASpotButton(center, MAPBOX_API_TOKEN);
+    }
+    function reverseGeocodeFromCreateASpotButton(center, token) {
+        var baseUrl = 'https://api.mapbox.com';
+        var endPoint = '/geocoding/v5/mapbox.places/';
+        fetch(baseUrl + endPoint + center.lng + "," + center.lat + '.json' + "?" + 'access_token=' + token)
+            .then(res=>{res.json().then(res=>{
+                addressSearchBar.value = (res.features[0].place_name);
+                latitude.value = res.features[0].center[1];
+                longitude.value = res.features[0].center[0];
+            })
+            })
+    }
+    //Wont add the marker to the map if not logged in
+    function showCreateASpotViewNotLoggedIn(){
+        document.getElementById("welcome").style.display = "none";
+        document.getElementById("create-a-spot").style.display = "block";
+    }
+    //Create invisible create a spot marker
+    var createASpotMarker = new mapboxgl.Marker({
+        color: "#000000",
+        draggable: true,
+    })
+    var addressSearchBar = document.getElementById("address");
+    var latitude = document.getElementById("latitude");
+    var longitude = document.getElementById("longitude");
+    //When typing into create a spot bar, will place a pin on the first location
+    addressSearchBar.addEventListener('keyup', getValueFromSearchBar);
+    function getValueFromSearchBar(){
+        geocode(addressSearchBar.value);
+    }
+    function geocode(search) {
+        var baseUrl = 'https://api.mapbox.com';
+        var endPoint = '/geocoding/v5/mapbox.places/';
+        fetch(baseUrl + endPoint + encodeURI(search) + '.json' + "?" + 'access_token=' + MAPBOX_API_TOKEN).then(response=> { response.json()
+            .then(res => {
+                var searchLongitude = res.features[0].center[0];
+                var searchLatitude = res.features[0].center[1];
+                createASpotMarker.setLngLat([
+                    searchLongitude,
+                    searchLatitude
+                ]).addTo(map)
+                map.setCenter([
+                    searchLongitude,
+                    searchLatitude
+                ])
+                longitude.value = searchLongitude;
+                latitude.value = searchLatitude;
+            })
+        })
+    }
+    //You can drop the marker, and the address bar will change
+    createASpotMarker.on('dragend', function() {
+        const coord = {
+            lat: createASpotMarker.getLngLat().lat,
+            lng: createASpotMarker.getLngLat().lng
+        };
+        reverseGeocode(coord, MAPBOX_API_TOKEN).then(function (data){
+            console.log(data)
+            addressSearchBar.value = (data.features[0].place_name);
+            latitude.value = data.features[0].center[1];
+            longitude.value = data.features[0].center[0];
+        });
+    });
+    function reverseGeocode(coordinates, token) {
+        var baseUrl = 'https://api.mapbox.com';
+        var endPoint = '/geocoding/v5/mapbox.places/';
+        return fetch(baseUrl + endPoint + coordinates.lng + "," + coordinates.lat + '.json' + "?" + 'access_token=' + token)
+            .then(function(res) {
+                return res.json();
+            })
+    }
 </script>
 </body>
 </html>
