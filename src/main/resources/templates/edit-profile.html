@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head lang="en">
+    <title>Edit your profile</title>
+</head>
+<body>
+
+<form th:action="@{/save_data}" method="post" th:object="${user}" >
+
+    <div class="contact-grids1 w3agile-6">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 contact-form1 form-group">
+                <label> Name </label>
+                <input type="text"
+                       name="name"
+                       class="form-control"
+                       id="name"
+                       aria-describedby="emailHelp"
+                       placeholder="Edit Name"
+                       required
+                       th:field="*{user.name}"/>
+            </div>
+            <div class="col-md-6 col-sm-6 contact-form1 form-group">
+                <label> Username</label>
+                <input type="text"
+                       name="name"
+                       class="form-control"
+                       id="username"
+                       placeholder="Edit username"
+                       required
+                       th:field="*{user.username}"/>
+            </div>
+            <div class="col-md-6 col-sm-6 contact-form1 form-group">
+                <label class="col-form-label">Email</label>
+                <input type="email"
+                       class="form-control"
+                       placeholder="Edit email"
+                       name="email"
+                       id="email"
+                       required
+                       th:field="*{user.email}" />
+            </div>
+
+            <div class="col-md-6 col-sm-6 contact-form1 form-group">
+                <label class="col-form-label">Bio</label>
+                <textarea class="form-control"
+                          placeholder="Edit Bio"
+                          id="bio"
+                          rows="6"
+                          name="bio"
+                          required th:field="*{user.bio}" ></textarea>
+                <p id="error_description"></p>
+            </div>
+        </div>
+
+        <button type="submit" class="btn bg-primary text-white" >
+            Submit
+        </button>
+
+    </div>
+    <br>
+</form>
+
+
+<script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
+</body>
+</html>
+</html>

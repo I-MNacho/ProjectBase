@@ -19,11 +19,19 @@ class HomeController {
     @Value("${mapbox.api.token}")
     private String mapboxApiKey;
 
+    @Value("AAAgQ3espTiiSH4FxsWDIz")
+    private String fileStackApiKey;
+
+    @Value("2158f575ad5ab05573157f50c05cf4ca")
+    private String openWeatherApiKey;
+
     @RequestMapping(path = "/keys.js", produces = "application/javascript")
     @ResponseBody
     public String apikey(){
         System.out.println(mapboxApiKey);
-        return "const MapboxAPIKey = `" + mapboxApiKey + "`";
+        return "const MapboxAPIKey = `" + mapboxApiKey + "`\n" 
+                + "const FileStackAPIKey = `" + fileStackApiKey + "`";
+
     }
 
     @GetMapping("/home")
