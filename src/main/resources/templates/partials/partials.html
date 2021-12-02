@@ -6,4 +6,44 @@
 </head>
 <body>
 
+<<<<<<< HEAD
+=======
+<!--                    User ID: <span th:text="${#authentication.principal.id}"/>-->
+<!--                    Username: <span th:text="${#authentication.principal.username}"/>-->
+<!--                    Email: <span th:text="${#authentication.principal.email}"/>-->
+            </div>
+            <form>
+                <span class="d-inline-flex">
+                    <div th:replace="partials/search-bar.html"></div>
+                </span>
+            </form>
+
+            <div class="nav navbar-nav navbar-right">
+<!--                Logged out user-->
+                <div sec:authorize="isAnonymous()">
+                    <div>
+                        <a th:href="@{/login}" class="btn btn-secondary">Login</a>
+                        <a th:href="@{/register}" class="btn btn-primary">Register</a>
+                    </div>
+                </div>
+<!--                Logged in User-->
+                <div sec:authorize="isAuthenticated()">
+                    <div class="dropleft">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                            <span th:text="${#authentication.principal.username}"></span>
+                        </button>
+                        <div class="dropdown-menu position-absolute" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="/profile">View Profile</a>
+                            <a class="dropdown-item" onclick="showSplashScreen()">Welcome</a>
+                            <form th:action="@{/logout}" th:method="post">
+                            <button class="dropdown-item">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+>>>>>>> a5078c0390c095135d963f9f7b5c3a1598788692
 </body>

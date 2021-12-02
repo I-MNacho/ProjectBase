@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 
 <head lang="en">
     <title>Your profile</title>
 </head>
 <body>
     <h2 class="indigo-text center">Personal info</h2>
+<!--add more user text-->
+    <div sec:authentication="name"></div>
+    <div th:text="${user.email}"></div>
 
-    <form th:action="@{/profile}" method="post"></form>
+
 </body>
 </html>
-

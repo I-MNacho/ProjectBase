@@ -1,6 +1,6 @@
 "use strict";
 var placeName;
-mapboxgl.accessToken = MAPBOX_API_TOKEN;
+mapboxgl.accessToken = MapboxAPIKey;
 
 //This adds the mapbox to our file
 //Set center to San Antonio, TX on start.
@@ -33,6 +33,7 @@ geocoder.on('result', function(data) {
     refreshCards();
 });
 //On dragend from our marker
+<<<<<<< HEAD
 // marker.on('dragend', function() {
 //     const coord = {
 //         lat: marker.getLngLat().lat,
@@ -49,6 +50,24 @@ geocoder.on('result', function(data) {
 //         refreshCards();
 //     });
 // });
+=======
+marker.on('dragend', function() {
+    const coord = {
+        lat: marker.getLngLat().lat,
+        lng: marker.getLngLat().lng
+    };
+    reverseGeocode(coord, MapboxAPIKey).then(function (data){
+        $(".place").html(data.features[0].place_name);
+        // Creates a button that when clicked goes to the /spots/create route with the latitude and longitude passed as query parameters
+        $(".place").append(`
+            <div>
+                <a href="/spots/create?lat=${coord.lat}&lng=${coord.lng}">Create a Spot</a>
+            </div>
+        `)
+        refreshCards();
+    });
+});
+>>>>>>> a5078c0390c095135d963f9f7b5c3a1598788692
 //This function clears and inputs the cards using data from geocoder
 function refreshCards(){
     $(".insert-cards").html("");
@@ -98,6 +117,7 @@ function refreshCards(){
     });
 }
 // Initialization of marker and refresh cards
+<<<<<<< HEAD
 // reverseGeocode({
 //         lat: marker.getLngLat().lat,
 //         lng: marker.getLngLat().lng
@@ -106,6 +126,16 @@ function refreshCards(){
 //     $(".place").html(data.features[0].place_name);
 //     refreshCards();
 // });
+=======
+reverseGeocode({
+        lat: marker.getLngLat().lat,
+        lng: marker.getLngLat().lng
+    },
+    MapboxAPIKey).then(function (data){
+    $(".place").html(data.features[0].place_name);
+    refreshCards();
+});
+>>>>>>> a5078c0390c095135d963f9f7b5c3a1598788692
 
 // Geocode and reverseGeocode functions
 // function geocode(search) {

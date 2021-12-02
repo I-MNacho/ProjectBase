@@ -9,26 +9,15 @@
     <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
 <body>
-<style>
-   form{
-       display: flex;
-       flex-direction: column;
-       padding: 20px;
-       justify-items: flex-start;
-
-   }
-</style>
 <nav th:replace="partials/partials.html :: navbar"></nav>
 <!--${event} = event atr from controller -->
-<form action="#" th:action="@{/events/create}" th:object="${event}" method="POST" >
-
+<form action="#" th:action="@{/events/edit}" th:object="${event}" method="POST" >
+ <input id="id" name="id" type="hidden" th:field="${event.id}"/>
     <label for="title">I Have An Event..</label>
     <input id="title" name="title" type="text" th:field="${event.title}"/>
 
     <label for="description">What is your event?</label>
     <textarea id="description" name="description" th:field="${event.description}"></textarea>
-    <label for="startTime">What is the time your event starts?</label>
-    <input id="startTime" name="startTime" type="date" th:field="${event.startTime}"/>
     <button>Submit</button>
 
 
