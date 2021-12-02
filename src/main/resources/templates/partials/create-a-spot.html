@@ -1,0 +1,26 @@
+<span th:fragment="create-a-spot">
+<form th:action="@{/spots/create}" th:object="${spot}" method="POST" >
+    <div class="justify-content-center">
+        <h2>Create A Spot</h2>
+        <div sec:authorize="isAuthenticated()">
+            <div class="form-group">
+                <label for="title">Address:</label><br>
+                <input id="address" class="form-control" name="address" type="text"/><br>
+                <label for="title">Name this spot:</label><br>
+                <input id="title" class="form-control" name="title" type="text" th:field="${spot.title}"/><br>
+                <label for="description">Describe your spot:</label><br>
+                <textarea style="resize: none" id="description" class="form-control" name="description" th:field="${spot.description}"/><br>
+                <input id="latitude" name="latitude" type="hidden" th:field="${spot.latitude}"/>
+                <input id="longitude" name="longitude" type="hidden" th:field="${spot.longitude}"/>
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+        <div sec:authorize="isAnonymous()">
+            <form th:action="@{/login}">
+                <button class="btn btn-secondary" type="submit">Please login to continue</button>
+            </form>
+        </div>
+    </div>
+    <!--basic form for submitting a spot and saving it to the database... more needs to be added-->
+</form>
+</span>

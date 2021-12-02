@@ -14,7 +14,7 @@ function hideSplashScreen() {
    // if hasVisited is false, show splash screen and set "visited" value to true in localStorage
    if(!hasVisited) {
       splashPage.style.display = "flex";
-      storage.setItem("visited", "true");
+      // storage.setItem("visited", "true");
    }
    // checks if user has visited the splash page already and shows the splash page if they have not
 })();
