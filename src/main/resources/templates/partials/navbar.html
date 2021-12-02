@@ -33,7 +33,9 @@
                         </button>
                         <div class="dropdown-menu position-absolute" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" th:href="@{/profile}">View Profile</a>
-                            <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+                            <form th:action="@{/logout}" th:method="post">
+                                <button class="dropdown-item">Logout</button>
+                            </form>
                         </div>
                     </div>
                 </div>
