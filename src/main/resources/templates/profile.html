@@ -5,13 +5,23 @@
 <head lang="en">
     <title>Your profile</title>
 </head>
+<div th:replace="partials/bootstrap-header.html"></div>
+
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
+<link rel="stylesheet" th:href="@{/css/index.css}">
 <body>
+<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+
     <h2 class="indigo-text center">Personal info</h2>
 <!--add more user text-->
     <div sec:authentication="name"></div>
     <div th:text="${user.email}"></div>
     <h2 class="indigo-text center">My Events</h2>
 
+
+
+
+<div th:replace="partials/bootstrap-footer.html"></div>
 
 </body>
 </html>

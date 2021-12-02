@@ -1,8 +1,5 @@
 package com.codeup.iknowaspot.models;
 
-import com.codeup.iknowaspot.models.Spot;
-import com.codeup.iknowaspot.models.User;
-
 import javax.persistence.*;
 
     @Entity
@@ -13,10 +10,10 @@ import javax.persistence.*;
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private long id;
 
-        @Column(columnDefinition = "VARCHAR(200) NOT NULL")
-        private String rating;
+        @Column(columnDefinition = "INTEGER NOT NULL")
+        private int rating;
 
-        @Column(columnDefinition = "VARCHAR(200) NOT NULL")
+        @Column(columnDefinition = "TEXT NOT NULL")
         private String body;
 
         @ManyToOne
@@ -35,11 +32,11 @@ import javax.persistence.*;
             this.id = id;
         }
 
-        public String getRating() {
+        public int getRating() {
             return rating;
         }
 
-        public void setRating(String rating) {
+        public void setRating(int rating) {
             this.rating = rating;
         }
 
