@@ -3,6 +3,8 @@
 <head th:fragment="head">
     <meta charset="UTF-8" />
     <title>Home</title>
+    <div th:replace="partials/bootstrap-header.html"></div>
+
 </head>
 <body>
 <nav class="mb-1 col-12" th:fragment="navbar" style="background-color: white; box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);">
@@ -51,4 +53,6 @@
         </div>
     </div>
 </nav>
+<div th:replace="partials/bootstrap-footer.html"></div>
+
 </body>

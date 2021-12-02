@@ -1,4 +1,5 @@
 package com.codeup.iknowaspot.controllers;
+import com.codeup.iknowaspot.models.Review;
 
 import com.codeup.iknowaspot.models.Spot;
 import com.codeup.iknowaspot.models.User;
@@ -29,38 +30,33 @@ public class ReviewsController {
     public ReviewsController() {
     }
 
-    public class Review {
-    }
-
-    //getters and setters
-    public ReviewsController getReviewsDao() {
-        return (ReviewsController) reviewsDao;
-    }
-
-    public void setSpotDao(ReviewsRepository reviewsDao) {
+    public ReviewsController(ReviewsRepository reviewsDao, SpotRepository spotsDao, UserRepository usersDao) {
         this.reviewsDao = reviewsDao;
+        this.spotsDao = spotsDao;
+        this.usersDao = usersDao;
     }
+
 
     //create review
-    @GetMapping("/reviews/create")
-    public String create(Model model) {
-        model.addAttribute("review", new ReviewsController.Review());
-        return "review/create";
+    @GetMapping("/review/create")
+    public String createReview(Model model) {
+        model.addAttribute("review", new Review());
+        return "reviews/create-review";
     }
 
 
     //inserting review
     @PostMapping("/review/create")
-    public String insert(@ModelAttribute Spot spot) {
-        spotsDao.save(spot);
-        return "redirect:/reviews";
+    public String insertReview(@ModelAttribute Review review) {
+        reviewsDao.save(review);
+        return "redirect:/spots";
     }
 
 
     //delete function
     @PostMapping("/home_page_goes_here/{id}/delete")
-    public String deletePost(@PathVariable long id) {
-        spotsDao.deleteById(id);
+    public String deleteReview(@PathVariable long id) {
+        reviewsDao.deleteById(id);
         return "redirect:/back_to_homepage";
     }
 
