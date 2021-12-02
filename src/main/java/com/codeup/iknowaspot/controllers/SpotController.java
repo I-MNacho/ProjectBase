@@ -39,7 +39,7 @@ public class SpotController {
         this.spotsDao = spotDao;
     }
 
-    // mapping for spots list page mapped to "spots/index.html"
+    // mapping for spots list page mapped to "spots/home.html"
     @GetMapping("/spots")
     public String index(Model model) {
         model.addAttribute("spots", spotsDao.findAll());
