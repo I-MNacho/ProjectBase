@@ -1,5 +1,7 @@
 package com.codeup.iknowaspot.models;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 
 @Entity
@@ -28,6 +30,9 @@ public class Spot {
     @ManyToOne
     @JoinColumn (name = "user_id")
     private User user;
+
+    @Value("${file-upload-path}")
+    private String uploadPath;
 
     public Spot() {
     }
