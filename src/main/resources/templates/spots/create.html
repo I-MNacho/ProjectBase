@@ -4,8 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Save a Spot</title>
+    <div th:replace="partials/bootstrap-header.html"></div>
+
 </head>
 <body>
+<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+
 <form action="#" th:action="@{/spots/create}" th:object="${spot}" method="POST" >
     <input id="latitude" name="latitude" type="hidden" th:field="${spot.latitude}"/>
     <input id="longitude" name="longitude" type="hidden" th:field="${spot.longitude}"/>
@@ -18,6 +22,9 @@
     <button>Submit</button>
 <!--basic form for submitting a spot and saving it to the database... more needs to be added-->
 </form>
+
+
+<div th:replace="partials/bootstrap-footer.html"></div>
 
 </body>
 </html>
