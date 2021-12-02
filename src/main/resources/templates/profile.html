@@ -5,7 +5,12 @@
 <head lang="en">
     <title>Your profile</title>
 </head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
+<link rel="stylesheet" th:href="@{/css/index.css}">
 <body>
+<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+
     <h2 class="indigo-text center">Personal info</h2>
 <!--add more user text-->
     <div sec:authentication="name"></div>
