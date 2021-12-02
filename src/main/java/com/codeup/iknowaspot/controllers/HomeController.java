@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 class HomeController {
 
-    @Value("${mapbox_key}")
+    @Value("${mapbox.api.token}")
     private String mapboxApiKey;
 
     @RequestMapping(path = "/keys.js", produces = "application/javascript")
