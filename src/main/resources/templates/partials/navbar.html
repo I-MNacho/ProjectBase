@@ -1,43 +1,40 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> lang="en">
-<head th:fragment="head">
-    <meta charset="UTF-8" />
-    <title>Home</title>
-    <div th:replace="partials/bootstrap-header.html"></div>
-
-</head>
-<body>
-
-
-<!--                    User ID: <span th:text="${#authentication.principal.id}"/>-->
-<!--                    Username: <span th:text="${#authentication.principal.username}"/>-->
-<!--                    Email: <span th:text="${#authentication.principal.email}"/>-->
+<nav class="mb-1 col-12" th:fragment="navbar" style="background-color: white; box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);">
+    <div class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">IKnowASpot</a>
+                <a th:href="@{/home}" class="btn btn-success">Spots</a>
+                <span sec:authorize="isAuthenticated()">
+                    <a type="button" class="btn btn-outline-success" onclick="showCreateASpotViewLoggedIn()">Create A Spot</a>
+                </span>
+                <span sec:authorize="isAnonymous()">
+                    <a type="button" class="btn btn-outline-success" onclick="showCreateASpotViewNotLoggedIn()">Create A Spot</a>
+                </span>
+                <a th:href="@{/aboutus}" class="btn btn-outline-info">About Us</a>
             </div>
             <form>
                 <span class="d-inline-flex">
                     <div th:replace="partials/search-bar.html"></div>
                 </span>
             </form>
-
             <div class="nav navbar-nav navbar-right">
-<!--                Logged out user-->
+                <!--                Logged out user-->
                 <div sec:authorize="isAnonymous()">
                     <div>
                         <a th:href="@{/login}" class="btn btn-secondary">Login</a>
                         <a th:href="@{/register}" class="btn btn-primary">Register</a>
                     </div>
                 </div>
-<!--                Logged in User-->
+                <!--                Logged in User-->
                 <div sec:authorize="isAuthenticated()">
                     <div class="dropleft">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                             <span th:text="${#authentication.principal.username}"></span>
                         </button>
                         <div class="dropdown-menu position-absolute" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="/profile">View Profile</a>
-                            <a class="dropdown-item" onclick="showSplashScreen()">Welcome</a>
+                            <a class="dropdown-item" th:href="@{/profile}">View Profile</a>
                             <form th:action="@{/logout}" th:method="post">
-                            <button class="dropdown-item">Logout</button>
+                                <button class="dropdown-item">Logout</button>
                             </form>
                         </div>
                     </div>
@@ -46,5 +43,3 @@
         </div>
     </div>
 </nav>
-
-</body>

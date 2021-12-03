@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link type="text/css" media="all" href="/css/splash.css" rel="stylesheet"/>
+    <div th:replace="partials/bootstrap-header.html"></div>
+
+</head>
+<body>
+<!--<div>-->
+<!--    <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>-->
+<!--</div>-->
+
+    <div onclick="hideSplashScreen()">X</div>
+<!--    calls id from hideSplashScreen function from home.js-->
+    <p>
+        Welcome to the IKnowASpot location search application!
+        Get started quickly by signing up.
+    </p>
+    <p>
+        <a href="/login" th:href="@{/login}" class="btn btn-large btn-success">Sign in</a>
+        <a href="/signup" th:href="@{/register}" class="btn btn-large btn-success">Sign up</a>
+    </p>
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel" style="display: none;">
+        <div class="carousel-inner w-auto h-auto">
+            <div class="carousel-item active" data-bs-interval="2000">
+                <img src="/img/waterfall.jpeg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+<div th:replace="partials/bootstrap-footer.html"></div>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to IKnowASpot!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body class="container-fluid">
+<div class="row no-gutters everything-container">
+    <nav th:replace="partials/navbar.html :: navbar"></nav>
+<!--    <div th:replace="partials/splash.html"></div>-->
+    <div class="col-7 mb-3">
+        <div id="geocoder" class="geocoder col-12"></div>
+        <div id="map" class="m-1"></div>
+    </div>
+    <div class="col-5 no-gutters card-col">
+        <div class="card mt-1 mb-2 ml-2 mr-2 pl-3 pr-3 text-white bg-info text-center">IKnowASpot</div>
+        <div class="card mb-1 mb-2 ml-2 mr-2 text-center d-flex align-items-center justify-content-center" id="main-view" style="height: 95%">
+<!--            The welcome partial will be displayed by default-->
+            <span id="welcome"style="display: block">
+                <span th:replace="partials/welcome-to-iknowaspot.html :: welcome-to-iknowaspot" style="display: block"></span>
+            </span>
+<!--            The create-a-spot partial will be displayed-->
+            <span id="create-a-spot"style="display: none">
+                <span th:replace="partials/create-a-spot.html :: create-a-spot"></span>
+            </span>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script><script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
+<script src="/keys.js"></script>
+<script src="/js/weather_map.js"></script>
+<!--<script src="/js/home.js"></script>-->
+<script th:inline="javascript">
+<!--    Create spots object from thymeleaf spot model-->
+    var spots = [[${spots}]];
+    //For each spot, place a pin on the map
+    spots.forEach((spot)=>{
+        new mapboxgl.Marker()
+            .setLngLat([spot.longitude, spot.latitude])
+            .addTo(map);
+    });
+
+//When click on create a spot button, show the view for create a spot and disable other views
+    function showCreateASpotViewLoggedIn(){
+        document.getElementById("welcome").style.display = "none";
+        document.getElementById("create-a-spot").style.display = "block";
+        const center = map.getCenter();
+        createASpotMarker.setLngLat([
+            center.lng,
+            center.lat
+        ]).addTo(map);
+        reverseGeocodeFromCreateASpotButton(center, MapboxAPIKey);
+    }
+    function reverseGeocodeFromCreateASpotButton(center, token) {
+        var baseUrl = 'https://api.mapbox.com';
+        var endPoint = '/geocoding/v5/mapbox.places/';
+        fetch(baseUrl + endPoint + center.lng + "," + center.lat + '.json' + "?" + 'access_token=' + token)
+            .then(res=>{res.json().then(res=>{
+                addressSearchBar.value = (res.features[0].place_name);
+                latitude.value = res.features[0].center[1];
+                longitude.value = res.features[0].center[0];
+            })
+            })
+    }
+    //Wont add the marker to the map if not logged in
+    function showCreateASpotViewNotLoggedIn(){
+        document.getElementById("welcome").style.display = "none";
+        document.getElementById("create-a-spot").style.display = "block";
+    }
+    //Create invisible create a spot marker
+    var createASpotMarker = new mapboxgl.Marker({
+        color: "#000000",
+        draggable: true,
+    })
+    var addressSearchBar = document.getElementById("address");
+    var latitude = document.getElementById("latitude");
+    var longitude = document.getElementById("longitude");
+    //When typing into create a spot bar, will place a pin on the first location
+    addressSearchBar.addEventListener('keyup', getValueFromSearchBar);
+    function getValueFromSearchBar(){
+        geocode(addressSearchBar.value);
+    }
+    function geocode(search) {
+        var baseUrl = 'https://api.mapbox.com';
+        var endPoint = '/geocoding/v5/mapbox.places/';
+        fetch(baseUrl + endPoint + encodeURI(search) + '.json' + "?" + 'access_token=' + MapboxAPIKey).then(response=> { response.json()
+            .then(res => {
+                var searchLongitude = res.features[0].center[0];
+                var searchLatitude = res.features[0].center[1];
+                createASpotMarker.setLngLat([
+                    searchLongitude,
+                    searchLatitude
+                ]).addTo(map)
+                map.setCenter([
+                    searchLongitude,
+                    searchLatitude
+                ])
+                longitude.value = createASpotMarker.getLngLat().lng;
+                latitude.value = createASpotMarker.getLngLat().lat;
+            })
+        })
+    }
+    //You can drop the marker, and the address bar will change
+    createASpotMarker.on('dragend', function() {
+        const coord = {
+            lat: createASpotMarker.getLngLat().lat,
+            lng: createASpotMarker.getLngLat().lng
+        };
+        reverseGeocode(coord, MapboxAPIKey).then(function (data){
+            console.log(data)
+            addressSearchBar.value = (data.features[0].place_name);
+            latitude.value = createASpotMarker.getLngLat().lat;
+            longitude.value = createASpotMarker.getLngLat().lng;
+        });
+    });
+    function reverseGeocode(coordinates, token) {
+        var baseUrl = 'https://api.mapbox.com';
+        var endPoint = '/geocoding/v5/mapbox.places/';
+        return fetch(baseUrl + endPoint + coordinates.lng + "," + coordinates.lat + '.json' + "?" + 'access_token=' + token)
+            .then(function(res) {
+                return res.json();
+            })
+    }
+    function getCurrentLocation(){
+        navigator.geolocation.getCurrentPosition((position) => {
+            var coord = {lat: position.coords.latitude, lng: position.coords.longitude};
+            console.log(coord)
+            reverseGeocode(coord, MapboxAPIKey).then(function (data){
+                addressSearchBar.value = (data.features[0].place_name);
+            });
+            createASpotMarker.setLngLat(coord).addTo(map)
+            map.setCenter(coord)
+            map.setZoom(17);
+            latitude.value = createASpotMarker.getLngLat().lat;
+            longitude.value = createASpotMarker.getLngLat().lng;
+        });
+
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+.visible {
+ visibility: visible !important;
+}
+.invisible {
+ visibility: hidden !important;
+}
+
+.hidden {
+ display: none;
+}
+
+h1 {
+ color: hotpink;
+}

@@ -1,9 +1,12 @@
 package com.codeup.iknowaspot.models;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
-//hey
+import java.util.List;
+
 @Entity
-@Table(name = "posts")
+@Table(name = "spots")
 public class Spot {
 
     @Id
@@ -16,6 +19,22 @@ public class Spot {
     @Column(columnDefinition = "TEXT NOT NULL")
     private String description;
 
+    @Column(columnDefinition = "DOUBLE")
+    private double latitude;
+
+    @Column(columnDefinition = "DOUBLE")
+    private double longitude;
+
+    @Column(columnDefinition = "INTEGER")
+    private double githubId;
+
+    @Value("${file-upload-path}")
+    private String uploadPath;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
+    private List<Tag> tags;
+
     @ManyToOne
     @JoinColumn (name = "user_id")
     private User user;
@@ -23,13 +42,11 @@ public class Spot {
     public Spot() {
     }
 
-    public Spot(String title, String body) {
+    public Spot(String title, String description, Double latitude, Double longitude, User user) {
         this.title = title;
-        this.description = body;
-    }
-    public Spot(String title, String body, User user) {
-        this.title = title;
-        this.description = body;
+        this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.user = user;
     }
 
@@ -57,8 +74,32 @@ public class Spot {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+//    public Set<User> getUser() {
+//        return users;
+//    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getGithubId() {
+        return githubId;
+    }
+
+    public void setGithubId(int githubId) {
+        this.githubId = githubId;
     }
 
     public void setUser(User user) {

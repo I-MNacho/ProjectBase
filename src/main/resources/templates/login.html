@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <title>Log In</title>
 </head>
+<div th:replace="partials/bootstrap-header.html"></div>
+
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
 <body>
+<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+
 <h1>Log In</h1>
 <div th:if="${param.error}">
     Invalid Username and Password.
@@ -18,8 +23,11 @@
     <input id="username" name="username" type="text"/>
     <label for="password">Password</label>
     <input id="password" name="password" type="password"/>
-    <input type="submit" value="Log In" />
+    <input type="submit" value="Log In"/>
 </form>
+
+
+<div th:replace="partials/bootstrap-footer.html"></div>
 
 </body>
 

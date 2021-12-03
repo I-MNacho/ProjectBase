@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <title>Register Form</title>
 </head>
+
+<div th:replace="partials/bootstrap-header.html"></div>
+
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
+
 <body>
+<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+
 <h1>Create an account</h1>
-<form th:action="@{/sign-up}" method="POST" th:object="${user}">
+<form th:action="@{/register}" method="POST" th:object="${user}">
+
     <label for="username">Username</label>
     <input id="username" th:field="*{username}" />
 
@@ -18,5 +26,10 @@
 
     <input value="Sign me up!" type="submit" />
 </form>
+
+
+
+<div th:replace="partials/bootstrap-footer.html"></div>
+
 </body>
 </html>

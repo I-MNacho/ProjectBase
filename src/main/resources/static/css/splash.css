@@ -1,10 +1,6 @@
-.site {
-    
-}
 
-.overlay {
+.splash {
   z-index: 1000;
-  background: #13bbd973;
   font-family: Poppins;
   flex-direction: column;
   text-align: center;
@@ -16,10 +12,15 @@
   top: 0;
   left: 0;
   right: 0;
+  backdrop-filter: blur(10px);
+}
+
+.splash .header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 h4 {
-  width: 100%;
-  text-align: right;
-
+  margin: 20px;
 }
