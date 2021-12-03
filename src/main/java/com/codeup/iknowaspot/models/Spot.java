@@ -37,10 +37,9 @@ public class Spot {
     public Spot() {
     }
 
-    public Spot(String title, String description, Set<User> users, Double latitude, Double longitude) {
+    public Spot(String title, String description, Double latitude, Double longitude) {
         this.title = title;
         this.description = description;
-        this.users = users;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -69,13 +68,9 @@ public class Spot {
         this.id = id;
     }
 
-    public Set<User> getUser() {
-        return users;
-    }
-
-    public void setUser(Set<User> users) {
-        this.users = users;
-    }
+//    public Set<User> getUser() {
+//        return users;
+//    }
 
     public double getLatitude() {
         return latitude;

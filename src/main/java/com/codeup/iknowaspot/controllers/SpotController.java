@@ -75,7 +75,7 @@ public class SpotController {
         Spot spot = spotsDao.getById(id);
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
-        author.addSpot(spot);
+//        author.addSpot(spot);
         usersDao.save(author);
         return "redirect:/spots";
     }
@@ -86,7 +86,7 @@ public class SpotController {
     public String insert(@ModelAttribute Spot spot) {
 //        spot.setGithubId((int) principal.getAttribute("id"));
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        spot.setUser(usersDao.getById(user.getId()));
+//        spot.setUser(usersDao.getById(user.getId()));
         spotsDao.save(spot);
         return "redirect:/spots";
     }

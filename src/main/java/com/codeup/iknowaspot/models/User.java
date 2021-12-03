@@ -20,34 +20,35 @@ public class User {
     @Column(columnDefinition = "VARCHAR(100) NOT NULL")
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Spot> spots;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+//    private List<Spot> spots;
     
     public User(User copy) {
         id = copy.id; // This line is SUPER important! Many things won't work if it's absent
         email = copy.email;
         username = copy.username;
         password = copy.password;
+//        spots = copy.spots;
     }
     public User(){
 
     }
-    public Set<Spot> getSpots(){
-        return spots;
-    }
-    public Set<Spot> setSpots(Set<Spot> spots){
-        this.spots = spots;
-        return spots;
-    }
-    public Set<Spot> addSpot(Spot spot){
-        if (spots.contains(spot)) {
-
-            return spots;
-        }
-
-        this.spots.add(spot);
-        return spots;
-    }
+//    public Set<Spot> getSpots(){
+//        return spots;
+//    }
+//    public Set<Spot> setSpots(Set<Spot> spots){
+//        this.spots = spots;
+//        return spots;
+//    }
+//    public Set<Spot> addSpot(Spot spot){
+//        if (spots.contains(spot)) {
+//
+//            return spots;
+//        }
+//
+//        this.spots.add(spot);
+//        return spots;
+//    }
 
     public long getId() {
         return id;
