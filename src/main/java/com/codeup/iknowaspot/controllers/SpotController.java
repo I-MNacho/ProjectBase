@@ -70,7 +70,15 @@ public class SpotController {
 
         return "spots/index";
     }
-
+    @GetMapping("/spots/save/{id}")
+    public String saveSpot(@PathVariable long id){
+        Spot spot = spotsDao.getById(id);
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        author.addSpot(spot);
+        usersDao.save(author);
+        return "redirect:/spots";
+    }
 
     //inserting spot
     @PostMapping("/spots/create")
