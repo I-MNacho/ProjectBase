@@ -31,8 +31,13 @@ public class Spot {
     @Value("${file-upload-path}")
     private String uploadPath;
 
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
     private List<Tag> tags;
+
+    @ManyToOne
+    @JoinColumn (name = "user_id")
+    private User user;
 
     public Spot() {
     }
