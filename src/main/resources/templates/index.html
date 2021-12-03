@@ -1,44 +1,44 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome to IKnowASpot!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <div th:replace="partials/bootstrap-header.html"></div>
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Welcome to IKnowASpot!</title>-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <div th:replace="partials/bootstrap-header.html"></div>-->
 
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
-</head>
-<body class="container-fluid">
-<div class="row no-gutters everything-container">
-    <nav th:replace="partials/partials.html :: navbar"></nav>
-    <div class="container splash" sec:authorize="isAnonymous()">
-    <div th:replace="partials/splash.html"></div>
-</div>
-<!--    <div class="container splash" sec:authorize="isAuthenticated()" style="display: none">-->
+<!--    <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />-->
+<!--</head>-->
+<!--<body class="container-fluid">-->
+<!--<div class="row no-gutters everything-container">-->
+<!--    <nav th:replace="partials/partials.html :: navbar"></nav>-->
+<!--    <div class="container splash" sec:authorize="isAnonymous()">-->
 <!--    <div th:replace="partials/splash.html"></div>-->
 <!--</div>-->
+<!--&lt;!&ndash;    <div class="container splash" sec:authorize="isAuthenticated()" style="display: none">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div th:replace="partials/splash.html"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-    <div class="col-7 mb-3">
-        <div id="geocoder" class="geocoder col-12"></div>
-        <div id="map" class="m-1"></div>
-    </div>
-    <div class="col-5 no-gutters card-col">
-        <div class="card mt-1 mb-2 ml-2 mr-2 pl-3 pr-3 text-white bg-info text-center place"></div>
-        <div class="row insert-cards mb-1"></div>
-    </div>
+<!--    <div class="col-7 mb-3">-->
+<!--        <div id="geocoder" class="geocoder col-12"></div>-->
+<!--        <div id="map" class="m-1"></div>-->
+<!--    </div>-->
+<!--    <div class="col-5 no-gutters card-col">-->
+<!--        <div class="card mt-1 mb-2 ml-2 mr-2 pl-3 pr-3 text-white bg-info text-center place"></div>-->
+<!--        <div class="row insert-cards mb-1"></div>-->
+<!--    </div>-->
 
-</div>
+<!--</div>-->
 
 
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
-<script src="/keys.js"></script>
-<script src="/js/weather_map.js"></script>
-<script src="/js/home.js"></script>
-<div th:replace="partials/bootstrap-footer.html"></div>
+<!--<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>-->
+<!--<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--<script src='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js'></script>-->
+<!--<link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />-->
+<!--<script src="/keys.js"></script>-->
+<!--<script src="/js/weather_map.js"></script>-->
+<!--<script src="/js/home.js"></script>-->
+<!--<div th:replace="partials/bootstrap-footer.html"></div>-->
 
-</body>
-</html>
+<!--</body>-->
+<!--</html>-->
