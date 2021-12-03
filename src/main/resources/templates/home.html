@@ -130,6 +130,20 @@
                 return res.json();
             })
     }
+    function getCurrentLocation(){
+        navigator.geolocation.getCurrentPosition((position) => {
+            var coord = {lat: position.coords.latitude, lng: position.coords.longitude};
+            console.log(coord)
+            reverseGeocode(coord, MapboxAPIKey).then(function (data){
+                addressSearchBar.value = (data.features[0].place_name);
+                latitude.value = data.features[0].center[1];
+                longitude.value = data.features[0].center[0];
+            });
+            createASpotMarker.setLngLat(coord).addTo(map)
+            map.setCenter(coord)
+        });
+
+    }
 </script>
 </body>
 </html>
