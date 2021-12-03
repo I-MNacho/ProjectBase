@@ -104,8 +104,8 @@
                     searchLongitude,
                     searchLatitude
                 ])
-                longitude.value = searchLongitude;
-                latitude.value = searchLatitude;
+                longitude.value = createASpotMarker.getLngLat().lng;
+                latitude.value = createASpotMarker.getLngLat().lat;
             })
         })
     }
@@ -118,8 +118,8 @@
         reverseGeocode(coord, MapboxAPIKey).then(function (data){
             console.log(data)
             addressSearchBar.value = (data.features[0].place_name);
-            latitude.value = data.features[0].center[1];
-            longitude.value = data.features[0].center[0];
+            latitude.value = createASpotMarker.getLngLat().lat;
+            longitude.value = createASpotMarker.getLngLat().lng;
         });
     });
     function reverseGeocode(coordinates, token) {
@@ -136,11 +136,12 @@
             console.log(coord)
             reverseGeocode(coord, MapboxAPIKey).then(function (data){
                 addressSearchBar.value = (data.features[0].place_name);
-                latitude.value = data.features[0].center[1];
-                longitude.value = data.features[0].center[0];
             });
             createASpotMarker.setLngLat(coord).addTo(map)
             map.setCenter(coord)
+            map.setZoom(17);
+            latitude.value = createASpotMarker.getLngLat().lat;
+            longitude.value = createASpotMarker.getLngLat().lng;
         });
 
     }
