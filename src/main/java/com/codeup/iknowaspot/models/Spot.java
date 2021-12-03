@@ -3,6 +3,7 @@ package com.codeup.iknowaspot.models;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "spots")
@@ -31,12 +32,23 @@ public class Spot {
     @JoinColumn (name = "user_id")
     private User user;
 
+
     @Value("${file-upload-path}")
     private String uploadPath;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
+    private List<Tag> tags;
 
     public Spot() {
     }
 
+//    public Spot(Spot copy) {
+//        title = copy.title;
+//        description = copy.description;
+//        user = copy.user;
+//        latitude = copy.latitude;
+//        longitude = copy.longitude;
+//    }
     public Spot(String title, String description, User user, Double latitude, Double longitude) {
         this.title = title;
         this.description = description;
