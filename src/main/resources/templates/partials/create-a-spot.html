@@ -4,7 +4,8 @@
         <h2>Create A Spot</h2>
         <div sec:authorize="isAuthenticated()">
             <div class="form-group">
-                <label for="title">Address:</label><br>
+                <button type="button" class="btn btn-info" onclick="getCurrentLocation()">Get my current location</button><br>
+                <label for="title">Address or place:</label><br>
                 <input id="address" class="form-control" name="address" type="text"/><br>
                 <label for="title">Name this spot:</label><br>
                 <input id="title" class="form-control" name="title" type="text" th:field="${spot.title}"/><br>
