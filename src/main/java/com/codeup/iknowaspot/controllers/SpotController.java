@@ -8,6 +8,7 @@ import com.codeup.iknowaspot.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,7 +70,15 @@ public class SpotController {
 
         return "spots/index";
     }
-
+    @GetMapping("/spots/save/{id}")
+    public String saveSpot(@PathVariable long id){
+        Spot spot = spotsDao.getById(id);
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        author.addSpot(spot);
+        usersDao.save(author);
+        return "redirect:/spots";
+    }
 
     //inserting spot
     @PostMapping("/spots/create")

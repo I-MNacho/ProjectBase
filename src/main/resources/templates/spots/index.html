@@ -10,26 +10,7 @@
 
 <body>
 <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
-
-<table>
-    <thead>
-    <tr>
-        <th> Title </th>
-        <th> Description </th>
-    </tr>
-    </thead>
-    <tbody>
-<!--    <tr th:if="${spots.empty}">-->
-<!--        <td colspan="2"> No Spots Available </td>-->
-<!--    </tr>-->
-    <tr th:each="spot : ${spots}">
-        <td><span th:text="${spot.title}"> Title </span></td>
-        <td><span th:text="${spot.description}"> Description </span></td>
-    </tr>
-    </tbody>
-</table>
-
-
+<div th:replace="partials/view-spots.html"></div>
 <div th:replace="partials/bootstrap-footer.html"></div>
 
 </body>

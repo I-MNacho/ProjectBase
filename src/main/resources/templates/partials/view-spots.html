@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Spots</title>
+    <div th:replace="partials/bootstrap-header.html"></div>
+
+</head>
+
+<body>
+<table>
+    <thead>
+    <tr>
+        <th> Title </th>
+        <th> Description </th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--    <tr th:if="${spots.empty}">-->
+    <!--        <td colspan="2"> No Spots Available </td>-->
+    <!--    </tr>-->
+    <tr th:each="spot : ${spots}">
+        <td><span th:text="${spot.title}"> Title </span></td>
+        <td><span th:text="${spot.description}"> Description </span></td>
+        <td><a th:href="@{|spots/save/${spot.id}|  }"> Save </a></td>
+
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

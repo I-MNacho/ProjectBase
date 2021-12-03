@@ -3,6 +3,7 @@ package com.codeup.iknowaspot.models;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "spots")
@@ -27,9 +28,8 @@ public class Spot {
     @Column(columnDefinition = "INTEGER")
     private double githubId;
 
-    @ManyToOne
-    @JoinColumn (name = "user_id")
-    private User user;
+    @ManyToMany
+    private Set<User> users;
 
     @Value("${file-upload-path}")
     private String uploadPath;
@@ -37,10 +37,10 @@ public class Spot {
     public Spot() {
     }
 
-    public Spot(String title, String description, User user, Double latitude, Double longitude) {
+    public Spot(String title, String description, Set<User> users, Double latitude, Double longitude) {
         this.title = title;
         this.description = description;
-        this.user = user;
+        this.users = users;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -69,12 +69,12 @@ public class Spot {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Set<User> getUser() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Set<User> users) {
+        this.users = users;
     }
 
     public double getLatitude() {
