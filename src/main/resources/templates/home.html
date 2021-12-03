@@ -36,7 +36,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
-<script src="/js/keys.js"></script>
+<script src="/keys.js"></script>
 <script src="/js/weather_map.js"></script>
 <!--<script src="/js/home.js"></script>-->
 <script th:inline="javascript">
@@ -58,7 +58,7 @@
             center.lng,
             center.lat
         ]).addTo(map);
-        reverseGeocodeFromCreateASpotButton(center, MAPBOX_API_TOKEN);
+        reverseGeocodeFromCreateASpotButton(center, MapboxAPIKey);
     }
     function reverseGeocodeFromCreateASpotButton(center, token) {
         var baseUrl = 'https://api.mapbox.com';
@@ -92,7 +92,7 @@
     function geocode(search) {
         var baseUrl = 'https://api.mapbox.com';
         var endPoint = '/geocoding/v5/mapbox.places/';
-        fetch(baseUrl + endPoint + encodeURI(search) + '.json' + "?" + 'access_token=' + MAPBOX_API_TOKEN).then(response=> { response.json()
+        fetch(baseUrl + endPoint + encodeURI(search) + '.json' + "?" + 'access_token=' + MapboxAPIKey).then(response=> { response.json()
             .then(res => {
                 var searchLongitude = res.features[0].center[0];
                 var searchLatitude = res.features[0].center[1];
@@ -115,7 +115,7 @@
             lat: createASpotMarker.getLngLat().lat,
             lng: createASpotMarker.getLngLat().lng
         };
-        reverseGeocode(coord, MAPBOX_API_TOKEN).then(function (data){
+        reverseGeocode(coord, MapboxAPIKey).then(function (data){
             console.log(data)
             addressSearchBar.value = (data.features[0].place_name);
             latitude.value = data.features[0].center[1];

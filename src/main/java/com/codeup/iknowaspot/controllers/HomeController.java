@@ -19,11 +19,11 @@ class HomeController {
     @Value("${mapbox.api.token}")
     private String mapboxApiKey;
 
-    @Value("AAAgQ3espTiiSH4FxsWDIz")
+    @Value("${filestack.api.token}")
     private String fileStackApiKey;
 
-    @Value("2158f575ad5ab05573157f50c05cf4ca")
-    private String openWeatherApiKey;
+//    @Value("2158f575ad5ab05573157f50c05cf4ca")
+//    private String openWeatherApiKey;
 
     @RequestMapping(path = "/keys.js", produces = "application/javascript")
     @ResponseBody

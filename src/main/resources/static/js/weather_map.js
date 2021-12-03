@@ -1,5 +1,5 @@
 "use strict";
-mapboxgl.accessToken = mapbox.api.token;
+mapboxgl.accessToken = MapboxAPIKey;
 //This adds the mapbox to our file
 //Set center to San Antonio, TX on start.
 const map = new mapboxgl.Map({
