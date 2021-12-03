@@ -34,6 +34,10 @@ public class Spot {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
     private List<Tag> tags;
 
+    @ManyToOne
+    @JoinColumn (name = "user_id")
+    private User user;
+
     public Spot() {
     }
 
