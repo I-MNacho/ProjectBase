@@ -3,7 +3,7 @@ package com.codeup.iknowaspot.models;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "spots")
@@ -28,11 +28,11 @@ public class Spot {
     @Column(columnDefinition = "INTEGER")
     private double githubId;
 
-    @ManyToMany
-    private Set<User> users;
-
     @Value("${file-upload-path}")
     private String uploadPath;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
+    private List<Tag> tags;
 
     public Spot() {
     }

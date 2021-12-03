@@ -85,6 +85,8 @@ public class SpotController {
 //    public String insert(@AuthenticationPrincipal OAuth2User principal, @ModelAttribute Spot spot) {
     public String insert(@ModelAttribute Spot spot) {
 //        spot.setGithubId((int) principal.getAttribute("id"));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        spot.setUser(usersDao.getById(user.getId()));
         spotsDao.save(spot);
         return "redirect:/spots";
     }

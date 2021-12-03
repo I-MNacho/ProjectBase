@@ -14,13 +14,17 @@ public class Tag {
     @Column(columnDefinition = "VARCHAR(200) NOT NULL")
     private String title;
 
+    @ManyToOne
+    @JoinColumn (name = "spot_id")
+    private Spot spot;
+
     //constructors
     public Tag() {
     }
 
-    public Tag(long id, String title) {
-        this.id = id;
+    public Tag(String title, Spot spot) {
         this.title = title;
+        this.spot = spot;
     }
 
     //getters and setters

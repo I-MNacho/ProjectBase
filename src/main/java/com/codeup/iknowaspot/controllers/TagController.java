@@ -66,11 +66,11 @@ public class TagController {
     }
 
     //create tag
-    @GetMapping("/tag/create")
-    public String createTag(Model model) {
-        model.addAttribute("tag", new Tag());
-        return "tag/create";
-    }
+//    @GetMapping("/tag/create")
+//    public String createTag(Model model) {
+//        model.addAttribute("tag", new Tag());
+//        return "tag/create";
+//    }
 
 
     //delete tag
