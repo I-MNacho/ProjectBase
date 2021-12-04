@@ -93,10 +93,10 @@ public class SpotController {
 
 
     //delete Spot
-    @PostMapping("/home_page_goes_here/{id}/delete")
+    @PostMapping("/{id}/delete")
     public String deleteSpot(@PathVariable long id) {
         spotsDao.deleteById(id);
-        return "redirect:/back_to_homepage";
+        return "redirect:/home";
     }
 
 }
