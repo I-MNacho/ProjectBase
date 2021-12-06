@@ -78,12 +78,12 @@ public class User {
     }
 
     public List<Spot> getSpots() {
+
         return spots; }
 
     public void setSpots(List<Spot> spots) {
-            this.spots = spots;
-        }
-
+        this.spots = spots;
+    }
 
     public String getBio() {
             return bio;

@@ -39,8 +39,10 @@ public class Spot {
     @JoinColumn (name = "user_id")
     private User user;
 
+
     public Spot() {
     }
+
 
     public Spot(String title, String description, Double latitude, Double longitude, User user, String tags) {
         this.title = title;
@@ -50,7 +52,6 @@ public class Spot {
         this.user = user;
         this.tags = tags;
         this.spotPhotoURL = spotPhotoURL;
-
     }
 
     public String getTitle() {
@@ -77,6 +78,14 @@ public class Spot {
         this.id = id;
     }
 
+    public void setUser(User user){
+        this.user = user;
+    }
+
+//    public Set<User> getUser() {
+//        return users;
+//    }
+
     public double getLatitude() {
         return latitude;
     }
@@ -101,15 +110,6 @@ public class Spot {
         this.tags = tags;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-
     public String getSpotPhotoURL() {
         return spotPhotoURL;
     }
@@ -117,6 +117,4 @@ public class Spot {
     public void setSpotPhotoURL(String spotPhotoURL) {
         this.spotPhotoURL = spotPhotoURL;
     }
-
-
 }
