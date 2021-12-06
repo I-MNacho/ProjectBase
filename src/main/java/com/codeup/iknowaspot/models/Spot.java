@@ -39,27 +39,18 @@ public class Spot {
     @JoinColumn (name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn (name = "user_id")
-    private User user;
 
     public Spot() {
     }
 
-<<<<<<< HEAD
-    public Spot(String title, String description, Double latitude, Double longitude, User user) {
-=======
+
     public Spot(String title, String description, Double latitude, Double longitude, User user, String tags) {
->>>>>>> 695deb0aaa8229dfa70c58c54d858559a3c64017
         this.title = title;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
         this.user = user;
-<<<<<<< HEAD
-=======
         this.tags = tags;
->>>>>>> 695deb0aaa8229dfa70c58c54d858559a3c64017
     }
 
     public String getTitle() {
@@ -126,7 +117,4 @@ public class Spot {
 //        this.githubId = githubId;
 //    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
