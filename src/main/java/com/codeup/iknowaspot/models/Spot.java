@@ -39,8 +39,10 @@ public class Spot {
     @JoinColumn (name = "user_id")
     private User user;
 
+
     public Spot() {
     }
+
 
     public Spot(String title, String description, Double latitude, Double longitude, User user, String tags) {
         this.title = title;
@@ -73,6 +75,10 @@ public class Spot {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
 //    public Set<User> getUser() {
@@ -111,7 +117,4 @@ public class Spot {
 //        this.githubId = githubId;
 //    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

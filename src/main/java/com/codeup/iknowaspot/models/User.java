@@ -30,7 +30,6 @@ public class User {
     private List<Spot> spots;
 
 
-
     public User(User copy) {
         id = copy.id; // This line is SUPER important! Many things won't work if it's absent
         email = copy.email;
@@ -78,6 +77,7 @@ public class User {
 
     public List<Spot> getSpots() {
         return spots;
+    }
       
     public String getBio() {
         return bio;
