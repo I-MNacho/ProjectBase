@@ -84,4 +84,7 @@ public class User {
         this.password = password;
     }
 
+    public List<Spot> getSpots() {
+        return spots;
+    }
 }
