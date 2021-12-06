@@ -20,35 +20,34 @@ public class User {
     @Column(columnDefinition = "VARCHAR(100) NOT NULL")
     private String password;
 
+<<<<<<< HEAD
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Spot> spots;
     
+=======
+    @Column(columnDefinition = "VARCHAR(500) NOT NULL")
+    private String bio;
+
+    @Column(columnDefinition = "VARCHAR(500) NOT NULL")
+    private String profilePhotoURL;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Spot> spots;
+
+
+
+>>>>>>> 695deb0aaa8229dfa70c58c54d858559a3c64017
     public User(User copy) {
         id = copy.id; // This line is SUPER important! Many things won't work if it's absent
         email = copy.email;
         username = copy.username;
         password = copy.password;
+        bio = copy.bio;
 //        spots = copy.spots;
     }
     public User(){
 
     }
-//    public Set<Spot> getSpots(){
-//        return spots;
-//    }
-//    public Set<Spot> setSpots(Set<Spot> spots){
-//        this.spots = spots;
-//        return spots;
-//    }
-//    public Set<Spot> addSpot(Spot spot){
-//        if (spots.contains(spot)) {
-//
-//            return spots;
-//        }
-//
-//        this.spots.add(spot);
-//        return spots;
-//    }
 
     public long getId() {
         return id;
@@ -82,4 +81,22 @@ public class User {
         this.password = password;
     }
 
+    public List<Spot> getSpots() {
+        return spots;
+      
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getProfilePhotoURL() {
+        return profilePhotoURL;
+    }
+
+    public void setProfilePhotoURL(String profilePhotoURL) {
+        this.profilePhotoURL = profilePhotoURL;
+    }
 }

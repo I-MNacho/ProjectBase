@@ -19,20 +19,25 @@ public class Spot {
     @Column(columnDefinition = "TEXT NOT NULL")
     private String description;
 
+    @Column(columnDefinition = "TEXT NOT NULL")
+    private String tags;
+
     @Column(columnDefinition = "DOUBLE")
     private double latitude;
 
     @Column(columnDefinition = "DOUBLE")
     private double longitude;
 
-    @Column(columnDefinition = "INTEGER")
-    private double githubId;
-
     @Value("${file-upload-path}")
     private String uploadPath;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
-    private List<Tag> tags;
+
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
+//    private List<Tag> tags;
+
+    @ManyToOne
+    @JoinColumn (name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn (name = "user_id")
@@ -41,12 +46,20 @@ public class Spot {
     public Spot() {
     }
 
+<<<<<<< HEAD
     public Spot(String title, String description, Double latitude, Double longitude, User user) {
+=======
+    public Spot(String title, String description, Double latitude, Double longitude, User user, String tags) {
+>>>>>>> 695deb0aaa8229dfa70c58c54d858559a3c64017
         this.title = title;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
         this.user = user;
+<<<<<<< HEAD
+=======
+        this.tags = tags;
+>>>>>>> 695deb0aaa8229dfa70c58c54d858559a3c64017
     }
 
     public String getTitle() {
@@ -97,11 +110,23 @@ public class Spot {
         this.longitude = longitude;
     }
 
-    public double getGithubId() {
-        return githubId;
+    public String getTags() {
+        return tags;
     }
 
-    public void setGithubId(int githubId) {
-        this.githubId = githubId;
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+//    public double getGithubId() {
+//        return githubId;
+//    }
+//
+//    public void setGithubId(int githubId) {
+//        this.githubId = githubId;
+//    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

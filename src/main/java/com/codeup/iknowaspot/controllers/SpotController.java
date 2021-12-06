@@ -49,14 +49,14 @@ public class SpotController {
 
     //create spot mapping
     // takes latitude and longitude as url parameters to create Spot model
-    @GetMapping("/spots/create")
-    public String createSpot(@RequestParam(name="lat") Double lat, @RequestParam(name="lng") Double lng, Model model) {
-        Spot spot = new Spot();
-        spot.setLatitude(lat);
-        spot.setLongitude(lng);
-        model.addAttribute("spot", spot);
-        return "spots/create";
-    }
+//    @GetMapping("/spots/create")
+//    public String createSpot(@RequestParam(name="lat") Double lat, @RequestParam(name="lng") Double lng, Model model) {
+//        Spot spot = new Spot();
+//        spot.setLatitude(lat);
+//        spot.setLongitude(lng);
+//        model.addAttribute("spot", spot);
+//        return "spots/create";
+//    }
 
     @GetMapping("/spots/{id}/update")
     public String updateSpot(@PathVariable long id){
@@ -86,7 +86,7 @@ public class SpotController {
     public String insert(@ModelAttribute Spot spot) {
 //        spot.setGithubId((int) principal.getAttribute("id"));
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        spot.setUser(usersDao.getById(user.getId()));
+        spot.setUser(usersDao.getById(user.getId()));
         spotsDao.save(spot);
         return "redirect:/spots";
     }
