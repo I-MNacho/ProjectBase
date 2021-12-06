@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.15/dist/js/bulma-calendar.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bulma-calendar/dist/css/bulma-calendar.min.css" rel="stylesheet">
 </head>
 <body>
 <style>
@@ -14,24 +17,45 @@
        display: flex;
        flex-direction: column;
        padding: 20px;
-       justify-items: flex-start;
-
+       align-items: flex-start;
    }
 </style>
-<nav th:replace="partials/partials.html :: navbar"></nav>
+<script th:inline="javascript">
+    $(document).ready(() => {
+        // https://bulma-calendar.onrender.com/#installation
+        const options = {
+            type: "datetime",
+            dateFormat: "yyyy-mm-dd",
+            timeFormat: "HH:mm",
+            color: 'primary'
+        }
+        const calendars = bulmaCalendar.attach('[type="date"]', options);
+        // Loop on each calendar initialized
+        calendars.forEach(calendar => {
+            // Add listener to event for date is selected in picker
+            // Sets start and end time hidden input values so they are submitted with the rest of the form
+            calendar.on('select', date => {
+                // Set form values for start and end time based on whatever is selected from the datetime picker
+                $("#startTime").val(calendar.startDate);
+                $("#endTime").val(calendar.endDate);
+            });
+        });
+    })
+</script>
+<nav th:replace="partials/navbar.html :: navbar"></nav>
 <!--${event} = event atr from controller -->
-<form action="#" th:action="@{/events/create}" th:object="${event}" method="POST" >
+<form action="#" th:action="@{/events/create}" th:object="${event}" method="POST" class="uk-form">
+    <input id="startTime" type="hidden" th:field="${event.startTime}"/>
+    <input id="endTime" type="hidden" th:field="${event.endTime}"/>
 
     <label for="title">I Have An Event..</label>
     <input id="title" name="title" type="text" th:field="${event.title}"/>
 
     <label for="description">What is your event?</label>
     <textarea id="description" name="description" th:field="${event.description}"></textarea>
-    <label for="startTime">What is the time your event starts?</label>
-    <input id="startTime" name="startTime" type="date" th:field="${event.startTime}"/>
+    <label>When does your event start and end?</label>
+    <input type="date" data-is-range="true"/>
     <button>Submit</button>
-
-
     <!--basic form for submitting a spot and saving it to the database... more needs to be added-->
 </form>
 

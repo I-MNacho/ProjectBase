@@ -34,7 +34,7 @@ class HomeController {
 
     }
 
-    @GetMapping("/home")
+    @GetMapping({"/home", "/"})
     public String getIndexPage(Model model) {
         model.addAttribute("spots", spotsDao.findAll());
         Spot spot = new Spot();

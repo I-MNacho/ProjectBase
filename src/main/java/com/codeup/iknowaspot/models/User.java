@@ -20,6 +20,12 @@ public class User {
     @Column(columnDefinition = "VARCHAR(100) NOT NULL")
     private String password;
 
+    @Column(columnDefinition = "VARCHAR(500) NOT NULL")
+    private String bio;
+
+    @Column(columnDefinition = "VARCHAR(500) NOT NULL")
+    private String profilePhotoURL;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Spot> spots;
 
@@ -30,27 +36,12 @@ public class User {
         email = copy.email;
         username = copy.username;
         password = copy.password;
+        bio = copy.bio;
 //        spots = copy.spots;
     }
     public User(){
 
     }
-//    public Set<Spot> getSpots(){
-//        return spots;
-//    }
-//    public Set<Spot> setSpots(Set<Spot> spots){
-//        this.spots = spots;
-//        return spots;
-//    }
-//    public Set<Spot> addSpot(Spot spot){
-//        if (spots.contains(spot)) {
-//
-//            return spots;
-//        }
-//
-//        this.spots.add(spot);
-//        return spots;
-//    }
 
     public long getId() {
         return id;
@@ -86,5 +77,20 @@ public class User {
 
     public List<Spot> getSpots() {
         return spots;
+      
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getProfilePhotoURL() {
+        return profilePhotoURL;
+    }
+
+    public void setProfilePhotoURL(String profilePhotoURL) {
+        this.profilePhotoURL = profilePhotoURL;
     }
 }
