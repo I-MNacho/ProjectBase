@@ -78,7 +78,8 @@ public class User {
 
     public List<Spot> getSpots() {
         return spots;
-      
+    }
+
     public String getBio() {
         return bio;
     }
