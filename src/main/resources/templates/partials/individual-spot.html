@@ -2,32 +2,8 @@
 <!--<form th:action="@{/spots/create}" th:object="${spot}" method="POST" >-->
     <div class="justify-content-center">
         <h2 id="spot-title"></h2><br>
-            <div class="form-group">
-                <button type="button" class="btn btn-info" onclick="getCurrentLocation()">Get my current location</button><br><br>
-                <label for="address">Address or place:</label><br>
-                <textarea style="resize: none" rows="3" id="address" class="form-control" name="address" type="text"></textarea><br>
-                <label for="title">Name this spot:</label><br>
-                <input id="title" class="form-control" name="title" type="text" th:field="${spot.title}"/><br>
-                <label for="description">Describe your spot:</label><br>
-                <textarea style="resize: none" rows="4" id="description" class="form-control" name="description" th:field="${spot.description}"></textarea><br>
-                <label for="tags">Tags:<br>(Separate with commas)</label><br>
-                <textarea style="resize: none" rows="4" id="tags" class="form-control" name="description" th:field="${spot.tags}"></textarea><br>
-
-                <!--                Hidden lat and lng-->
-                <input id="latitude" name="latitude" type="hidden" th:field="${spot.latitude}"/>
-                <input id="longitude" name="longitude" type="hidden" th:field="${spot.longitude}"/>
-                <!--                -------------------->
-                <button class="btn btn-primary">Submit</button>
-            </div>
-        <div sec:authorize="isAnonymous()">
-            <form th:action="@{/login}">
-                <button class="btn btn-secondary" type="submit">Login</button>
-            </form>
-            <br>or<br>
-            <form th:action="@{/register}">
-                <button class="btn btn-primary" type="submit">Register</button>
-            </form>
-        </div>
+        <label for="title"></label>
+        <div id="title" name="title" type="text"></div>
     </div>
     <!--basic form for submitting a spot and saving it to the database... more needs to be added-->
 <!--</form>-->
