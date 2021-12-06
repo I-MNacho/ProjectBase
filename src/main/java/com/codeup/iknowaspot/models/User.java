@@ -37,6 +37,7 @@ public class User {
         username = copy.username;
         password = copy.password;
         bio = copy.bio;
+        profilePhotoURL = copy.profilePhotoURL;
 //        spots = copy.spots;
     }
     public User(){

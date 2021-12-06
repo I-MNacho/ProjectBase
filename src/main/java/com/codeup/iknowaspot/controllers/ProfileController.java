@@ -58,12 +58,13 @@ public class ProfileController {
         return "profile";
     }
 
+// uploads image to profile
     @PostMapping(path = "/profile/upload", consumes = MediaType.TEXT_PLAIN_VALUE)
     public String uploadProfilePhoto(@RequestBody String url) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userInDB = userRepository.findByUsername(user.getUsername());
-        user.setProfilePhotoURL(url);
-        userRepository.save(user);
+        userInDB.setProfilePhotoURL(url);
+        userRepository.save(userInDB);
         return "profile";
     }
 
