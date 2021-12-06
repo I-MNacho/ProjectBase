@@ -39,8 +39,7 @@ public class User {
         profilePhotoURL = copy.profilePhotoURL;
 //        spots = copy.spots;
     }
-
-    public User() {
+    public User(){
 
     }
 
@@ -79,23 +78,20 @@ public class User {
     public List<Spot> getSpots() {
         return spots;
     }
-
-        public String getBio () {
-            return bio;
-        }
-
-        public void setBio (String bio){
-            this.bio = bio;
-        }
-
-        public String getProfilePhotoURL () {
-            return profilePhotoURL;
-        }
-
-        public void setProfilePhotoURL (String profilePhotoURL){
-            this.profilePhotoURL = profilePhotoURL;
-        }
-
+      
+    public String getBio() {
+        return bio;
     }
 
-//    hi
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getProfilePhotoURL() {
+        return profilePhotoURL;
+    }
+
+    public void setProfilePhotoURL(String profilePhotoURL) {
+        this.profilePhotoURL = profilePhotoURL;
+    }
+}
