@@ -65,7 +65,7 @@ public class EventController {
     }
 
     //create event
-    @GetMapping("/events/create")
+    @GetMapping("/events/create/{id}")
     public String createEvent(Model model) {
         //creating a new event obj and assg atrb = assn obj atb
         model.addAttribute("event", new Event());
@@ -76,11 +76,12 @@ public class EventController {
 
     //inserting event
     // postmapping request will insert the event into the DB
-    @PostMapping("/events/create")
-    public String insertEvent(@ModelAttribute Event event) {
+    @PostMapping("/events/create/{id}")
+    public String insertEvent(@ModelAttribute Event event, @PathVariable Long id) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
         event.setUser(author);
+        event.setSpot(spotsDao.getById(id));
         eventsDao.save(event);
         return "redirect:/events";
     }
