@@ -43,22 +43,6 @@ public class User {
     public User(){
 
     }
-//    public Set<Spot> getSpots(){
-//        return spots;
-//    }
-//    public Set<Spot> setSpots(Set<Spot> spots){
-//        this.spots = spots;
-//        return spots;
-//    }
-//    public Set<Spot> addSpot(Spot spot){
-//        if (spots.contains(spot)) {
-//
-//            return spots;
-//        }
-//
-//        this.spots.add(spot);
-//        return spots;
-//    }
 
     public long getId() {
         return id;
@@ -92,6 +76,9 @@ public class User {
         this.password = password;
     }
 
+    public List<Spot> getSpots() {
+        return spots;
+      
     public String getBio() {
         return bio;
     }

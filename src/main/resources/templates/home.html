@@ -44,10 +44,13 @@
     var spots = [[${spots}]];
     //For each spot, place a pin on the map
     spots.forEach((spot)=>{
+        console.log(spot);
         new mapboxgl.Marker()
+            .setPopup()
             .setLngLat([spot.longitude, spot.latitude])
             .addTo(map);
     });
+console.log(spots);
 
 //When click on create a spot button, show the view for create a spot and disable other views
     function showCreateASpotViewLoggedIn(){
