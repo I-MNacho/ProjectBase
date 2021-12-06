@@ -1,7 +1,7 @@
 <span th:fragment="create-a-spot">
 <form th:action="@{/spots/create}" th:object="${spot}" method="POST" >
     <div class="justify-content-center">
-        <h2>Create A Spot</h2>
+        <h2>Create A Spot</h2><br>
         <div sec:authorize="isAuthenticated()">
             <div class="form-group">
                 <button type="button" class="btn btn-info" onclick="getCurrentLocation()">Get my current location</button><br><br>
@@ -23,7 +23,11 @@
         </div>
         <div sec:authorize="isAnonymous()">
             <form th:action="@{/login}">
-                <button class="btn btn-secondary" type="submit">Please login to continue</button>
+                <button class="btn btn-secondary" type="submit">Login</button>
+            </form>
+            <br>or<br>
+            <form th:action="@{/register}">
+                <button class="btn btn-primary" type="submit">Register</button>
             </form>
         </div>
     </div>
