@@ -58,7 +58,7 @@
     function updateMap(data) {
         data.forEach(d=> {
             spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
-                '"properties": { "title" : "'+d.title+'", "description" : "'+d.description+'"},' +
+                '"properties": { "title" : "'+d.title+'", "description" : "'+d.description+'", "tags" : "'+d.tags+'"},' +
                 '"geometry": {"type": "Point", "coordinates": ['+d.longitude+','+ d.latitude+']}}'));
         });
     }
@@ -112,14 +112,16 @@ map.on('click', 'spots', (e) => {
         .setLngLat(coordinates)
         .setHTML(title)
         .addTo(map);
-    showIndividualSpotView();
+    showIndividualSpotView(e);
 });
 
-function showIndividualSpotView(){
+function showIndividualSpotView(e){
     document.getElementById("welcome").style.display = "none";
     document.getElementById("create-a-spot").style.display = "none";
     document.getElementById("individual-spot").style.display = "block";
-    document.getElementById("spot-title").value = "";
+    document.getElementById("spot-title").innerText = e.features[0].properties.title;
+    document.getElementById("spot-description").innerText = e.features[0].properties.description;
+    document.getElementById("spot-tags").innerText = e.features[0].properties.tags;
 }
 //When click on create a spot button, show the view for create a spot and disable other views
     function showCreateASpotViewLoggedIn(){
