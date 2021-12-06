@@ -43,19 +43,85 @@
 <!--    Create spots object from thymeleaf spot model-->
     var spots = [[${spots}]];
     //For each spot, place a pin on the map
-    spots.forEach((spot)=>{
-        console.log(spot);
-        new mapboxgl.Marker()
-            .setPopup()
-            .setLngLat([spot.longitude, spot.latitude])
-            .addTo(map);
+    // spots.forEach((spot)=>{
+    //     console.log(spot);
+    //     new mapboxgl.Marker()
+    //         .setPopup()
+    //         .setLngLat([spot.longitude, spot.latitude])
+    //         .addTo(map);
+    // });
+    console.log(spots);
+    var spotsGeoJson = [];
+    function updateMap(data) {
+        data.forEach(d=> {
+            spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
+                '"properties": { "title" : "'+d.title+'", "description" : "'+d.description+'"},' +
+                '"geometry": {"type": "Point", "coordinates": ['+d.longitude+','+ d.latitude+']}}'));
+        });
+    }
+    updateMap(spots);
+    map.on('load', function() {
+        map.loadImage(
+            '/img/blue-pin-icon.png',
+            (error, image) => {
+                if (error) throw error;
+                map.addImage('custom-marker', image);
+                map.addSource("spots", {
+                    "type": "geojson",
+                    "data": {
+                        "type": "FeatureCollection",
+                        "features": spotsGeoJson
+                    }
+                })
+                console.log(spotsGeoJson)
+                map.addLayer({
+                    'id': 'spots',
+                    'type': 'symbol',
+                    'source': 'spots',
+                    'layout': {
+                        'icon-image': 'custom-marker', // reference the image
+                        'icon-size': 0.15,
+                        'icon-allow-overlap': true
+                    }
+                })
+            });
     });
-console.log(spots);
+map.on('mouseenter', 'spots', function () {
+    map.getCanvas().style.cursor = 'pointer';
+});
 
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'spots', function () {
+    map.getCanvas().style.cursor = '';
+});
+map.on('click', 'spots', (e) => {
+// Copy coordinates array.
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    const title = e.features[0].properties.title;
+    const description = e.features[0].properties.description;
+// Ensure that if the map is zoomed out such that multiple
+// copies of the feature are visible, the popup appears
+// over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+    new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(title)
+        .addTo(map);
+    showIndividualSpotView();
+});
+
+function showIndividualSpotView(){
+    document.getElementById("welcome").style.display = "none";
+    document.getElementById("create-a-spot").style.display = "none";
+    document.getElementById("individual-spot").style.display = "block";
+}
 //When click on create a spot button, show the view for create a spot and disable other views
     function showCreateASpotViewLoggedIn(){
         document.getElementById("welcome").style.display = "none";
         document.getElementById("create-a-spot").style.display = "block";
+        document.getElementById("individual-spot").style.display = "none";
         const center = map.getCenter();
         createASpotMarker.setLngLat([
             center.lng,
@@ -78,6 +144,7 @@ console.log(spots);
     function showCreateASpotViewNotLoggedIn(){
         document.getElementById("welcome").style.display = "none";
         document.getElementById("create-a-spot").style.display = "block";
+        document.getElementById("individual-spot").style.display = "none";
     }
     //Create invisible create a spot marker
     var createASpotMarker = new mapboxgl.Marker({
@@ -148,6 +215,10 @@ console.log(spots);
         });
 
     }
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+
+
 </script>
 </body>
 </html>

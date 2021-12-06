@@ -54,12 +54,11 @@ public class ReviewsController {
 
 
     //delete function
-    @PostMapping("/home_page_goes_here/{id}/delete")
+    @PostMapping("/review/{id}/delete")
     public String deleteReview(@PathVariable long id) {
         reviewsDao.deleteById(id);
-        return "redirect:/back_to_homepage";
+        return "redirect:/home";
     }
-
 
 }
 
