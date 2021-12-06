@@ -2,7 +2,9 @@
  display: none;
 }
 
-
+.hideme{
+ display: none;
+}
 
 h1 {
 
