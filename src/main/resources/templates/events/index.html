@@ -5,37 +5,105 @@
     <title>Events</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
+    <div th:replace="partials/uikit-header.html"></div>
     <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
+    <script src="/keys.js"></script>
 </head>
 <body>
-<nav th:replace="partials/partials.html :: navbar"></nav>
-<table>
-    <thead>
-    <tr>
-        <th> Title </th>
-        <th> Description </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${events.empty}">
-        <td colspan="2"> No  Available </td>
-    </tr>
-<!--    //foreach for every event theres a event atrb & it will make a tr-->
-<!--    ln 20 is refrencing the events in list all events in controller -->
-    <tr th:each="event : ${events}">
-        <td><span th:text="${event.title}"> Title </span></td>
-        <td><span th:text="${event.description}"> Description </span></td>
-<!--        @, $ = redirecting so youre injecting a rout into var youre putting the actual event id into -->
-        <td><a th:href="@{|events/edit/${event.id}|  }"> Edit </a></td>
-<!--        lining up the html to -->
-        <td><a th:href="@{|events/delete/${event.id}|  }"> Delete </a></td>
-
-
-
-
-    </tr>
-    </tbody>
-</table>
+<style>
+    body {
+        display: grid;
+        /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
+        grid-template-rows: min-content 1fr;
+        /*Body takes up full height of viewport*/
+        height: 100vh;
+    }
+    /*Events grid*/
+    .grid {
+        /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
+        display: grid;
+        gap: 16px;
+        padding: 12px;
+        /*Try to take up as much space as possible up to 450px*/
+        grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+        /*Rows only fill as much space as they need*/
+        grid-template-rows: min-content;
+        align-items: flex-start;
+    }
+    .card {
+        display: grid;
+        /*Has two columns: 1 is 250px and the other takes up the remaining space*/
+        grid-template-columns: 250px 1fr;
+    }
+    .card .footer {
+        display: flex;
+        /*Footer items are at the right side*/
+        justify-content: flex-end;
+        gap: 8px;
+    }
+    .card .map {
+        width: 100%;
+        height: 100%;
+        border-radius: 6px;
+    }
+    .card .body {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 12px;
+    }
+    .card .body h3 {
+        margin: 0;
+    }
+</style>
+<nav th:replace="partials/navbar.html :: navbar"></nav>
+<div class="grid">
+    <div th:if="${events.empty}">
+        <p colspan="2"> No Events Available </p>
+    </div>
+    <div th:id="${event.id}" th:each="event : ${events}" class="card">
+        <div class="map"></div>
+        <div class="body">
+            <h3 class="title" th:text="${event.title}"></h3>
+            <span th:text="${event.startTime}"></span>
+            <span th:text="${event.endTime}"></span>
+            <p th:text="${event.description}"></p>
+            <div class="footer">
+            <!--        @, $ = redirecting so youre injecting a rout into var youre putting the actual event id into -->
+                <a uk-icon="pencil" th:href="@{|events/edit/${event.id}|}"></a>
+                <!--        lining up the html to -->
+                <a uk-icon="trash" th:href="@{|events/delete/${event.id}|}"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    mapboxgl.accessToken = MapboxAPIKey;
+    <!--    Create spots object from thymeleaf spot model-->
+    const events = [[${events}]];
+    //For each event, add a map with a marker at the location of the event
+    events.forEach((event)=> {
+        // TODO: get coordinates from spot after spots are tied to events
+        // Hardcoded to san antonio
+        const center = [-98.491142, 29.424349];
+        // Get card with event id and find the div with the class "map" inside that card
+        const container = document.getElementById(event.id).querySelector(".map")
+        const map = new mapboxgl.Map({
+            container,
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center,
+            zoom: 9,
+            pitch: 60
+        });
+        new mapboxgl.Marker()
+            .setLngLat(center)
+            .addTo(map);
+    });
+</script>
 </body>
 </html>
