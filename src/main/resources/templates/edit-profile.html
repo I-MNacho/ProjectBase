@@ -20,8 +20,10 @@
         const client = filestack.init(FileStackAPIKey);
 
         function onUploadDone(result) {
-            $.post("/profile/upload", result.filesUploaded[0])
             console.log(result)
+            const url = result.filesUploaded[0].url
+            $('#profile-photo').attr({src: url})
+            $('#profile-photo-input').val(url)
         }
 
         const options = {
@@ -36,7 +38,8 @@
 <form th:action="@{/profile/edit}" method="post" th:object="${user}" >
     <input type="hidden" name="id" th:field="${user.id}">
     <input type="hidden" name="password" th:field="${user.password}">
-
+    <input id="profile-photo-input" type="hidden" name="profilePhotoURL" th:field="${user.profilePhotoURL}">
+    <img id="profile-photo" th:src="${user.profilePhotoURL}" alt="No Profile Photo" width="50px" height="50px">
     <div class="contact-grids1 w3agile-6">
         <div class="row">
             <div class="col-md-6 col-sm-6 contact-form1 form-group">
