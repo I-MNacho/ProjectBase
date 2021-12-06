@@ -30,17 +30,18 @@ public class User {
     private List<Spot> spots;
 
 
-
     public User(User copy) {
         id = copy.id; // This line is SUPER important! Many things won't work if it's absent
         email = copy.email;
         username = copy.username;
         password = copy.password;
+        spots = copy.spots;
         bio = copy.bio;
         profilePhotoURL = copy.profilePhotoURL;
-//        spots = copy.spots;
+
     }
-    public User(){
+
+    public User() {
 
     }
 
@@ -77,21 +78,29 @@ public class User {
     }
 
     public List<Spot> getSpots() {
-        return spots;
-      
+        return spots; }
+
+    public void setSpots(List<Spot> spots) {
+            this.spots = spots;
+        }
+
+
     public String getBio() {
-        return bio;
+            return bio;
+        }
+
+    public void setBio(String bio){
+            this.bio = bio;
+        }
+
+    public String getProfilePhotoURL () {
+            return profilePhotoURL;
+        }
+
+    public void setProfilePhotoURL (String profilePhotoURL){
+            this.profilePhotoURL = profilePhotoURL;
+        }
+
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
 
-    public String getProfilePhotoURL() {
-        return profilePhotoURL;
-    }
-
-    public void setProfilePhotoURL(String profilePhotoURL) {
-        this.profilePhotoURL = profilePhotoURL;
-    }
-}

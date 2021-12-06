@@ -28,8 +28,8 @@ public class Spot {
     @Column(columnDefinition = "DOUBLE")
     private double longitude;
 
-    @Value("${file-upload-path}")
-    private String uploadPath;
+    @Column(columnDefinition = "VARCHAR(500)")
+    private String spotPhotoURL;
 
 
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
@@ -49,6 +49,8 @@ public class Spot {
         this.longitude = longitude;
         this.user = user;
         this.tags = tags;
+        this.spotPhotoURL = spotPhotoURL;
+
     }
 
     public String getTitle() {
@@ -75,10 +77,6 @@ public class Spot {
         this.id = id;
     }
 
-//    public Set<User> getUser() {
-//        return users;
-//    }
-
     public double getLatitude() {
         return latitude;
     }
@@ -103,15 +101,22 @@ public class Spot {
         this.tags = tags;
     }
 
-//    public double getGithubId() {
-//        return githubId;
-//    }
-//
-//    public void setGithubId(int githubId) {
-//        this.githubId = githubId;
-//    }
+    public User getUser() {
+        return user;
+    }
 
     public void setUser(User user) {
         this.user = user;
     }
+
+
+    public String getSpotPhotoURL() {
+        return spotPhotoURL;
+    }
+
+    public void setSpotPhotoURL(String spotPhotoURL) {
+        this.spotPhotoURL = spotPhotoURL;
+    }
+
+
 }
