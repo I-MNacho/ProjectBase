@@ -15,25 +15,7 @@
 <body>
 <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
 
-<script>
-    function openFilePicker() {
-        const client = filestack.init(FileStackAPIKey);
 
-        function onUploadDone(result) {
-            console.log(result)
-            const url = result.filesUploaded[0].url
-            $('#profile-photo').attr({src: url})
-            $('#profile-photo-input').val(url)
-        }
-
-        const options = {
-            onUploadDone,
-        };
-
-        const picker = client.picker(options);
-        picker.open();
-    }
-</script>
 <button onclick="openFilePicker()">Upload Profile Picture</button>
 <form th:action="@{/profile/edit}" method="post" th:object="${user}" >
     <input type="hidden" name="id" th:field="${user.id}">
@@ -86,7 +68,7 @@
     <br>
 </form>
 
+<script src="/js/image-upload.js"></script>
 
 </body>
-</html>
 </html>

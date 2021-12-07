@@ -7,6 +7,7 @@ import com.codeup.iknowaspot.repositories.EventRepository;
 import com.codeup.iknowaspot.repositories.SpotRepository;
 import com.codeup.iknowaspot.repositories.UserRepository;
 //import org.springframework.security.core.context.SecurityContextHolder;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.Optional;
+import java.util.logging.Logger;
+
 @Controller
 public class EventController {
-
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EventController.class.getName());
     //Dao's
     private EventRepository eventsDao;
     private UserRepository usersDao;
@@ -60,15 +64,21 @@ public class EventController {
     public String listEvent(Model model) {
         //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
         model.addAttribute("events", eventsDao.findAll());
+
         //page shows to this bc its mapped here:  //
         return "events/index";
     }
 
     //create event
-    @GetMapping("/events/create")
-    public String createEvent(Model model) {
+    @GetMapping("/events/create/{spot_id}")
+    public String createEvent(Model model, @PathVariable Long spot_id) {
         //creating a new event obj and assg atrb = assn obj atb
-        model.addAttribute("event", new Event());
+        Event event = new Event();
+        event.setSpot(spotsDao.getById(spot_id));
+        model.addAttribute("event", event);
+        model.addAttribute("latitude", event.getSpot().getLatitude());
+        model.addAttribute("longitude", event.getSpot().getLongitude());
+
         //page shows to this bc its mapped here:  //
         return "events/create";
     }
@@ -78,8 +88,9 @@ public class EventController {
     // postmapping request will insert the event into the DB
     @PostMapping("/events/create")
     public String insertEvent(@ModelAttribute Event event) {
-        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User author = usersDao.getById(principal.getId());
+//        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User author = usersDao.getById(principal.getId());
+        User author = usersDao.getById(1L);
         event.setUser(author);
         eventsDao.save(event);
         return "redirect:/events";
