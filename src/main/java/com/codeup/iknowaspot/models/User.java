@@ -20,10 +20,10 @@ public class User {
     @Column(columnDefinition = "VARCHAR(100) NOT NULL")
     private String password;
 
-    @Column(columnDefinition = "VARCHAR(500) NOT NULL")
+    @Column(columnDefinition = "VARCHAR(500)")
     private String bio;
 
-    @Column(columnDefinition = "VARCHAR(500) NOT NULL")
+    @Column(columnDefinition = "VARCHAR(500)")
     private String profilePhotoURL;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
