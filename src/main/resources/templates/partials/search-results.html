@@ -1,12 +1,12 @@
 <div class="container-cards col-8 col-xl-12 ">
     <div class="cards row ">
-        <table id="myTable">
+        <table>
             <tr class="header">
                 <th style="width:33%;">Title</th>
                 <th style="width:33%;">Description</th>
                 <th style="width:33%;">Tags</th>
             </tr>
-            <tbody>
+            <tbody id="myTable">
             <tr th:each="spot : ${spots}">
                 <td><span th:text="${spot.title}"> Title </span></td>
                 <td><span th:text="${spot.description}"> Description </span></td>

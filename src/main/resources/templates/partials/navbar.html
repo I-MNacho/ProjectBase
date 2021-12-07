@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">IKnowASpot</a>
-                <a th:href="@{/home}" class="btn btn-success">Spots</a>
+                <a th:href="@{/spots}" class="btn btn-success">Spots</a>
                 <span sec:authorize="isAuthenticated()">
                     <a type="button" class="btn btn-outline-success" onclick="showCreateASpotViewLoggedIn()">Create A Spot</a>
                 </span>
