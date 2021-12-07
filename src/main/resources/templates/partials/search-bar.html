@@ -1,27 +1,107 @@
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
 
 
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
 
 
-<!--<input type="text" id="myInput" placeholder="Search By Tag">-->
-<!--<input id="submit" type="submit"/>-->
+<input type="text" id="myInput" placeholder="Search By Tag">
+<input id="submit" type="submit"/>
 
 
-<!--<script th:inline="javascript">-->
-<!--    var spots = [[${spots}]];-->
+<script th:inline="javascript">
+    var spots = [[${spots}]];
 
-<!--        $("#myInput").on("keyup", function() {-->
-<!--            var value = $(this).val().toLowerCase();-->
-<!--            spots.filter(function() {-->
-<!--                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)-->
-<!--            });-->
-<!--        });-->
+    console.log(spots);
+        // $("#myInput").on("keyup", function() {
+        //     var value = $(this).val().toLowerCase();
+        //     spots.filter(function() {
+        //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        //     });
+        // });
 
-<!--</script>-->
 
-<!--<ul id="myList">-->
-<!--    <li>${spots}</li>-->
-<!--</ul>-->
+    function myFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
 
-<!--will fix this-->
+        // Loop through all table rows, and hide those who don't match the search query
+        for(i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if(td) {
+                txtValue = td.textContent || td.innerText;
+                if(txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function renderSpots(spot) {
+        var html = '<tr class="spots-info">';
+        html += '<td>' + spot.title + '</td>';
+        html += '<td>' + spot.description + '</td>';
+        html += '<td>' + spot.tags + '</td>';
+        html += '</tr>';
+
+        return html;
+    }
+
+
+    function renderCoffee(coffee) {
+        var cinnamonColor = '';
+        var lightRoastBG = '';
+        if(coffee.roast === 'light'){
+            lightRoastBG = 'bg-warning';
+        }
+        var mediumRoastBG = '';
+        if(coffee.roast === 'medium'){
+            mediumRoastBG = 'bg-info';
+        }
+        var darkRoastBG = '';
+        if(coffee.roast === 'dark'){
+            darkRoastBG = 'bg-secondary';
+        }
+        if (coffee.name === 'Cinnamon'){
+            cinnamonColor = 'text-danger'
+        }
+
+        return `<div class="d-flex flex-column border border-secondary rounded-bottom" style="width: 10rem; margin: 2rem;">
+<div class="card-shape">
+        <img src="img/coffee-cup.jpeg" class="card-img-top"  alt="${spots.title}">
+                <div class="container-cards">
+                    <div class="cards row ">
+                <div class="card-body ${lightRoastBG} ${mediumRoastBG} ${darkRoastBG}">
+                    <h5 class="card-title ${cinnamonColor}"> ${coffee.name} </h5>
+                    <p class="card-text">${coffee.roast} </p>
+                </div>
+                    </div>
+                </div>
+           </div>
+           </div>`
+
+
+        var html = '<tr class="coffee">';
+        html += '<td>' + coffee.id + '</td>';
+        html += '<td>' + coffee.name + '</td>';
+        html += '<td>' + coffee.roast + '</td>';
+        html += '</tr>';
+
+        return html;
+    }
+
+    function renderSpots(spots) {
+
+        var html = '';
+        for(var i = spots.length - 1; i >= 0; i--) {
+            html += renderSpots(spots[i]);
+        }
+
+        return html;
+    }
+
+
+</script>

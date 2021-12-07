@@ -67,6 +67,7 @@ public class SpotController {
 
         return "spots/index";
     }
+
     @GetMapping("/spots/save/{id}")
     public String saveSpot(@PathVariable long id){
         Spot spot = spotsDao.getById(id);

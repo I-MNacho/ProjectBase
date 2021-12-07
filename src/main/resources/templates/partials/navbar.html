@@ -12,11 +12,6 @@
                 </span>
                 <a th:href="@{/aboutus}" class="btn btn-outline-info">About Us</a>
             </div>
-            <form>
-                <span class="d-inline-flex">
-                    <div th:replace="partials/search-bar.html"></div>
-                </span>
-            </form>
             <div class="nav navbar-nav navbar-right">
                 <!--                Logged out user-->
                 <div sec:authorize="isAnonymous()">
