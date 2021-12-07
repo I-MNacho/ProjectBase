@@ -83,6 +83,16 @@ public class SpotController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         spot.setUser(usersDao.getById(user.getId()));
         spotsDao.save(spot);
+        if (spot.getTitle().isEmpty()) {
+            System.out.println("Title is empty.");
+            return "home";
+        }
+
+        if (spot.getDescription().isEmpty()) {
+            System.out.println("Description is empty.");
+            return "home";
+        }
+
         return "redirect:/spots";
     }
 
