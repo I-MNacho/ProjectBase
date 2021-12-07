@@ -1,9 +1,12 @@
 <span th:fragment="individual-spot">
 <!--<form th:action="@{/spots/create}" th:object="${spot}" method="POST" >-->
-    <div class="justify-content-center">
+    <div id="individual-spot-view" class="justify-content-center">
         <h2 id="spot-title"></h2>
         <div id="spot-description"></div><br>
         <div id="spot-tags"></div>
+        <div id="spot-actions">
+            <a id="spot-schedule-event-button">Schedule Event</a>
+        </div>
     </div>
     <!--basic form for submitting a spot and saving it to the database... more needs to be added-->
 <!--</form>-->

@@ -45,7 +45,7 @@
 <!--<script src="/js/home.js"></script>-->
 <script th:inline="javascript">
 <!--    Create spots object from thymeleaf spot model-->
-    var spots = [[${spots}]];
+    const spots = [[${spots}]];
     //For each spot, place a pin on the map
     // spots.forEach((spot)=>{
     //     console.log(spot);
@@ -59,7 +59,7 @@
     function updateMap(data) {
         data.forEach(d=> {
             spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
-                '"properties": { "title" : "'+d.title+'", "description" : "'+d.description+'", "tags" : "'+d.tags+'"},' +
+                '"properties": { "spot_id": "'+d.id+'", "title" : "'+d.title+'", "description" : "'+d.description+'"},' +
                 '"geometry": {"type": "Point", "coordinates": ['+d.longitude+','+ d.latitude+']}}'));
         });
     }
@@ -120,9 +120,12 @@ function showIndividualSpotView(e){
     document.getElementById("welcome").style.display = "none";
     document.getElementById("create-a-spot").style.display = "none";
     document.getElementById("individual-spot").style.display = "block";
-    document.getElementById("spot-title").innerText = e.features[0].properties.title;
-    document.getElementById("spot-description").innerText = e.features[0].properties.description;
-    document.getElementById("spot-tags").innerText = e.features[0].properties.tags;
+    // Set data in spot view for spot
+    const {spot_id, title, description, tags} = e.features[0].properties;
+    document.getElementById("spot-title").innerText = title;
+    document.getElementById("spot-description").innerText = description;
+    document.getElementById("spot-schedule-event-button").href = `events/create/${spot_id}`;
+    document.getElementById("spot-tags").innerText = tags ?? "";
 }
 //When click on create a spot button, show the view for create a spot and disable other views
     function showCreateASpotViewLoggedIn(){
@@ -222,8 +225,6 @@ function showIndividualSpotView(e){
         });
 
     }
-
-    // Change the cursor to a pointer when the mouse is over the places layer.
 
 </script>
 <script src="/js/image-upload.js"></script>
