@@ -1,11 +1,13 @@
 <div class="container-cards col-8 col-xl-12 ">
     <div class="cards row ">
         <table>
+            <thead>
             <tr class="header">
                 <th style="width:33%;">Title</th>
                 <th style="width:33%;">Description</th>
                 <th style="width:33%;">Tags</th>
             </tr>
+            </thead>
             <tbody id="myTable">
             <tr th:each="spot : ${spots}">
                 <td><span th:text="${spot.title}"> Title </span></td>
@@ -15,5 +17,8 @@
             </tr>
             </tbody>
         </table>
+
+
     </div>
 </div>
+
