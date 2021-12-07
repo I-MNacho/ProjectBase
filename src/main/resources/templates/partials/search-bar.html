@@ -1,27 +1,22 @@
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+
+<input type="text" id="myInput" placeholder="Search By Tag">
+<input id="submit" type="submit"/>
 
 
-<!--<input type="text" id="myInput" placeholder="Search By Tag">-->
-<!--<input id="submit" type="submit"/>-->
+<script th:inline="javascript">
+    var spots = [[${spots}]];
 
+    // console.log(spots);
 
-<!--<script th:inline="javascript">-->
-<!--    var spots = [[${spots}]];-->
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
 
-<!--        $("#myInput").on("keyup", function() {-->
-<!--            var value = $(this).val().toLowerCase();-->
-<!--            spots.filter(function() {-->
-<!--                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)-->
-<!--            });-->
-<!--        });-->
-
-<!--</script>-->
-
-<!--<ul id="myList">-->
-<!--    <li>${spots}</li>-->
-<!--</ul>-->
-
-<!--will fix this-->
+</script>

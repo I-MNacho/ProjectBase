@@ -9,25 +9,21 @@
 </head>
 
 <body>
-<table>
-    <thead>
-    <tr>
-        <th> Title </th>
-        <th> Description </th>
-    </tr>
-    </thead>
-    <tbody>
-    <!--    <tr th:if="${spots.empty}">-->
-    <!--        <td colspan="2"> No Spots Available </td>-->
-    <!--    </tr>-->
-    <tr th:each="spot : ${spots}">
-        <td><span th:text="${spot.title}"> Title </span></td>
-        <td><span th:text="${spot.description}"> Description </span></td>
-        <td><a th:href="@{|spots/save/${spot.id}|  }"> Save </a></td>
 
-    </tr>
-    </tbody>
-</table>
+<div th:replace="partials/search-bar.html"></div>
 
+
+<div th:replace="partials/search-results.html"></div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<div th:replace="partials/bootstrap-footer.html"></div>
 </body>
 </html>
