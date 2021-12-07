@@ -24,20 +24,20 @@ public class Event {
     private User user;
 
     @ManyToOne
-    @JoinColumn (name = "spot_id")
+    @JoinColumn(name="spot_id")
     private Spot spot;
 
-    @Column(columnDefinition = "VARCHAR(30)", nullable = true)
-    private String startTime;
+    @Column
+    private long startTime;
 
-    @Column(columnDefinition = "VARCHAR(30)", nullable = true)
-    private String endTime;
+    @Column
+    private long endTime;
 
     //constructors
     public Event() {
     }
 
-    public Event(long id, String title, String description, User user, Spot spot, String startTime, String endTime) {
+    public Event(long id, String title, String description, User user, Spot spot, long startTime, long endTime) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -89,19 +89,19 @@ public class Event {
         this.spot = spot;
     }
 
-    public String getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
 }

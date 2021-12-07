@@ -1,9 +1,12 @@
 package com.codeup.iknowaspot.models;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "spots")
@@ -31,7 +34,8 @@ public class Spot {
     @Column(columnDefinition = "VARCHAR(500)")
     private String spotPhotoURL;
 
-
+//    @OneToMany(mappedBy="spot")
+//    private Set<Event> events;
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
 //    private List<Tag> tags;
 
@@ -39,12 +43,11 @@ public class Spot {
     @JoinColumn (name = "user_id")
     private User user;
 
-
     public Spot() {
     }
 
 
-    public Spot(String title, String description, Double latitude, Double longitude, User user, String tags) {
+    public Spot(String title, String description, Double latitude, Double longitude, User user, String tags, Set<Event> events) {
         this.title = title;
         this.description = description;
         this.latitude = latitude;
@@ -52,6 +55,7 @@ public class Spot {
         this.user = user;
         this.tags = tags;
         this.spotPhotoURL = spotPhotoURL;
+//        this.events = events;
     }
 
     public String getTitle() {
@@ -117,4 +121,13 @@ public class Spot {
     public void setSpotPhotoURL(String spotPhotoURL) {
         this.spotPhotoURL = spotPhotoURL;
     }
+
+//    public Set<Event> getEvents() { return events; }
+//
+//    public Set<Event> addEvent(Event event) {
+//        events.add(event);
+//        return events;
+//    }
+//
+//    public void setEvents(Set<Event> events) { this.events = events; }
 }

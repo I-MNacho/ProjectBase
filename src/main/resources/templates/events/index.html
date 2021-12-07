@@ -12,6 +12,7 @@
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
     <script src="/keys.js"></script>
+    <script src="/js/mapbox-helper.js"></script>
 </head>
 <body>
 <style>
@@ -60,6 +61,9 @@
     .card .body h3 {
         margin: 0;
     }
+    .card .body h6 {
+        margin: 0;
+    }
 </style>
 <nav th:replace="partials/navbar.html :: navbar"></nav>
 <div class="grid">
@@ -70,9 +74,11 @@
         <div class="map"></div>
         <div class="body">
             <h3 class="title" th:text="${event.title}"></h3>
-            <span th:text="${event.startTime}"></span>
-            <span th:text="${event.endTime}"></span>
             <p th:text="${event.description}"></p>
+            <h6>Starts</h6>
+            <span class="start"></span>
+            <h6>Ends</h6>
+            <span class="end"></span>
             <div class="footer">
             <!--        @, $ = redirecting so youre injecting a rout into var youre putting the actual event id into -->
                 <a uk-icon="pencil" th:href="@{|events/edit/${event.id}|}"></a>
@@ -83,27 +89,29 @@
     </div>
 </div>
 <script th:inline="javascript">
-    mapboxgl.accessToken = MapboxAPIKey;
     <!--    Create spots object from thymeleaf spot model-->
     const events = [[${events}]];
     //For each event, add a map with a marker at the location of the event
     events.forEach((event)=> {
-
-        // TODO: get coordinates from spot after spots are tied to events
         // Hardcoded to san antonio
-        const center = [-98.491142, 29.424349];
+        const {longitude, latitude} = event.spot
+        const center = [longitude, latitude];
         // Get card with event id and find the div with the class "map" inside that card
-        const container = document.getElementById(event.id).querySelector(".map")
-        const map = new mapboxgl.Map({
-            container,
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center,
-            zoom: 9,
-            pitch: 60
-        });
-        new mapboxgl.Marker()
-            .setLngLat(center)
-            .addTo(map);
+        const eventElement = document.getElementById(event.id)
+        const container = eventElement.querySelector(".map");
+        addMapWithLocation({container, center})
+
+        const timeFormat = {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        }
+        eventElement.querySelector(".start").innerHTML = `
+            ${new Date(event.startTime).toLocaleDateString()} ${new Date(event.startTime).toLocaleTimeString([], timeFormat)}
+        `;
+        eventElement.querySelector(".end").innerHTML = `
+            ${new Date(event.endTime).toLocaleDateString()} ${new Date(event.endTime).toLocaleTimeString([], timeFormat)}
+        `;
     });
 </script>
 </body>
