@@ -18,35 +18,19 @@
                 <input id="latitude" name="latitude" type="hidden" th:field="${spot.latitude}"/>
                 <input id="longitude" name="longitude" type="hidden" th:field="${spot.longitude}"/>
                 <!--                -------------------->
-                <script>
-                    function openFilePicker() {
-                        const client = filestack.init(FileStackAPIKey);
-
-                        function onUploadDone(result) {
-                            console.log(result)
-                            const url = result.filesUploaded[0].url
-                            $('#spot-photo').attr({src: url})
-                            $('#spot-photo-input').val(url)
-                        }
-
-                        const options = {
-                            onUploadDone,
-                        };
-
-                        const picker = client.picker(options);
-                        picker.open();
-                    }
-                </script>
-                    <button onclick="openFilePicker()">Upload Photos</button>
+                    <button onclick="openFilePicker()" type="button">Upload Photos</button>
                     <form th:action="@{/spots/create}" method="post" th:object="${spot}" >
                     <input type="hidden" name="id" th:field="${spot.id}">
                     <input id="spot-photo-input" type="hidden" name="spotPhotoURL" th:field="${spot.spotPhotoURL}">
                     <img id="spot-photo" th:src="${spot.spotPhotoURL}" alt="No Spot Photos" width="50px" height="50px">
 
                  <br>
+
                 <button class="btn btn-primary">Submit</button>
                     </form>
+
             </div>
+
         </div>
         <div sec:authorize="isAnonymous()">
             <form th:action="@{/login}">
