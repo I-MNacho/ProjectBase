@@ -1,5 +1,7 @@
 package com.codeup.iknowaspot.models;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -20,10 +22,10 @@ public class User {
     @Column(columnDefinition = "VARCHAR(100) NOT NULL")
     private String password;
 
-    @Column(columnDefinition = "VARCHAR(500)")
+    @Column(columnDefinition = "VARCHAR(500) NULL")
     private String bio;
 
-    @Column(columnDefinition = "VARCHAR(500)")
+    @Column(columnDefinition = "VARCHAR(500) NULL")
     private String profilePhotoURL;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -83,6 +85,11 @@ public class User {
 
     public void setSpots(List<Spot> spots) {
         this.spots = spots;
+    }
+
+    public List<Spot> addSpot(Spot spot) {
+        spots.add(spot);
+        return spots;
     }
 
     public String getBio() {

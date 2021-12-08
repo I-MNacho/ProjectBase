@@ -125,6 +125,7 @@ function showIndividualSpotView(e){
     document.getElementById("spot-title").innerText = title;
     document.getElementById("spot-description").innerText = description;
     document.getElementById("spot-schedule-event-button").href = `events/create/${spot_id}`;
+    document.getElementById("spot-save-button").href = `spots/save/${spot_id}`;
     document.getElementById("spot-tags").innerText = tags ?? "";
 }
 //When click on create a spot button, show the view for create a spot and disable other views

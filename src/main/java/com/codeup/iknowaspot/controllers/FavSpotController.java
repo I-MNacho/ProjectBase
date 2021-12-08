@@ -69,7 +69,7 @@ public class FavSpotController {
     Spot favoriteSpot = spotsDao.getById(id);
     User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     User author = usersDao.getById(principal.getId());
-    favoriteSpot.setUser(author);
+    author.addSpot(favoriteSpot);
     spotsDao.save(favoriteSpot);
   }
 
