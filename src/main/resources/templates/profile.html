@@ -25,10 +25,15 @@
 <div th:replace="partials/view-events.html"></div>
 
 <h2 class="indigo-text center">My Spots</h2>
+<div th:replace="partials/view-spots.html"></div>
 
 <h2 class="indigo-text center">Saved Spots</h2>
-
-<div th:replace="partials/view-spots.html"></div>
+<tr th:each="spot : ${savedSpots}">
+    <td><span th:text="${spot.title}"> Title </span></td>
+    <td><span th:text="${spot.description}"> Description </span></td>
+    <td><span th:text="${spot.tags}"> Tags </span></td>
+    <td><a th:href="@{|spots/unsave/${spot.id}|}"> Unsave </a></td>
+</tr>
 
 <div th:replace="partials/bootstrap-footer.html"></div>
 
