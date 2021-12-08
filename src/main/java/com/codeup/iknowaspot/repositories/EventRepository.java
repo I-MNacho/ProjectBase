@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllByUser(User user);
+    List<Event> findEventByEndTimeAfter(long datetime);
 }
