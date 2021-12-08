@@ -70,8 +70,8 @@ public class Spot {
         return description;
     }
 
-    public void setDescription(String body) {
-        this.description = body;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public long getId() {

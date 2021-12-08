@@ -59,7 +59,7 @@
     function updateMap(data) {
         data.forEach(d=> {
             spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
-                '"properties": { "spot_id": "'+d.id+'", "title" : "'+d.title+'", "description" : "'+d.description+'"},' +
+                '"properties": { "spot_id": "'+d.id+'", "title" : "'+d.title+'", "description" : "'+d.description+'", "tags" : "'+d.tags+'"},' +
                 '"geometry": {"type": "Point", "coordinates": ['+d.longitude+','+ d.latitude+']}}'));
         });
     }
