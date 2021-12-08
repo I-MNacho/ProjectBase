@@ -64,14 +64,14 @@ public class FavSpotController {
     return "redirect:/settings/";
   }
 
-//  @GetMapping("/favorite_spot/save/{id}")
-//  public void saveFavoriteSpot(@PathVariable long id){
-//    Spot favoriteSpot = spotsDao.getById(id);
-//    User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//    User author = usersDao.getById(principal.getId());
-//    favoriteSpot.setUser(author);
-//    spotsDao.save(favoriteSpot);
-//  }
+  @GetMapping("/favorite_spot/save/{id}")
+  public void saveFavoriteSpot(@PathVariable long id){
+    Spot favoriteSpot = spotsDao.getById(id);
+    User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User author = usersDao.getById(principal.getId());
+    favoriteSpot.setUser(author);
+    spotsDao.save(favoriteSpot);
+  }
 
   @PostMapping("/favorite_spot/create")
   public String insertFavoriteSpot(@ModelAttribute Spot spot) {
