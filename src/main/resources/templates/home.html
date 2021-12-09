@@ -128,7 +128,11 @@ function showIndividualSpotView(e){
     document.getElementById("spot-description").innerText = description;
     document.getElementById("spot-tags").innerText = tags;
     document.getElementById("spot-events").innerHTML = getEventsFromSpotId(spot_id);
-    document.getElementById("spot-schedule-event-button").href = `events/create/${spot_id}`;
+    try{
+        document.getElementById("spot-schedule-event-button").href = `events/create/${spot_id}`;
+    } catch{
+        console.log("Cannot create spot_id if not logged in")
+    }
 }
 function getEventsFromSpotId(spot_id){
     var foundEvents = "";
@@ -138,7 +142,7 @@ function getEventsFromSpotId(spot_id){
        }
     });
     if (foundEvents === ""){
-        return "No events found<hr>"
+        return "No events found<br><hr>"
     }
     console.log(foundEvents)
     return foundEvents;
