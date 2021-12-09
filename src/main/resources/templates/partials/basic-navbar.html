@@ -5,14 +5,22 @@
     <title>Home</title>
 </head>
 <body>
-<nav class="mb-1 col-12" th:fragment="basic-navbar" style="background-color: white; box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);">
+<nav class="mb-1 col-12" th:fragment="basic-navbar" style="background-color: #F6F6F6; box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);">
     <div class="navbar navbar-default">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">IKnowASpot</a>
-                <a th:href="@{/spots}" class="btn btn-success">Spots</a>
-                <a th:href="@{/events}" class="btn btn-info">Events</a>
-                <a th:href="@{/aboutus}" class="btn btn-outline-info">About Us</a>
+            <div class="navbar-header d-flex">
+                <div class="mr-2 font-weight-bold">
+                    <a class="navbar-brand" style="color: #519872" href="/">IKnowASpot</a>
+                </div>
+                <div class="mr-3 pt-2">
+                    <a class="text-dark" th:href="@{/spots}">Spots</a>
+                </div>
+               <div class="mr-3 pt-2">
+                   <a class="text-dark" th:href="@{/events}">Events</a>
+               </div>
+                <div class="pt-2">
+                    <a class="text-dark" th:href="@{/aboutus}">About Us</a>
+                </div>
                 <!--                    This content is only shown to authenticated users.-->
 
                 <!--                    User ID: <span th:text="${#authentication.principal.id}"/>-->
@@ -28,9 +36,14 @@
             <div class="nav navbar-nav navbar-right">
                 <!--                Logged out user-->
                 <div sec:authorize="isAnonymous()">
-                    <div>
-                        <a th:href="@{/login}" class="btn btn-secondary">Login</a>
-                        <a th:href="@{/register}" class="btn btn-primary">Register</a>
+                    <div class="d-flex">
+                        <div class="mr-3 pt-2">
+                            <a class="text-dark" th:href="@{/login}">Login</a>
+                        </div>
+                        <div class="mr-3 pt-2">
+                            <a class="text-dark" th:href="@{/register}">Register</a>
+                        </div>
+
                     </div>
                 </div>
                 <!--                Logged in User-->

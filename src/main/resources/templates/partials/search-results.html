@@ -23,32 +23,54 @@
 <!--    </div>-->
 <!--</div>-->
 
+<style>
+    .red-heart{
+     color: red;
+    }
+
+    .black-heart{
+     color: black;
+    }
 
 
+</style>
 
-<div class="table-responsive">
+
+<div class="">
+<div class="table-responsive w-80">
     <table class="table table-hover">
         <thead>
         <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Tags</th>
-            <th scope="col">Favorite</th>
-            <th scope="col">Events</th>
+            <th style="background-color: #E0ECE4;" scope="col">Title</th>
+            <th style="background-color: #E0ECE4;" scope="col">Description</th>
+            <th style="background-color: #E0ECE4;" scope="col">Tags</th>
+            <th style="background-color: #E0ECE4;" scope="col">Events</th>
+            <th style="background-color: #E0ECE4;" scope="col">Favorite</th>
         </tr>
         </thead>
         <tbody id="myTable">
         <tr th:each="spot : ${spots}">
-            <td><a th:href="@{|spots/${spot.id}|}"><span th:text="${spot.title}"></span></a></td>
+            <td><a class="text-dark font-weight-bold" th:href="@{|spots/${spot.id}|}"><span th:text="${spot.title}"></span></a></td>
             <td><span th:text="${spot.description}"> Description </span></td>
             <td><span th:text="${spot.tags}"> Tags </span></td>
-<!--            <td><span th:text="${spot.events}"> Events </span></td>-->
-            <td><a th:href="@{|spots/save/${spot.id}|  }"> Save </a></td>
+            <td><span> counter here </span></td>
+
+            <!--            <td><span th:text="${spot.events}"> Events </span></td>-->
+            <td><a id="heart" th:href="@{|spots/save/${spot.id}|  }"> <span class="ml-4" style="font-size:150%;color:black;">&hearts;</span> </a></td>
         </tr>
         </tbody>
     </table>
 </div>
+</div>
 
+<script>
+
+    $("#heart").on("click", function() {
+        $(this).toggleClass("red-heart")
+        // document.getElementById("heart").toggleAttribute("red-heart");
+    });
+
+</script>
 
 
 
