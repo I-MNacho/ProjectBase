@@ -42,7 +42,7 @@ public class SpotController {
     @GetMapping("/spots")
     public String index(Model model) {
         model.addAttribute("spots", spotsDao.findAll());
-        return "/spots/index";
+        return "spots/index";
     }
 
     @GetMapping("/spots/{id}")

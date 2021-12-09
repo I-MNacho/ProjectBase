@@ -3,7 +3,6 @@ package com.codeup.iknowaspot.models;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +20,9 @@ public class Spot {
 
     @Column(columnDefinition = "TEXT NOT NULL")
     private String description;
+
+    @Column(columnDefinition = "TEXT NOT NULL")
+    private String address;
 
     @Column(columnDefinition = "TEXT NOT NULL")
     private String tags;
@@ -50,6 +52,7 @@ public class Spot {
     public Spot(String title, String description, Double latitude, Double longitude, User user, String tags, Set<Event> events) {
         this.title = title;
         this.description = description;
+        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.user = user;
@@ -74,6 +77,14 @@ public class Spot {
         this.description = description;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public long getId() {
         return id;
     }
@@ -85,10 +96,6 @@ public class Spot {
     public void setUser(User user){
         this.user = user;
     }
-
-//    public Set<User> getUser() {
-//        return users;
-//    }
 
     public double getLatitude() {
         return latitude;
