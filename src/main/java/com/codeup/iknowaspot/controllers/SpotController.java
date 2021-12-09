@@ -45,6 +45,16 @@ public class SpotController {
         return "/spots/index";
     }
 
+    @GetMapping("/spots/{id}")
+    public String oneSpotView(Model model, @PathVariable long id){
+        Spot spot = spotsDao.getById((long) id);
+        model.addAttribute("latitude", spot.getLatitude());
+        model.addAttribute("longitude", spot.getLongitude());
+        model.addAttribute("spot", spot);
+        return "/spots/one-spot";
+    }
+
+
     //create spot mapping
     // takes latitude and longitude as url parameters to create Spot model
 //    @GetMapping("/spots/create")
