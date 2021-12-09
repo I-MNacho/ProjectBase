@@ -46,6 +46,7 @@
 <script th:inline="javascript">
 <!--    Create spots object from thymeleaf spot model-->
     const spots = [[${spots}]];
+    const events = [[${events}]];
     //For each spot, place a pin on the map
     // spots.forEach((spot)=>{
     //     console.log(spot);
@@ -55,6 +56,7 @@
     //         .addTo(map);
     // });
     console.log(spots);
+    console.log(events);
     var spotsGeoJson = [];
     function updateMap(data) {
         data.forEach(d=> {
@@ -124,8 +126,22 @@ function showIndividualSpotView(e){
     const {spot_id, title, description, tags} = e.features[0].properties;
     document.getElementById("spot-title").innerText = title;
     document.getElementById("spot-description").innerText = description;
+    document.getElementById("spot-tags").innerText = tags;
+    document.getElementById("spot-events").innerHTML = getEventsFromSpotId(spot_id);
     document.getElementById("spot-schedule-event-button").href = `events/create/${spot_id}`;
-    document.getElementById("spot-tags").innerText = tags ?? "";
+}
+function getEventsFromSpotId(spot_id){
+    var foundEvents = "";
+    events.forEach(event=>{
+       if (parseInt(event.spot.id) === parseInt(spot_id)){
+           foundEvents += (event.title + "<br>" + event.description + "<br><hr>");
+       }
+    });
+    if (foundEvents === ""){
+        return "No events found<hr>"
+    }
+    console.log(foundEvents)
+    return foundEvents;
 }
 //When click on create a spot button, show the view for create a spot and disable other views
     function showCreateASpotViewLoggedIn(){
