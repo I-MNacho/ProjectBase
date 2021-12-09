@@ -13,6 +13,14 @@
                 </span>
                 <a th:href="@{/aboutus}" class="btn btn-outline-info">About Us</a>
             </div>
+            <div>
+                <label for="searchBarHome">
+                <input class="form-control" id="searchBarHome" name="searchBarHome" type="text" placeholder="Search">
+                </label>
+                <button type="button" class="btn btn-primary" onclick="updateMapWithSearchSpots()">Search</button>
+                <button type="button" class="btn btn-secondary" onclick="resetMap()">Reset</button>
+
+            </div>
             <div class="nav navbar-nav navbar-right">
                 <!--                Logged out user-->
                 <div sec:authorize="isAnonymous()">
