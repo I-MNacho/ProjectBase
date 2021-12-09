@@ -41,7 +41,7 @@ public class SpotController {
     @GetMapping("/spots")
     public String index(Model model) {
         model.addAttribute("spots", spotsDao.findAll());
-        return "home";
+        return "/spots/index";
     }
 
     //create spot mapping
