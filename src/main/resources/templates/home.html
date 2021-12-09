@@ -66,6 +66,63 @@
         });
     }
     updateMap(spots);
+    function updateMapWithSearchSpots(){
+        spotsGeoJson = [];
+        var searchValue = document.getElementById("searchBarHome").value;
+        spots.forEach(spot=> {
+            if (spot.title.includes(searchValue)||spot.tags.includes(searchValue)||spot.description.includes(searchValue)){
+                spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
+                    '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
+                    '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
+            }
+        });
+        map.removeLayer("spots");
+        map.removeSource("spots")
+        map.addSource("spots", {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": spotsGeoJson
+            }
+        })
+        map.addLayer({
+            'id': 'spots',
+            'type': 'symbol',
+            'source': 'spots',
+            'layout': {
+                'icon-image': 'custom-marker', // reference the image
+                'icon-size': 0.15,
+                'icon-allow-overlap': true
+            }
+        });
+    }
+    function resetMap(){
+        spotsGeoJson = [];
+        spots.forEach(spot=> {
+            spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
+                '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
+                '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
+        });
+        map.removeLayer("spots");
+        map.removeSource("spots")
+        map.addSource("spots", {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": spotsGeoJson
+            }
+        })
+        map.addLayer({
+            'id': 'spots',
+            'type': 'symbol',
+            'source': 'spots',
+            'layout': {
+                'icon-image': 'custom-marker', // reference the image
+                'icon-size': 0.15,
+                'icon-allow-overlap': true
+            }
+        });
+    }
     map.on('load', function() {
         map.loadImage(
             '/img/blue-pin-icon.png',
