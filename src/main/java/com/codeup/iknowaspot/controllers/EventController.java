@@ -63,6 +63,7 @@ public class EventController {
     @GetMapping("/events")
     public String listEvent(Model model) {
         //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
+        // TODO: filter only events that end after today
         model.addAttribute("events", eventsDao.findAll());
 
         //page shows to this bc its mapped here:  //

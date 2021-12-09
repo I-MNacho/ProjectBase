@@ -42,7 +42,7 @@ public class SpotController {
     @GetMapping("/spots")
     public String index(Model model) {
         model.addAttribute("spots", spotsDao.findAll());
-        return "spots/index";
+        return "/spots/index";
     }
 
     //create spot mapping
@@ -66,7 +66,7 @@ public class SpotController {
 //        needs to be able to keep same id
 
 
-        return "spots/index";
+        return "home";
     }
 
     @GetMapping("/spots/save/{id}")
@@ -74,9 +74,19 @@ public class SpotController {
         Spot spot = spotsDao.getById(id);
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
-//        author.addSpot(spot);
+        author.addSpot(spot);
         usersDao.save(author);
-        return "redirect:/spots";
+        return "redirect:/profile";
+    }
+
+    @GetMapping("/spots/unsave/{id}")
+    public String unsaveSpot(@PathVariable long id){
+        Spot spot = spotsDao.getById(id);
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        author.removeSpot(spot);
+        usersDao.save(author);
+        return "redirect:/profile";
     }
 
     //inserting spot
