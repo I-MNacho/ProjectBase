@@ -17,6 +17,7 @@
 <body>
 <style>
     body {
+        /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
         display: grid;
         /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
         grid-template-rows: min-content 1fr;
@@ -100,19 +101,18 @@
         const eventElement = document.getElementById(event.id)
         const container = eventElement.querySelector(".map");
         addMapWithLocation({container, center})
-
+        eventElement.querySelector(".start").innerHTML = convertToLocalTime(event.startTime);
+        eventElement.querySelector(".end").innerHTML =  convertToLocalTime(event.endTime);
+    });
+    function convertToLocalTime(time) {
         const timeFormat = {
             hour: '2-digit',
             minute: '2-digit',
             hour12: true
         }
-        eventElement.querySelector(".start").innerHTML = `
-            ${new Date(event.startTime).toLocaleDateString()} ${new Date(event.startTime).toLocaleTimeString([], timeFormat)}
-        `;
-        eventElement.querySelector(".end").innerHTML = `
-            ${new Date(event.endTime).toLocaleDateString()} ${new Date(event.endTime).toLocaleTimeString([], timeFormat)}
-        `;
-    });
+        const date = new Date(time);
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString([], timeFormat);
+    }
 </script>
 </body>
 </html>
