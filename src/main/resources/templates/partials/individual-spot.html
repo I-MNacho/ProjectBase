@@ -10,6 +10,8 @@
         <h2 id="spot-title"></h2>
         <div id="spot-description"></div>
         <div id="spot-tags"></div>
+        <h2>Events:</h2>
+        <div id="spot-events"></div>
         <h3 sec:authorize="isAnonymous()">Login or Register to save spots and schedule events!</h3>
         <div th:replace="partials/login-register.html" sec:authorize="isAnonymous()">
         </div>
