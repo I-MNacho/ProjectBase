@@ -66,11 +66,18 @@
         });
     }
     updateMap(spots);
+    var searchBarHome = document.getElementById("searchBarHome");
+    searchBarHome.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("searchButton").click();
+        }
+    });
     function updateMapWithSearchSpots(){
         spotsGeoJson = [];
-        var searchValue = document.getElementById("searchBarHome").value;
+        var searchValue = searchBarHome.value.toLowerCase();
         spots.forEach(spot=> {
-            if (spot.title.includes(searchValue)||spot.tags.includes(searchValue)||spot.description.includes(searchValue)){
+            if (spot.title.toLowerCase().includes(searchValue)||spot.tags.toLowerCase().includes(searchValue)||spot.description.toLowerCase().includes(searchValue)){
                 spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
                     '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
                     '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
