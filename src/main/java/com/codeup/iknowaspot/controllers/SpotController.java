@@ -23,6 +23,7 @@ public class SpotController {
     private SpotRepository spotsDao;
     private UserRepository usersDao;
 
+
     //constructor
     public SpotController(SpotRepository spotDao, UserRepository userDao) {
         this.spotsDao = spotDao;

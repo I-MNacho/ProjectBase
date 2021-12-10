@@ -33,8 +33,8 @@ public class User {
 
     // Many users can save many spots to their profile
     // Uses set so that you don't accidentally save the same spot more than once
-    @ManyToMany
-    private Set<Spot> savedSpots;
+    @ManyToMany(mappedBy = "users")
+    private List<Spot> savedSpots;
 
 
     public User(User copy) {
@@ -92,20 +92,20 @@ public class User {
         this.spots = spots;
     }
 
-    public Set<Spot> getSavedSpots() {
+    public List<Spot> getSavedSpots() {
 
         return savedSpots; }
 
-    public void setSavedSpots(Set<Spot> savedSpots) {
+    public void setSavedSpots(List<Spot> savedSpots) {
         this.savedSpots = savedSpots;
     }
 
-    public Set<Spot> addSpot(Spot spot) {
+    public List<Spot> addSpot(Spot spot) {
         savedSpots.add(spot);
         return savedSpots;
     }
 
-    public Set<Spot> removeSpot(Spot spot) {
+    public List<Spot> removeSpot(Spot spot) {
         savedSpots.remove(spot);
         return savedSpots;
     }

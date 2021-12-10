@@ -63,8 +63,9 @@
 </div>
 </div>
 
-<script>
+<script th:inline="javascript">
 
+        var spots = [[${spots}]];
     $("#heart").on("click", function() {
         $(this).toggleClass("red-heart")
         // document.getElementById("heart").toggleAttribute("red-heart");

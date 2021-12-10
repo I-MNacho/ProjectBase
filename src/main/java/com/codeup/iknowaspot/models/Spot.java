@@ -38,10 +38,20 @@ public class Spot {
 //    private Set<Event> events;
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
 //    private List<Tag> tags;
-
     @ManyToOne
     @JoinColumn (name = "user_id")
     private User user;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name="users_saved_spots",
+            joinColumns={@JoinColumn(name="user_id")},
+            inverseJoinColumns={@JoinColumn(name="saved_spots_id")}
+    )
+
+
+    private List<User> users;
+
 
     public Spot() {
     }
