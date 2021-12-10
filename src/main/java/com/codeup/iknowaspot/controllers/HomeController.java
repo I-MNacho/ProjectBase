@@ -36,8 +36,11 @@ class HomeController {
                 + "const FileStackAPIKey = `" + fileStackApiKey + "`";
 
     }
-
-    @GetMapping({"/home", "/"})
+    @GetMapping({"/"})
+        public String getSplashPage(){
+            return "partials/splash";
+    }
+    @GetMapping({"/home"})
     public String getIndexPage(Model model) {
         model.addAttribute("spots", spotsDao.findAll());
         model.addAttribute("events", eventsDao.findAll());

@@ -66,6 +66,70 @@
         });
     }
     updateMap(spots);
+    var searchBarHome = document.getElementById("searchBarHome");
+    searchBarHome.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("searchButton").click();
+        }
+    });
+    function updateMapWithSearchSpots(){
+        spotsGeoJson = [];
+        var searchValue = searchBarHome.value.toLowerCase();
+        spots.forEach(spot=> {
+            if (spot.title.toLowerCase().includes(searchValue)||spot.tags.toLowerCase().includes(searchValue)||spot.description.toLowerCase().includes(searchValue)){
+                spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
+                    '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
+                    '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
+            }
+        });
+        map.removeLayer("spots");
+        map.removeSource("spots")
+        map.addSource("spots", {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": spotsGeoJson
+            }
+        })
+        map.addLayer({
+            'id': 'spots',
+            'type': 'symbol',
+            'source': 'spots',
+            'layout': {
+                'icon-image': 'custom-marker', // reference the image
+                'icon-size': 0.15,
+                'icon-allow-overlap': true
+            }
+        });
+    }
+    function resetMap(){
+        spotsGeoJson = [];
+        spots.forEach(spot=> {
+            spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
+                '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
+                '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
+        });
+        map.removeLayer("spots");
+        map.removeSource("spots")
+        map.addSource("spots", {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": spotsGeoJson
+            }
+        })
+        map.addLayer({
+            'id': 'spots',
+            'type': 'symbol',
+            'source': 'spots',
+            'layout': {
+                'icon-image': 'custom-marker', // reference the image
+                'icon-size': 0.15,
+                'icon-allow-overlap': true
+            }
+        });
+    }
     map.on('load', function() {
         map.loadImage(
             '/img/blue-pin-icon.png',
@@ -113,7 +177,7 @@ map.on('click', 'spots', (e) => {
     }
     new mapboxgl.Popup()
         .setLngLat(coordinates)
-        .setHTML(title)
+        .setHTML(`<h5>${title}</h5>`)
         .addTo(map);
     showIndividualSpotView(e);
 });
@@ -126,7 +190,7 @@ function showIndividualSpotView(e){
     const {spot_id, title, description, tags} = e.features[0].properties;
     document.getElementById("spot-title").innerText = title;
     document.getElementById("spot-description").innerText = description;
-    document.getElementById("spot-tags").innerText = tags;
+    document.getElementById("spot-tags").innerText = "Tags: " + tags;
     document.getElementById("spot-events").innerHTML = getEventsFromSpotId(spot_id);
     try{
         document.getElementById("spot-schedule-event-button").href = `events/create/${spot_id}`;

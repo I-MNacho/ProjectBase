@@ -7,6 +7,7 @@ import com.codeup.iknowaspot.repositories.UserRepository;
 //import org.springframework.security.core.context.SecurityContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +44,16 @@ public class SpotController {
         model.addAttribute("spots", spotsDao.findAll());
         return "/spots/index";
     }
+
+    @GetMapping("/spots/{id}")
+    public String oneSpotView(Model model, @PathVariable long id){
+        Spot spot = spotsDao.getById((long) id);
+        model.addAttribute("latitude", spot.getLatitude());
+        model.addAttribute("longitude", spot.getLongitude());
+        model.addAttribute("spot", spot);
+        return "/spots/one-spot";
+    }
+
 
     //create spot mapping
     // takes latitude and longitude as url parameters to create Spot model

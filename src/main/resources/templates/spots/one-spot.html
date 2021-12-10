@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <div th:replace="partials/uikit-header.html"></div>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet"
+          href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css"
+          type="text/css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet'/>
+    <script src="/keys.js"></script>
+    <script src="/js/mapbox-helper.js"></script>
+</head>
+<body>
+<style>
+ body {
+  /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
+  display: grid;
+  /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
+  grid-template-rows: min-content 1fr;
+  /*Body takes up full height of viewport*/
+  height: 100vh;
+ }
+
+ /*Events grid*/
+ .grid {
+  /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
+  display: grid;
+  gap: 16px;
+  padding: 12px;
+  /*Try to take up as much space as possible up to 450px*/
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  /*Rows only fill as much space as they need*/
+  grid-template-rows: min-content;
+  align-items: flex-start;
+ }
+
+ .card {
+  display: grid;
+  /*Has two columns: 1 is 250px and the other takes up the remaining space*/
+  grid-template-columns: 250px 1fr;
+ }
+
+ .card .footer {
+  display: flex;
+  /*Footer items are at the right side*/
+  justify-content: flex-end;
+  gap: 8px;
+ }
+
+ .card .map {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+ }
+
+ .card .body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+ }
+
+ .card .body h3 {
+  margin: 0;
+ }
+
+ .card .body h6 {
+  margin: 0;
+ }
+</style>
+
+<style>
+ form{
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  align-items: flex-start;
+ }
+ #map {
+  width: 100%;
+  height: 300px;
+ }
+</style>
+
+
+<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+
+<script th:inline="javascript">
+    const latitude = [[${latitude}]];
+    const longitude = [[${longitude}]];
+    const center = [longitude, latitude];
+    $(document).ready(() => {
+        const container = document.getElementById("map");
+        addMapWithLocation({container, center});
+    })
+</script>
+
+<div th:inline="javascript" class="grid">
+    <div class="card">
+        <div id="map"></div>
+        <div class="body">
+            <h3 class="title" th:text="${spot.title}"></h3>
+            <p th:text="${spot.description}"></p>
+            <p th:text="${spot.tags}">Tags</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
