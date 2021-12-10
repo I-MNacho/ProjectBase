@@ -8,9 +8,10 @@
 <nav class="mb-1 col-12" th:fragment="basic-navbar" style="background-color: #F6F6F6; box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);">
     <div class="navbar navbar-default">
         <div class="container-fluid">
+
             <div class="navbar-header d-flex">
                 <div class="mr-2 font-weight-bold">
-                    <a class="navbar-brand" style="color: #519872" href="/">IKnowASpot</a>
+                    <a class="navbar-brand" style="color: #519872" href="/home">IKnowASpot</a>
                 </div>
                 <div class="mr-3 pt-2">
                     <a class="text-dark" th:href="@{/spots}">Spots</a>
@@ -21,6 +22,8 @@
                 <div class="pt-2">
                     <a class="text-dark" th:href="@{/aboutus}">About Us</a>
                 </div>
+
+          
                 <!--                    This content is only shown to authenticated users.-->
 
                 <!--                    User ID: <span th:text="${#authentication.principal.id}"/>-->

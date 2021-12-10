@@ -65,8 +65,14 @@
     .card .body h6 {
         margin: 0;
     }
+    h2 {
+        display: flex;
+        justify-content: center;
+
+    }
 </style>
 <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+<fancy header><h2>Local Events</h2></fancy>
 <div class="grid">
     <div th:if="${events.empty}">
         <p colspan="2"> No Events Available </p>
@@ -88,6 +94,7 @@
             </div>
         </div>
     </div>
+    <div th:replace="partials/bootstrap-footer.html"></div>
 </div>
 <script th:inline="javascript">
     <!--    Create spots object from thymeleaf spot model-->

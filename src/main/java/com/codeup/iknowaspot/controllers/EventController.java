@@ -1,14 +1,11 @@
 package com.codeup.iknowaspot.controllers;
 
 import com.codeup.iknowaspot.models.Event;
-import com.codeup.iknowaspot.models.Spot;
 import com.codeup.iknowaspot.models.User;
 import com.codeup.iknowaspot.repositories.EventRepository;
 import com.codeup.iknowaspot.repositories.SpotRepository;
 import com.codeup.iknowaspot.repositories.UserRepository;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.stereotype.Controller;
 
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
@@ -63,8 +62,8 @@ public class EventController {
     @GetMapping("/events")
     public String listEvent(Model model) {
         //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
-        // TODO: filter only events that end after today
-        model.addAttribute("events", eventsDao.findAll());
+        List<Event> events = eventsDao.findEventByEndTimeAfter(System.currentTimeMillis());
+        model.addAttribute("events", events);
 
         //page shows to this bc its mapped here:  //
         return "events/index";
