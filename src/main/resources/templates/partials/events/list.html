@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<style>
+    .events-list-container {
+        /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
+        display: grid;
+        /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
+        grid-template-rows: min-content min-content 1fr;
+        /*Body takes up full height of viewport*/
+        height: 100vh;
+    }
+    /*Events grid*/
+    .grid {
+        /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
+        display: grid;
+        gap: 16px;
+        padding: 12px;
+        /*Try to take up as much space as possible up to 450px*/
+        grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+        /*Rows only fill as much space as they need*/
+        grid-template-rows: min-content;
+        align-items: flex-start;
+    }
+    .card {
+        display: grid;
+        /*Has two columns: 1 is 250px and the other takes up the remaining space*/
+        grid-template-columns: 250px 1fr;
+    }
+    .card .footer {
+        display: flex;
+        /*Footer items are at the right side*/
+        justify-content: flex-end;
+        gap: 8px;
+    }
+    .card .map {
+        width: 100%;
+        height: 100%;
+        border-radius: 6px;
+    }
+    .card .body {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 12px;
+    }
+    .card .body h3 {
+        margin: 0;
+    }
+    .card .body h6 {
+        margin: 0;
+    }
+    h2 {
+        display: flex;
+        justify-content: center;
+    }
+    .action-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #8989c5;
+        border-radius: 50%;
+        padding: 12px;
+        display: flex;
+        justify-items: center;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        color: white;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+</style>
+<div class="events-list-container">
+<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+<fancy header><h2>Local Events</h2></fancy>
+<div class="grid">
+    <div th:if="${events.empty}">
+        <p colspan="2"> No Events Available </p>
+    </div>
+    <div th:id="${event.id}" th:each="event : ${events}" class="card">
+        <div class="map"></div>
+        <div class="body">
+            <h3 class="title" th:text="${event.title}"></h3>
+            <p th:text="${event.description}"></p>
+            <h6>Starts</h6>
+            <span class="start"></span>
+            <h6>Ends</h6>
+            <span class="end"></span>
+            <div class="footer" th:if="${#authentication.name == event.user.username}">
+            <!--        @, $ = redirecting so youre injecting a rout into var youre putting the actual event id into -->
+                <a uk-icon="pencil" th:href="@{|/events/view/${event.id}|}"></a>
+                <!--        lining up the html to -->
+                <a uk-icon="trash" th:href="@{|/events/delete/${event.id}|}"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="action-button">
+    <a uk-icon="plus" href="@{|/events/create|}"></a>
+</div>
+<script th:inline="javascript">
+
+    <!--    Create spots object from thymeleaf spot model-->
+    const events = [[${events}]];
+    //For each event, add a map with a marker at the location of the event
+    events.forEach((event)=> {
+        // Hardcoded to san antonio
+        const {longitude, latitude, title, description} = event.spot
+        const center = [longitude, latitude];
+        // Get card with event id and find the div with the class "map" inside that card
+        const eventElement = document.getElementById(event.id)
+        const container = eventElement.querySelector(".map");
+        const popup = {
+            title,
+            description
+        }
+        addMapWithLocation({container, center, popup})
+        eventElement.querySelector(".start").innerHTML = convertToLocalTime(event.startTime);
+        eventElement.querySelector(".end").innerHTML =  convertToLocalTime(event.endTime);
+    });
+    function convertToLocalTime(time) {
+        const timeFormat = {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        }
+        const date = new Date(time);
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString([], timeFormat);
+    }
+</script>
+</div>
+</html>

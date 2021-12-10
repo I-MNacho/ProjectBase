@@ -6,6 +6,7 @@ import com.codeup.iknowaspot.repositories.EventRepository;
 import com.codeup.iknowaspot.repositories.SpotRepository;
 import com.codeup.iknowaspot.repositories.UserRepository;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,10 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.stereotype.Controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Controller
 public class EventController {
@@ -65,8 +63,20 @@ public class EventController {
         List<Event> events = eventsDao.findEventByEndTimeAfter(System.currentTimeMillis());
         model.addAttribute("events", events);
 
+
         //page shows to this bc its mapped here:  //
         return "events/index";
+    }
+
+    // edit event
+    @GetMapping("/events/view/{id}")
+    public String editEvent(@PathVariable long id, Model model){
+        //creating the event & setting the id & setting atrb
+        List<Event> events = eventsDao.findEventByEndTimeAfter(System.currentTimeMillis());
+        model.addAttribute("events", events);
+        model.addAttribute("event", eventsDao.getById(id));
+//      just updating i.e ^^^^^
+        return "events/edit";
     }
 
     //create event
@@ -88,21 +98,11 @@ public class EventController {
     // postmapping request will insert the event into the DB
     @PostMapping("/events/create")
     public String insertEvent(@ModelAttribute Event event) {
-//        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        User author = usersDao.getById(principal.getId());
-        User author = usersDao.getById(1L);
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
         event.setUser(author);
         eventsDao.save(event);
         return "redirect:/events";
-    }
-
-    // edit event
-    @GetMapping("/events/edit/{id}")
-    public String editEvent(@PathVariable long id, Model model){
-        //creating the event & setting the id & setting atrb
-        model.addAttribute("event", eventsDao.findById(id));
-//      just updating i.e ^^^^^
-        return "events/edit";
     }
 
 

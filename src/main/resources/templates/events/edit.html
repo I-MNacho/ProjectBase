@@ -1,28 +1,79 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create an Event</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
-    <link rel="stylesheet" th:href="@{/css/index.css}">
-</head>
-<body>
-<nav th:replace="partials/partials.html :: navbar"></nav>
-<!--${event} = event atr from controller -->
-<form action="#" th:action="@{/events/edit}" th:object="${event}" method="POST" >
- <input id="id" name="id" type="hidden" th:field="${event.id}"/>
-    <label for="title">I Have An Event..</label>
-    <input id="title" name="title" type="text" th:field="${event.title}"/>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+   <head th:replace="partials/events/headers.html"></head>
+   <style>
+      .form-modal {
+         position: absolute;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-content: center;
+         justify-items: center;
+         align-items: center;
+         width: 100vw;
+         height: 100vh;
+         z-index: 1000;
+      }
+      #edit-event-form {
+         background: white;
+         border-radius: 8px;
+         display: flex;
+         flex-direction: column;
+         gap: 16px;
+         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+         padding: 16px;
+      }
+   </style>
 
-    <label for="description">What is your event?</label>
-    <textarea id="description" name="description" th:field="${event.description}"></textarea>
-    <button>Submit</button>
+   <script>
+      function close() {
+         $(".form-modal").animate({ opacity: 0 }, 500, () => {
+            $(".form-modal").css({display: 'none'})
+         });
+      }
+      function prevent(e) {
+         e.stopPropagation();
+      }
+      $(document).ready(() => {
+         $(".form-modal").click(close)
+         $("#edit-event-form").click(prevent)
+         const options = {
+            type: "datetime",
+            dateFormat: "yyyy-mm-dd",
+            timeFormat: "HH:mm",
+            color: 'primary'
+         }
+         const calendars = bulmaCalendar.attach('[type="date"]', options);
+         // Loop on each calendar initialized
+         calendars.forEach(calendar => {
+            // Add listener to event for date is selected in picker
+            // Sets start and end time hidden input values so they are submitted with the rest of the form
+            calendar.on('select', date => {
+               // Set form values for start and end time based on whatever is selected from the datetime picker
+               // Use the javascript date object to covert times to Universal Standard Time (UST) in milliseconds
+               $("#startTime").val(new Date(calendar.startDate).getTime());
+               $("#endTime").val(new Date(calendar.endDate).getTime());
+            });
+         });
+      })
+   </script>
+   <!--${event} = event atr from controller -->
+   <div class="form-modal">
+      <form id="edit-event-form" action="#" th:action="@{/events/edit}" th:object="${event}" method="POST">
+         <input id="id" name="id" type="hidden" th:field="${event.id}"/>
+         <input id="startTime" type="hidden" th:field="${event.startTime}"/>
+         <input id="endTime" type="hidden" th:field="${event.endTime}"/>
+         <input id="spot" type="hidden" th:field="${event.spot}"/>
+         <input id="user" type="hidden" th:field="${event.user}"/>
 
+         <label for="title">I Have An Event..</label>
+         <input id="title" name="title" type="text" th:field="${event.title}"/>
 
-    <!--basic form for submitting a spot and saving it to the database... more needs to be added-->
-</form>
-
-</body>
+         <label for="description">What is your event?</label>
+         <textarea id="description" name="description" th:field="${event.description}"></textarea>
+         <label>When does your event start and end?</label>
+         <input type="date" data-is-range="true"/>
+         <button type="submit">Submit</button>
+      </form>
+   </div>
+   <div th:replace="partials/events/list.html"></div>
 </html>
