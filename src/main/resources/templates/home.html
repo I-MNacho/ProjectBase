@@ -13,13 +13,21 @@
 <div class="row no-gutters everything-container">
     <nav th:replace="partials/navbar.html :: navbar"></nav>
 <!--    <div th:replace="partials/splash.html"></div>-->
-    <div class="col-7 mb-3">
-        <div id="geocoder" class="geocoder col-12"></div>
-        <div id="map" class="m-1"></div>
+    <div class="col-7">
+        <div class="ml-2 mt-2 input-group" style="position: absolute; z-index: 2; width: 95%">
+            <input class="form-control" id="searchBarHome" name="searchBarHome" type="search" placeholder="Search for spots">
+            <span class="input-group-append">
+            <button type="button" class="btn btn-primary" id="searchButton" onclick="updateMapWithSearchSpots()">Search</button>
+            </span>
+<!--            <button type="button" class="btn btn-secondary" onclick="resetMap()">Reset</button>-->
+        </div>
+<!--        <div id="geocoder" class="geocoder col-12"></div>-->
+        <div style="z-index: 1" id="map" class="m-1"></div>
     </div>
-    <div class="col-5 no-gutters card-col">
-        <div class="card mt-1 mb-2 ml-2 mr-2 pl-3 pr-3 text-white bg-info text-center">IKnowASpot</div>
-        <div class="card mb-1 mb-2 ml-2 mr-2 text-center d-flex align-items-center justify-content-center" id="main-view" style="height: 95%">
+    <div class="col-5 no-gutters card-col align-items-center">
+<!--        <div class="card mt-1 mb-2 ml-2 mr-2 pl-3 pr-3 text-white bg-info text-center">-->
+<!--    </div>-->
+        <div class="card inside-card-col mt-1 ml-2 mr-2 p-3 text-center" id="main-view">
 <!--            The welcome partial will be displayed by default-->
             <span id="welcome"style="display: block">
                 <span th:replace="partials/welcome-to-iknowaspot.html :: welcome-to-iknowaspot" style="display: block"></span>
@@ -42,130 +50,83 @@
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
 <script src="/keys.js"></script>
 <script src="/js/weather_map.js"></script>
-<!--<script src="/js/home.js"></script>-->
 <script th:inline="javascript">
 <!--    Create spots object from thymeleaf spot model-->
-    const spots = [[${spots}]];
-    const events = [[${events}]];
-    //For each spot, place a pin on the map
-    // spots.forEach((spot)=>{
-    //     console.log(spot);
-    //     new mapboxgl.Marker()
-    //         .setPopup()
-    //         .setLngLat([spot.longitude, spot.latitude])
-    //         .addTo(map);
-    // });
-    console.log(spots);
-    console.log(events);
-    var spotsGeoJson = [];
-    function updateMap(data) {
-        data.forEach(d=> {
-            spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
-                '"properties": { "spot_id": "'+d.id+'", "title" : "'+d.title+'", "description" : "'+d.description+'", "tags" : "'+d.tags+'"},' +
-                '"geometry": {"type": "Point", "coordinates": ['+d.longitude+','+ d.latitude+']}}'));
-        });
-    }
-    updateMap(spots);
-    var searchBarHome = document.getElementById("searchBarHome");
-    searchBarHome.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            document.getElementById("searchButton").click();
-        }
+const spots = [[${spots}]];
+const events = [[${events}]];
+console.log(spots);
+
+var spotsGeoJson = [];
+//Function for creating map data with the Thymeleaf spot model
+function updateMap(spots) {
+    spots.forEach(spot=> {
+        spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
+            '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
+            '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
     });
-    function updateMapWithSearchSpots(){
-        spotsGeoJson = [];
-        var searchValue = searchBarHome.value.toLowerCase();
-        spots.forEach(spot=> {
-            if (spot.title.toLowerCase().includes(searchValue)||spot.tags.toLowerCase().includes(searchValue)||spot.description.toLowerCase().includes(searchValue)){
-                spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
-                    '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
-                    '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
-            }
-        });
-        map.removeLayer("spots");
-        map.removeSource("spots")
-        map.addSource("spots", {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": spotsGeoJson
-            }
-        })
-        map.addLayer({
-            'id': 'spots',
-            'type': 'symbol',
-            'source': 'spots',
-            'layout': {
-                'icon-image': 'custom-marker', // reference the image
-                'icon-size': 0.15,
-                'icon-allow-overlap': true
-            }
-        });
+}
+updateMap(spots);
+//Functions for updating map data with search value
+var searchBarHome = document.getElementById("searchBarHome");
+//This is for enter presses for incompatible browsers
+searchBarHome.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("searchButton").click();
     }
-    function resetMap(){
-        spotsGeoJson = [];
-        spots.forEach(spot=> {
+});
+//Will update every time a letter is typed
+//This will also reset the map if the X button is pressed on search bar
+$("#searchBarHome").on("input", updateMapWithSearchSpots);
+//Update map spots function
+function updateMapWithSearchSpots(){
+    spotsGeoJson = [];
+    var searchValue = searchBarHome.value.toLowerCase();
+    spots.forEach(spot=> {
+        if (spot.title.toLowerCase().includes(searchValue)||spot.tags.toLowerCase().includes(searchValue)||spot.description.toLowerCase().includes(searchValue)){
             spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
                 '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
                 '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
-        });
-        map.removeLayer("spots");
-        map.removeSource("spots")
-        map.addSource("spots", {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": spotsGeoJson
-            }
-        })
-        map.addLayer({
-            'id': 'spots',
-            'type': 'symbol',
-            'source': 'spots',
-            'layout': {
-                'icon-image': 'custom-marker', // reference the image
-                'icon-size': 0.15,
-                'icon-allow-overlap': true
-            }
-        });
-    }
-    map.on('load', function() {
-        map.loadImage(
-            '/img/blue-pin-icon.png',
-            (error, image) => {
-                if (error) throw error;
-                map.addImage('custom-marker', image);
-                map.addSource("spots", {
-                    "type": "geojson",
-                    "data": {
-                        "type": "FeatureCollection",
-                        "features": spotsGeoJson
-                    }
-                })
-                console.log(spotsGeoJson)
-                map.addLayer({
-                    'id': 'spots',
-                    'type': 'symbol',
-                    'source': 'spots',
-                    'layout': {
-                        'icon-image': 'custom-marker', // reference the image
-                        'icon-size': 0.15,
-                        'icon-allow-overlap': true
-                    }
-                })
-            });
+        }
     });
+    //Removes layer with current spots and replaces them with new spots
+    map.removeLayer("spots");
+    map.removeSource("spots")
+    map.addSource("spots", {
+        "type": "geojson",
+        "data": {
+            "type": "FeatureCollection",
+            "features": spotsGeoJson
+        }
+    })
+    map.addLayer({
+        'id': 'spots',
+        'type': 'symbol',
+        'source': 'spots',
+        'layout': {
+            'icon-image': 'custom-marker', // reference the image
+            'icon-size': 0.15,
+            'icon-allow-overlap': true
+        }
+    });
+}
+//Function for closing the right-side view and bringing back the welcome page
+function showWelcomePage(){
+    document.getElementById("welcome").style.display = "block";
+    document.getElementById("create-a-spot").style.display = "none";
+    document.getElementById("individual-spot").style.display = "none";
+}
+//    Changes mouse to pointer when hovering over a spot
 map.on('mouseenter', 'spots', function () {
     map.getCanvas().style.cursor = 'pointer';
 });
-
-// Change it back to a pointer when it leaves.
+//     Change it back when it leaves.
 map.on('mouseleave', 'spots', function () {
     map.getCanvas().style.cursor = '';
 });
+//When clicking a spot, it will change the right-side view to view all the details
 map.on('click', 'spots', (e) => {
-// Copy coordinates array.
+// Copy details of the spot that was clicked on
     const coordinates = e.features[0].geometry.coordinates.slice();
     const title = e.features[0].properties.title;
     const description = e.features[0].properties.description;
@@ -175,13 +136,14 @@ map.on('click', 'spots', (e) => {
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
+    //Show a popup
     new mapboxgl.Popup()
         .setLngLat(coordinates)
         .setHTML(`<h5>${title}</h5>`)
         .addTo(map);
     showIndividualSpotView(e);
 });
-
+//Shows individual spot view on spot marker click
 function showIndividualSpotView(e){
     document.getElementById("welcome").style.display = "none";
     document.getElementById("create-a-spot").style.display = "none";
@@ -198,6 +160,7 @@ function showIndividualSpotView(e){
         console.log("Cannot create spot_id if not logged in")
     }
 }
+//Gets spot events on spot marker click
 function getEventsFromSpotId(spot_id){
     var foundEvents = "";
     events.forEach(event=>{
@@ -212,103 +175,107 @@ function getEventsFromSpotId(spot_id){
     return foundEvents;
 }
 //When click on create a spot button, show the view for create a spot and disable other views
-    function showCreateASpotViewLoggedIn(){
-        document.getElementById("welcome").style.display = "none";
-        document.getElementById("create-a-spot").style.display = "block";
-        document.getElementById("individual-spot").style.display = "none";
-        const center = map.getCenter();
-        createASpotMarker.setLngLat([
-            center.lng,
-            center.lat
-        ]).addTo(map);
-        reverseGeocodeFromCreateASpotButton(center, MapboxAPIKey);
-    }
-    function reverseGeocodeFromCreateASpotButton(center, token) {
-        var baseUrl = 'https://api.mapbox.com';
-        var endPoint = '/geocoding/v5/mapbox.places/';
-        fetch(baseUrl + endPoint + center.lng + "," + center.lat + '.json' + "?" + 'access_token=' + token)
-            .then(res=>{res.json().then(res=>{
-                addressSearchBar.value = (res.features[0].place_name);
-                latitude.value = res.features[0].center[1];
-                longitude.value = res.features[0].center[0];
-            })
-            })
-    }
-    //Wont add the marker to the map if not logged in
-    function showCreateASpotViewNotLoggedIn(){
-        document.getElementById("welcome").style.display = "none";
-        document.getElementById("create-a-spot").style.display = "block";
-        document.getElementById("individual-spot").style.display = "none";
-    }
-    //Create invisible create a spot marker
-    var createASpotMarker = new mapboxgl.Marker({
-        color: "#000000",
-        draggable: true,
-    })
-    var addressSearchBar = document.getElementById("address");
-    var latitude = document.getElementById("latitude");
-    var longitude = document.getElementById("longitude");
-    //When typing into create a spot bar, will place a pin on the first location
-    addressSearchBar.addEventListener('keyup', getValueFromSearchBar);
-    function getValueFromSearchBar(){
-        geocode(addressSearchBar.value);
-    }
-    function geocode(search) {
-        var baseUrl = 'https://api.mapbox.com';
-        var endPoint = '/geocoding/v5/mapbox.places/';
-        fetch(baseUrl + endPoint + encodeURI(search) + '.json' + "?" + 'access_token=' + MapboxAPIKey).then(response=> { response.json()
-            .then(res => {
-                var searchLongitude = res.features[0].center[0];
-                var searchLatitude = res.features[0].center[1];
-                createASpotMarker.setLngLat([
-                    searchLongitude,
-                    searchLatitude
-                ]).addTo(map)
-                map.setCenter([
-                    searchLongitude,
-                    searchLatitude
-                ])
-                longitude.value = createASpotMarker.getLngLat().lng;
-                latitude.value = createASpotMarker.getLngLat().lat;
-            })
+function showCreateASpotViewLoggedIn(){
+    document.getElementById("welcome").style.display = "none";
+    document.getElementById("create-a-spot").style.display = "block";
+    document.getElementById("individual-spot").style.display = "none";
+    const center = map.getCenter();
+    createASpotMarker.setLngLat([
+        center.lng,
+        center.lat
+    ]).addTo(map);
+    reverseGeocodeFromCreateASpotButton(center, MapboxAPIKey);
+}
+function reverseGeocodeFromCreateASpotButton(center, token) {
+    var baseUrl = 'https://api.mapbox.com';
+    var endPoint = '/geocoding/v5/mapbox.places/';
+    fetch(baseUrl + endPoint + center.lng + "," + center.lat + '.json' + "?" + 'access_token=' + token)
+        .then(res=>{res.json().then(res=>{
+            addressSearchBar.value = (res.features[0].place_name);
+            latitude.value = res.features[0].center[1];
+            longitude.value = res.features[0].center[0];
         })
-    }
-    //You can drop the marker, and the address bar will change
-    createASpotMarker.on('dragend', function() {
-        const coord = {
-            lat: createASpotMarker.getLngLat().lat,
-            lng: createASpotMarker.getLngLat().lng
-        };
-        reverseGeocode(coord, MapboxAPIKey).then(function (data){
-            console.log(data)
-            addressSearchBar.value = (data.features[0].place_name);
-            latitude.value = createASpotMarker.getLngLat().lat;
+        })
+}
+//Wont add the marker to the map if not logged in
+function showCreateASpotViewNotLoggedIn(){
+    document.getElementById("welcome").style.display = "none";
+    document.getElementById("create-a-spot").style.display = "block";
+    document.getElementById("individual-spot").style.display = "none";
+}
+//Create invisible create a spot marker
+var createASpotMarker = new mapboxgl.Marker({
+    color: "#000000",
+    draggable: true,
+})
+var addressSearchBar = document.getElementById("address");
+var latitude = document.getElementById("latitude");
+var longitude = document.getElementById("longitude");
+//When typing into create a spot bar, will place a pin on the first location
+try {
+    addressSearchBar.addEventListener('keyup', getValueFromSearchBar);
+} catch (e){
+    console.log(e);
+}
+function getValueFromSearchBar(){
+    geocode(addressSearchBar.value);
+}
+function geocode(search) {
+    var baseUrl = 'https://api.mapbox.com';
+    var endPoint = '/geocoding/v5/mapbox.places/';
+    fetch(baseUrl + endPoint + encodeURI(search) + '.json' + "?" + 'access_token=' + MapboxAPIKey).then(response=> { response.json()
+        .then(res => {
+            var searchLongitude = res.features[0].center[0];
+            var searchLatitude = res.features[0].center[1];
+            createASpotMarker.setLngLat([
+                searchLongitude,
+                searchLatitude
+            ]).addTo(map)
+            map.setCenter([
+                searchLongitude,
+                searchLatitude
+            ])
             longitude.value = createASpotMarker.getLngLat().lng;
-        });
+            latitude.value = createASpotMarker.getLngLat().lat;
+        })
+    })
+}
+//You can drop the marker, and the address bar will change
+createASpotMarker.on('dragend', function() {
+    const coord = {
+        lat: createASpotMarker.getLngLat().lat,
+        lng: createASpotMarker.getLngLat().lng
+    };
+    reverseGeocode(coord, MapboxAPIKey).then(function (data){
+        console.log(data)
+        addressSearchBar.value = (data.features[0].place_name);
+        latitude.value = createASpotMarker.getLngLat().lat;
+        longitude.value = createASpotMarker.getLngLat().lng;
     });
-    function reverseGeocode(coordinates, token) {
-        var baseUrl = 'https://api.mapbox.com';
-        var endPoint = '/geocoding/v5/mapbox.places/';
-        return fetch(baseUrl + endPoint + coordinates.lng + "," + coordinates.lat + '.json' + "?" + 'access_token=' + token)
-            .then(function(res) {
-                return res.json();
-            })
-    }
-    function getCurrentLocation(){
-        navigator.geolocation.getCurrentPosition((position) => {
-            var coord = {lat: position.coords.latitude, lng: position.coords.longitude};
-            console.log(coord)
-            reverseGeocode(coord, MapboxAPIKey).then(function (data){
-                addressSearchBar.value = (data.features[0].place_name);
-            });
-            createASpotMarker.setLngLat(coord).addTo(map)
-            map.setCenter(coord)
-            map.setZoom(17);
-            latitude.value = createASpotMarker.getLngLat().lat;
-            longitude.value = createASpotMarker.getLngLat().lng;
+});
+function reverseGeocode(coordinates, token) {
+    var baseUrl = 'https://api.mapbox.com';
+    var endPoint = '/geocoding/v5/mapbox.places/';
+    return fetch(baseUrl + endPoint + coordinates.lng + "," + coordinates.lat + '.json' + "?" + 'access_token=' + token)
+        .then(function(res) {
+            return res.json();
+        })
+}
+function getCurrentLocation(){
+    navigator.geolocation.getCurrentPosition((position) => {
+        var coord = {lat: position.coords.latitude, lng: position.coords.longitude};
+        console.log(coord)
+        reverseGeocode(coord, MapboxAPIKey).then(function (data){
+            addressSearchBar.value = (data.features[0].place_name);
         });
+        createASpotMarker.setLngLat(coord).addTo(map)
+        map.setCenter(coord)
+        map.setZoom(17);
+        latitude.value = createASpotMarker.getLngLat().lat;
+        longitude.value = createASpotMarker.getLngLat().lng;
+    });
 
-    }
+}
 
 </script>
 <script src="/js/image-upload.js"></script>
