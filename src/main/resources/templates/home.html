@@ -116,6 +116,32 @@ function showWelcomePage(){
     document.getElementById("create-a-spot").style.display = "none";
     document.getElementById("individual-spot").style.display = "none";
 }
+map.on('load', function() {
+    map.loadImage(
+        '/images/blue-pin-icon.png',
+        (error, image) => {
+            if (error) throw error;
+            map.addImage('custom-marker', image);
+            map.addSource("spots", {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": spotsGeoJson
+                }
+            })
+            console.log(spotsGeoJson)
+            map.addLayer({
+                'id': 'spots',
+                'type': 'symbol',
+                'source': 'spots',
+                'layout': {
+                    'icon-image': 'custom-marker', // reference the image
+                    'icon-size': 0.15,
+                    'icon-allow-overlap': true
+                }
+            })
+        });
+});
 //    Changes mouse to pointer when hovering over a spot
 map.on('mouseenter', 'spots', function () {
     map.getCanvas().style.cursor = 'pointer';
