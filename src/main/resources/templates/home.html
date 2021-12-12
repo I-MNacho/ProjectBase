@@ -50,18 +50,22 @@
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
 <script src="/keys.js"></script>
 <script src="/js/weather_map.js"></script>
+<script src="/js/image-upload.js"></script>
+<script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
 <script th:inline="javascript">
 <!--    Create spots object from thymeleaf spot model-->
 const spots = [[${spots}]];
 const events = [[${events}]];
+const userId = [[${userId}]]
 console.log(spots);
+console.log("User Id is: " + userId)
 
 var spotsGeoJson = [];
 //Function for creating map data with the Thymeleaf spot model
 function updateMap(spots) {
     spots.forEach(spot=> {
         spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
-            '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
+            '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'", "photoUrl" : "'+spot.spotPhotoURL+'"},' +
             '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
     });
 }
@@ -85,7 +89,7 @@ function updateMapWithSearchSpots(){
     spots.forEach(spot=> {
         if (spot.title.toLowerCase().includes(searchValue)||spot.tags.toLowerCase().includes(searchValue)||spot.description.toLowerCase().includes(searchValue)){
             spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
-                '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
+                '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'", "photoUrl" : "'+spot.spotPhotoURL+'"},' +
                 '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
         }
     });
@@ -165,7 +169,7 @@ map.on('click', 'spots', (e) => {
     //Show a popup
     new mapboxgl.Popup()
         .setLngLat(coordinates)
-        .setHTML(`<h5>${title}</h5>`)
+        .setHTML(`<h5 class="m-2">${title}</h5>`)
         .addTo(map);
     showIndividualSpotView(e);
 });
@@ -175,10 +179,20 @@ function showIndividualSpotView(e){
     document.getElementById("create-a-spot").style.display = "none";
     document.getElementById("individual-spot").style.display = "block";
     // Set data in spot view for spot
-    const {spot_id, title, description, tags} = e.features[0].properties;
+    const {spot_id, title, description, tags, photoUrl} = e.features[0].properties;
+    try{
+        if (userId.toString() === spot_id){
+            document.getElementById("youCreatedThisSpot").style.display = "block";
+        }
+    } catch (e){
+
+    }
+
+    console.log(e.features[0].properties)
     document.getElementById("spot-title").innerText = title;
     document.getElementById("spot-description").innerText = description;
     document.getElementById("spot-tags").innerText = "Tags: " + tags;
+    document.getElementById("individual-spot-photo").innerHTML = `<img width="50%" src="${photoUrl}">`;
     document.getElementById("spot-events").innerHTML = getEventsFromSpotId(spot_id);
     try{
         document.getElementById("spot-schedule-event-button").href = `events/create/${spot_id}`;
@@ -197,7 +211,6 @@ function getEventsFromSpotId(spot_id){
     if (foundEvents === ""){
         return "No events found<br><hr>"
     }
-    console.log(foundEvents)
     return foundEvents;
 }
 //When click on create a spot button, show the view for create a spot and disable other views
@@ -305,7 +318,5 @@ function getCurrentLocation(){
 }
 
 </script>
-<script src="/js/image-upload.js"></script>
-<script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
 </body>
 </html>
