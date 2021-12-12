@@ -1,5 +1,5 @@
 <div th:fragment="welcome-to-iknowaspot">
-    <h2>Welcome to</h2>
+    <h1>Welcome to</h1>
     <img th:src="@{images/iknowaspotlogo.png}" alt="I Know A Spot Logo">
     <h2>
         Click on a map marker to view the details.
@@ -9,6 +9,6 @@
         <button class="btn btn-primary" onclick="showCreateASpotViewLoggedIn()">Create A Spot</button>
     </div>
     <div sec:authorize="isAnonymous()">
-        <button class="btn-lg btn-primary" onclick="showCreateASpotViewNotLoggedIn()">Create A Spot</button>
+        <button style="width: 50%" class="btn-lg btn-primary" onclick="showCreateASpotViewNotLoggedIn()">Create A Spot</button>
     </div>
 </div>

@@ -20,10 +20,6 @@
     height: 100%;
     overflow-y: auto;
 }
-h1{
-    font-size: 4vw;
-    text-shadow: 2px 2px 5px #000000;
-}
 .centered {
     display: flex;
     justify-content: center;

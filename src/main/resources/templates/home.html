@@ -288,9 +288,10 @@ function reverseGeocode(coordinates, token) {
         })
 }
 function getCurrentLocation(){
+    document.getElementById("geolocationLoading").style.display = "inline-block";
     navigator.geolocation.getCurrentPosition((position) => {
         var coord = {lat: position.coords.latitude, lng: position.coords.longitude};
-        console.log(coord)
+        document.getElementById("geolocationLoading").style.display = "none";
         reverseGeocode(coord, MapboxAPIKey).then(function (data){
             addressSearchBar.value = (data.features[0].place_name);
         });
