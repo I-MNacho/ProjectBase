@@ -1,26 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-
 <head lang="en">
     <title>Your profile</title>
+    <div th:replace="partials/bootstrap-header.html"></div>
 </head>
-<div th:replace="partials/bootstrap-header.html"></div>
-
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
 <body>
+<style>
+    .page-container {
+        display: grid;
+        /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
+        grid-template-rows: min-content 1fr;
+        /*Body takes up full height of viewport*/
+        height: 100vh;
+    }
+    .profile-page {
+        padding: 16px;
+        overflow: auto;
+    }
+    .profile-details {
+        display: flex;
+        gap: 8px;
+    }
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+</style>
+<div class="page-container">
 <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
-
-<a href="/profile/edit">Edit Profile</a>
-
-    <h2 class="indigo-text center">Personal info</h2>
 <!--add more user text-->
-    <img id="profile-photo" th:src="${user.profilePhotoURL}" th:if="${user.profilePhotoURL != null}" width="100px" height="100px">
+<div class="profile-page">
+<div class="profile-details">
+    <img id="profile-photo" th:src="${user.profilePhotoURL}" th:if="${user.profilePhotoURL != null}" width="200px" height="200px">
+    <div class="profile-info">
+        <div>
+            <strong>Username</strong>
+            <div sec:authentication="name"></div>
+        </div>
+        <div>
+            <strong>Email</strong>
+            <div th:text="${user.email}"></div>
+        </div>
+        <a href="/profile/edit">Edit Profile</a>
+    </div>
+</div>
+<strong>Bio</strong>
+<div th:text="${user.bio}"></div>
 
-    <div sec:authentication="name"></div>
-    <div th:text="${user.email}"></div>
-    <h2 class="indigo-text center">My Events</h2>
-
+    <div class="tab-bar">
+        <a href="/profile/events">My Events</a>
+        <a href="/profile/events">My Events</a>
+        <a href="/profile/events">My Events</a>
+        <a href="/profile/events">My Events</a>
+    </div>
+<h2 class="indigo-text center">My Events</h2>
 
 <div th:replace="partials/view-events.html"></div>
 
@@ -34,9 +68,7 @@
     <td><span th:text="${spot.tags}"> Tags </span></td>
     <td><a th:href="@{|spots/unsave/${spot.id}|}"> Unsave </a></td>
 </tr>
-
-<div th:replace="partials/bootstrap-footer.html"></div>
-
-
+</div>
+</div>
 </body>
 </html>

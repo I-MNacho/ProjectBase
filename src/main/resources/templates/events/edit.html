@@ -196,11 +196,11 @@
       })
 
       map.on('load', () => {
-         map.loadImage('/img/gray-pin-icon.png', (error, image) => {
+         map.loadImage('/images/gray-pin-icon.png', (error, image) => {
             if (error) throw error;
             map.addImage('unselected-icon', image);
             addSpotMarkers(spots.map(createMapMarkers));
-            map.loadImage('/img/blue-pin-icon.png', (error, image) => {
+            map.loadImage('/images/blue-pin-icon.png', (error, image) => {
                if (error) throw error;
                map.addImage('selected-icon', image);
                selectSpot({ features: [createMapMarkers(event.spot)] })

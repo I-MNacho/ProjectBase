@@ -34,6 +34,7 @@
     box-sizing: border-box;
     max-width: calc(100vw - 32px);
     border: 1px solid lightgrey;
+    overflow: auto;
 }
 .map {
     height: 250px;
@@ -88,7 +89,7 @@ label {
 }
 .form-field input, .form-field textarea {
     border: none;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #a9a9a9;
     transition: transform 300ms;
 }
 .form-field textarea {
