@@ -1,28 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Spots</title>
-    <div th:replace="partials/bootstrap-header.html"></div>
-
-</head>
-
-<body>
-
-<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
-
-<fancy header><h2>Local Spots</h2></fancy>
-<div th:replace="partials/search-bar.html"></div>
-
-
-<div th:replace="partials/search-results.html"></div>
-
-
-
-
-
-<div th:replace="partials/bootstrap-footer.html"></div>
-
-</body>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="partials/events/headers.html"></head>
+    <div th:replace="partials/spots/list.html"></div>
 </html>

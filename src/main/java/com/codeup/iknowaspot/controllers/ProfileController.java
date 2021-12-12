@@ -37,7 +37,7 @@ public class ProfileController {
         List<Event> usersEvents = eventRepository.findAllByUser(userInDb);
         model.addAttribute("events", usersEvents);
         model.addAttribute("spots", userInDb.getSpots());
-        model.addAttribute("savedSpots", userInDb.getSavedSpots());
+//        model.addAttribute("savedSpots", spotRepository.findAllBySaved(user));
         model.addAttribute("user", userInDb);
         return "/profile";
     }

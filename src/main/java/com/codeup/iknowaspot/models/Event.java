@@ -3,6 +3,7 @@ package com.codeup.iknowaspot.models;
 import com.mysql.cj.protocol.ColumnDefinition;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -34,11 +35,17 @@ public class Event {
     @Column
     private long endTime;
 
+    @ManyToMany
+    private Set<User> attending = new HashSet<User>();
+
+    @ManyToMany
+    private Set<User> saved = new HashSet<User>();
+
     //constructors
     public Event() {
     }
 
-    public Event(long id, String title, String description, User user, Spot spot, long startTime, long endTime) {
+    public Event(long id, String title, String description, User user, Spot spot, long startTime, long endTime, Set<User> attending, Set<User> saved) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -46,9 +53,9 @@ public class Event {
         this.spot = spot;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.attending = attending;
+        this.saved = saved;
     }
-
-
     //getters and setters
     public long getId() {
         return id;
@@ -104,6 +111,42 @@ public class Event {
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
+    }
+
+    public Set<User> getSaved() {
+        return saved;
+    }
+
+    public void setSaved(Set<User> saved) {
+        this.saved = saved;
+    }
+
+    public Set<User> favorite(User user) {
+        saved.add(user);
+        return saved;
+    }
+
+    public Set<User> unfavorite(User user) {
+        saved.remove(user);
+        return saved;
+    }
+
+    public Set<User> getAttending() {
+        return attending;
+    }
+
+    public Set<User> attend(User user) {
+        attending.add(user);
+        return attending;
+    }
+
+    public Set<User> unattend(User user) {
+        attending.remove(user);
+        return attending;
+    }
+
+    public void setAttending(Set<User> attending) {
+        this.attending = attending;
     }
 
 }

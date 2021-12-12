@@ -58,6 +58,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/events/delete/{id}",
                         "/events/save/{id}",
                         "/events/rsvp/{id}",
+                        "/events/unsave/{id}",
+                        "/events/unrsvp/{id}",
                         "/spots/save/{id}",
                         "/spots/{id}/edit", // only authenticated users can edit ads
                         "/profile", //only authenticated users can view profile
