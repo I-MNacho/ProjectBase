@@ -1,27 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-
 <head lang="en">
     <title>Edit your profile</title>
     <script src="/keys.js"></script>
     <script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <script src="/js/image-upload.js"></script>
+    <div th:replace="partials/bootstrap-header.html"></div>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
 </head>
-<div th:replace="partials/bootstrap-header.html"></div>
-
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
 <body>
+<style>
+    .upload-button {
+        width: 200px;
+        height: 200px;
+        background: lightgrey;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        justify-items: center;
+        text-align: center;
+        cursor: pointer;
+    }
+    form {
+        padding: 16px;
+    }
+    .hidden {
+        display: none;
+    }
+</style>
 <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
-
-
-<button onclick="openFilePicker()">Upload Profile Picture</button>
 <form th:action="@{/profile/edit}" method="post" th:object="${user}" >
     <input type="hidden" name="id" th:field="${user.id}">
     <input type="hidden" name="password" th:field="${user.password}">
     <input id="profile-photo-input" type="hidden" name="profilePhotoURL" th:field="${user.profilePhotoURL}">
-    <img id="profile-photo" th:src="${user.profilePhotoURL}" alt="No Profile Photo" width="50px" height="50px">
+    <img id="profile-photo" th:src="${user.profilePhotoURL}" alt="No Profile Photo" width="200px" height="200px">
+    <div onclick="openFilePicker()" class="upload-button">
+        Upload Photo
+    </div>
     <div class="contact-grids1 w3agile-6">
         <div class="row">
             <div class="col-md-6 col-sm-6 contact-form1 form-group">
@@ -59,16 +76,8 @@
                 <p id="error_description"></p>
             </div>
         </div>
-
-        <button type="submit" class="btn bg-primary text-white" >
-            Submit
-        </button>
-
+        <button type="submit" class="btn bg-primary text-white" >Save</button>
     </div>
-    <br>
 </form>
-
-<script src="/js/image-upload.js"></script>
-
 </body>
 </html>

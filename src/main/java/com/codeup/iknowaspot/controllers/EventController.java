@@ -1,6 +1,7 @@
 package com.codeup.iknowaspot.controllers;
 
 import com.codeup.iknowaspot.models.Event;
+import com.codeup.iknowaspot.models.Spot;
 import com.codeup.iknowaspot.models.User;
 import com.codeup.iknowaspot.repositories.EventRepository;
 import com.codeup.iknowaspot.repositories.SpotRepository;
@@ -60,7 +61,9 @@ public class EventController {
     @GetMapping("/events")
     public String listEvent(Model model) {
         //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
-        List<Event> events = eventsDao.findEventByEndTimeAfter(System.currentTimeMillis());
+        List<Event> events = eventsDao.findEventByEndTimeAfterOrderByStartTime(System.currentTimeMillis());
+        List<Spot> spots = spotsDao.findAll();
+        model.addAttribute("spots", spots);
         model.addAttribute("events", events);
 
 
@@ -72,7 +75,9 @@ public class EventController {
     @GetMapping("/events/view/{id}")
     public String editEvent(@PathVariable long id, Model model){
         //creating the event & setting the id & setting atrb
-        List<Event> events = eventsDao.findEventByEndTimeAfter(System.currentTimeMillis());
+        List<Event> events = eventsDao.findEventByEndTimeAfterOrderByStartTime(System.currentTimeMillis());
+        List<Spot> spots = spotsDao.findAll();
+        model.addAttribute("spots", spots);
         model.addAttribute("events", events);
         model.addAttribute("event", eventsDao.getById(id));
 //      just updating i.e ^^^^^
@@ -84,12 +89,24 @@ public class EventController {
     public String createEvent(Model model, @PathVariable Long spot_id) {
         //creating a new event obj and assg atrb = assn obj atb
         Event event = new Event();
+        List<Spot> spots = spotsDao.findAll();
+        model.addAttribute("spots", spots);
+        List<Event> events = eventsDao.findEventByEndTimeAfterOrderByStartTime(System.currentTimeMillis());
+        model.addAttribute("events", events);
         event.setSpot(spotsDao.getById(spot_id));
         model.addAttribute("event", event);
-        model.addAttribute("latitude", event.getSpot().getLatitude());
-        model.addAttribute("longitude", event.getSpot().getLongitude());
+        return "events/create";
+    }
 
-        //page shows to this bc its mapped here:  //
+    @GetMapping("/events/create")
+    public String createEvent(Model model) {
+        //creating a new event obj and assg atrb = assn obj atb
+        Event event = new Event();
+        List<Spot> spots = spotsDao.findAll();
+        model.addAttribute("spots", spots);
+        List<Event> events = eventsDao.findEventByEndTimeAfterOrderByStartTime(System.currentTimeMillis());
+        model.addAttribute("events", events);
+        model.addAttribute("event", event);
         return "events/create";
     }
 
@@ -116,12 +133,30 @@ public class EventController {
 
 
     //delete event
-
     @GetMapping("/events/delete/{id}")
     public String deleteEvent(@PathVariable long id) {
         eventsDao.deleteById(id);
         return "redirect:/events";
     }
 
+    //save event
+    @GetMapping("/events/save/{id}")
+    public String saveEvent(@PathVariable long id) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        author.saveEvent(eventsDao.getById(id));
+        usersDao.save(author);
+        return "redirect:/events";
+    }
+
+    //save event
+    @GetMapping("/events/rsvp/{id}")
+    public String attendEvent(@PathVariable long id) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        author.attendEvent(eventsDao.getById(id));
+        usersDao.save(author);
+        return "redirect:/events";
+    }
 
 }

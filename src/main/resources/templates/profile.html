@@ -15,7 +15,7 @@
 
     <h2 class="indigo-text center">Personal info</h2>
 <!--add more user text-->
-<img id="profile-photo" th:src="${user.profilePhotoURL}" alt="No Profile Photo" width="100px" height="100px">
+    <img id="profile-photo" th:src="${user.profilePhotoURL}" th:if="${user.profilePhotoURL != null}" width="100px" height="100px">
 
     <div sec:authentication="name"></div>
     <div th:text="${user.email}"></div>

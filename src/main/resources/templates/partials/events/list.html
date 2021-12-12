@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <style>
     .events-list-container {
         /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
         display: grid;
         /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
-        grid-template-rows: min-content min-content 1fr;
+        grid-template-rows: min-content 1fr;
         /*Body takes up full height of viewport*/
         height: 100vh;
     }
@@ -20,16 +20,19 @@
         /*Rows only fill as much space as they need*/
         grid-template-rows: min-content;
         align-items: flex-start;
+        overflow: auto;
     }
     .card {
         display: grid;
         /*Has two columns: 1 is 250px and the other takes up the remaining space*/
         grid-template-columns: 250px 1fr;
     }
-    .card .footer {
+    .card .footer-actions {
         display: flex;
         /*Footer items are at the right side*/
         justify-content: flex-end;
+        align-items: center;
+        align-content: center;
         gap: 8px;
     }
     .card .map {
@@ -58,7 +61,7 @@
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background: #8989c5;
+        background: #007BFF;
         border-radius: 50%;
         padding: 12px;
         display: flex;
@@ -69,10 +72,15 @@
         color: white;
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     }
+    .header-details {
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: space-between;
+    }
 </style>
 <div class="events-list-container">
-<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
-<fancy header><h2>Local Events</h2></fancy>
+<nav th:replace="partials/navbar.html :: navbar"></nav>
 <div class="grid">
     <div th:if="${events.empty}">
         <p colspan="2"> No Events Available </p>
@@ -80,53 +88,57 @@
     <div th:id="${event.id}" th:each="event : ${events}" class="card">
         <div class="map"></div>
         <div class="body">
-            <h3 class="title" th:text="${event.title}"></h3>
+            <div class="header-details">
+                <h3 class="title" th:text="${event.title}"></h3>
+                <a th:href="@{|/events/save/${event.id}|}" uk-icon="heart"></a>
+            </div>
             <p th:text="${event.description}"></p>
             <h6>Starts</h6>
             <span class="start"></span>
             <h6>Ends</h6>
             <span class="end"></span>
-            <div class="footer" th:if="${#authentication.name == event.user.username}">
-            <!--        @, $ = redirecting so youre injecting a rout into var youre putting the actual event id into -->
-                <a uk-icon="pencil" th:href="@{|/events/view/${event.id}|}"></a>
-                <!--        lining up the html to -->
-                <a uk-icon="trash" th:href="@{|/events/delete/${event.id}|}"></a>
+            <div class="footer-actions">
+                <a th:href="@{|/events/rsvp/${event.id}|}" class="btn btn-primary">Attend</a>
+<!--                <a th:if="${event.currentUserIsAttending == false}" th:href="@{|/events/rsvp/${event.id}|}" class="btn btn-secondary">Un-attend</a>-->
+                <a uk-icon="pencil" th:href="@{|/events/view/${event.id}|}" th:if="${#authentication.name == event.user.username}"></a>
+                <a uk-icon="trash" th:href="@{|/events/delete/${event.id}|}" th:if="${#authentication.name == event.user.username}"></a>
             </div>
         </div>
     </div>
 </div>
 <div class="action-button">
-    <a uk-icon="plus" href="@{|/events/create|}"></a>
+    <a uk-icon="icon: plus; ratio: 1.5" th:href="@{|/events/create|}"></a>
 </div>
 <script th:inline="javascript">
-
     <!--    Create spots object from thymeleaf spot model-->
-    const events = [[${events}]];
-    //For each event, add a map with a marker at the location of the event
-    events.forEach((event)=> {
-        // Hardcoded to san antonio
-        const {longitude, latitude, title, description} = event.spot
-        const center = [longitude, latitude];
-        // Get card with event id and find the div with the class "map" inside that card
-        const eventElement = document.getElementById(event.id)
-        const container = eventElement.querySelector(".map");
-        const popup = {
-            title,
-            description
+    $(document).ready(() => {
+        const events = [[${events}]];
+        //For each event, add a map with a marker at the location of the event
+        events.forEach((event)=> {
+            // Hardcoded to san antonio
+            const {longitude, latitude, title, description} = event.spot
+            const center = [longitude, latitude];
+            // Get card with event id and find the div with the class "map" inside that card
+            const eventElement = document.getElementById(event.id)
+            const container = eventElement.querySelector(".map");
+            const popup = {
+                title,
+                description
+            }
+            addMapWithLocation({container, center, popup})
+            eventElement.querySelector(".start").innerHTML = convertToLocalTime(event.startTime);
+            eventElement.querySelector(".end").innerHTML =  convertToLocalTime(event.endTime);
+        });
+        function convertToLocalTime(time) {
+            const timeFormat = {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            }
+            const date = new Date(time);
+            return date.toLocaleDateString() + " " + date.toLocaleTimeString([], timeFormat);
         }
-        addMapWithLocation({container, center, popup})
-        eventElement.querySelector(".start").innerHTML = convertToLocalTime(event.startTime);
-        eventElement.querySelector(".end").innerHTML =  convertToLocalTime(event.endTime);
-    });
-    function convertToLocalTime(time) {
-        const timeFormat = {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true
-        }
-        const date = new Date(time);
-        return date.toLocaleDateString() + " " + date.toLocaleTimeString([], timeFormat);
-    }
+    })
 </script>
 </div>
 </html>

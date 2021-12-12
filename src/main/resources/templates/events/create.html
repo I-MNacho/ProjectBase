@@ -2,7 +2,7 @@
 <head th:replace="partials/events/headers.html"></head>
 <style>
     .form-modal {
-        position: absolute;
+        position: fixed;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -11,6 +11,11 @@
         align-items: center;
         width: 100vw;
         height: 100vh;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        box-sizing: border-box;
         z-index: 1000;
     }
     #edit-event-form {
@@ -18,31 +23,303 @@
         border-radius: 8px;
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 12px;
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
         padding: 16px;
+        box-sizing: border-box;
+        max-width: calc(100vw - 32px);
+        border: 1px solid lightgrey;
+    }
+    .map {
+        height: 250px;
+        width: 500px;
+        max-width: calc(100vw - 64px);
+        border-radius: 4px;
+    }
+    h3 {
+        margin: 0;
+        font-family: sans-serif;
+        font-weight: bold;
+    }
+    .form-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-content: center;
+    }
+    label {
+        margin: 0;
+        font-weight: bold;
+    }
+    .search {
+        display: flex;
+        align-content: center;
+        align-items: center;
+        border-bottom: 1px solid gray;
+        gap: 6px;
+        transition: transform 300ms;
+    }
+    .search:focus-within,
+    .form-field input:focus,
+    .form-field textarea:focus {
+        border-bottom: 2px solid #007BFF;
+        transform: scale(1.015);
+        padding: 0 4px;
+    }
+    .form-field {
+        display: flex;
+        gap: 1px;
+        flex-direction: column;
+        width: 100%;
+    }
+    .search input {
+        border: none;
+        flex: 1 0 auto;
+    }
+    .search input:focus-visible,
+    .form-field input:focus-visible,
+    .form-field textarea:focus-visible {
+        outline: none;
+    }
+    .form-field input, .form-field textarea {
+        border: none;
+        border-bottom: 1px solid gray;
+        transition: transform 300ms;
+    }
+    .form-field textarea {
+        height: 85px;
+        resize: none;
+    }
+    .invalid,
+    .form-field input:invalid,
+    .form-field textarea:invalid {
+        border-bottom: 2px solid #ff2a2a;
     }
 </style>
-
-<script>
-    function close() {
-        $(".form-modal").animate({ opacity: 0 }, 500, () => {
-            $(".form-modal").css({display: 'none'})
-        });
-    }
-    function prevent(e) {
-        e.stopPropagation();
-    }
+<!--${event} = event atr from controller -->
+<div class="form-modal">
+    <form id="edit-event-form" action="#" th:action="@{/events/create}" th:object="${event}" method="POST">
+        <div class="form-header" tabindex="1">
+            <h3 >Schedule an Event</h3>
+            <a id="close-icon" uk-icon="close"></a>
+        </div>
+        <div class="errors"></div>
+        <input id="startTime" type="hidden" th:field="${event.startTime}" required/>
+        <input id="endTime" type="hidden" th:field="${event.endTime}" required/>
+        <input id="spot" type="hidden" th:field="${event.spot}" required/>
+        <label>Pick a spot for your event</label>
+        <div class="search">
+            <a uk-icon="search"></a>
+            <input id="spot-search" type="text" placeholder="Search by title, description, tags"/>
+        </div>
+        <div class="map"></div>
+        <div class="form-field">
+            <label for="title">Event Title</label>
+            <input id="title" name="title" type="text" th:field="${event.title}"  maxlength="200" required/>
+        </div>
+        <div class="form-field">
+            <label for="description">Describe your event</label>
+            <textarea id="description" name="description" th:field="${event.description}" maxlength="500" required></textarea>
+        </div>
+        <div id="start-end-time" class="form-field">
+            <label>When does your event start and end?</label>
+            <input id="start-end-time-input" type="date" data-is-range="true"/>
+        </div>
+        <button id="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+<div th:replace="partials/events/list.html"></div>
+<script th:inline="javascript">
     $(document).ready(() => {
+        const spots = [[${spots}]];
+        const event = [[${event}]];
+
+        const eventElement = document.getElementById("edit-event-form")
+        const container = eventElement.querySelector(".map");
+        const map = addMap({container})
+
+        $("#edit-event-form").submit(function(){
+            if($("#startTime").val() === "0" || $("#endTime").val() === "0") {
+                $("#start-end-time").addClass("invalid")
+                return false;
+            }
+            if(!$("#description")) {
+                document.getElementById("description").setCustomValidity("Please enter a description")
+                return false;
+            }
+            if(!$("#title")) {
+                document.getElementById("title").setCustomValidity("Please enter a title")
+                return false;
+            }
+            if(!$("#spot").val()) {
+                $(".search").addClass("invalid")
+                $("#spot-search").val("")
+                $("#spot-search").attr({
+                    placeholder: "Please select a spot by clicking a pin on the map"
+                })
+                $("#spot-search").focus()
+                return false;
+            }
+            return true;
+        })
+
+        function close() {
+            $(".form-modal").animate({ opacity: 0 }, 500, () => {
+                $(".form-modal").css({display: 'none'})
+            });
+        }
+        function prevent(e) {
+            e.stopPropagation();
+        }
+
+        function createMapMarkers({id, title, description, tags, longitude, latitude}) {
+            return {
+                id,
+                type: "Feature",
+                properties: {
+                    title,
+                    description,
+                    tags
+                },
+                geometry: {
+                    type: "Point",
+                    coordinates: [longitude, latitude]
+                }
+            }
+        }
+
+        function selectSpot(e) {
+            const {
+                id,
+                geometry: { coordinates }
+            } = e.features[0];
+            // Set form value for spot and remove invalid attributes
+            $("#spot").val(id);
+            $("#spot-search").attr({ placeholder: "Search by title, description, tags"})
+            $(".search").removeClass("invalid")
+            // Center this spot
+            map.flyTo({ center: coordinates });
+            // Change image to blue to show that this spot is selected
+            map.setLayoutProperty('spots', 'icon-image',
+                [
+                    'match',
+                    ['id'],
+                    id, 'selected-icon', 'unselected-icon'
+                ]
+            )
+            try {
+                map.removeLayer("circle");
+                map.removeSource("circle");
+            } catch(e) {}
+            map.addSource("circle", {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [e.features[0]]
+                }
+            })
+            map.addLayer({
+                id: 'circle',
+                type: 'circle',
+                source: 'circle',
+                paint: {
+                    'circle-radius': 50,
+                    'circle-color': '#007BFF',
+                    'circle-stroke-color': '#007BFF',
+                    'circle-stroke-width': 2,
+                    'circle-opacity': 0.085
+                }
+            });
+        }
+
+        function addSpotMarkers(spotMarkers) {
+            map.addSource("spots", {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": spotMarkers
+                }
+            })
+            map.addLayer({
+                'id': 'spots',
+                'type': 'symbol',
+                'source': 'spots',
+                'layout': {
+                    'text-field': ['get', 'title'],
+                    'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+                    'text-radial-offset': 1,
+                    'text-justify': 'auto',
+                    'icon-image': 'unselected-icon', // reference the image
+                    'icon-size': 0.15,
+                    'icon-allow-overlap': true
+                }
+            });
+            map.on('click', 'spots', selectSpot)
+        }
+
+        function updateMap(spotMarkers) {
+            map.removeLayer("spots");
+            map.removeSource("spots");
+            addSpotMarkers(spotMarkers);
+        }
+
+        function flyTo(spot) {
+            if(!spot) return;
+            const {longitude, latitude} = spot;
+            map.flyTo({
+                center: [longitude, latitude],
+                essential: true // this animation is considered essential with respect to prefers-reduced-motion
+            });
+        }
+
+        function searchSpots(e) {
+            const searchValue = e.target.value?.toLowerCase() ?? "";
+            const searchedSpots = spots.filter(spot =>
+                spot.title.toLowerCase().includes(searchValue)
+                || spot.tags.toLowerCase().includes(searchValue)
+                || spot.description.toLowerCase().includes(searchValue)
+            )
+            updateMap(searchedSpots.map(createMapMarkers));
+            flyTo(searchedSpots[0]);
+        }
+
+        document.getElementById("spot-search").addEventListener("keyup", searchSpots)
+        $("#spot-search").click(function() {
+            $(this).select()
+        })
+
+        map.on('load', () => {
+            map.loadImage('/img/gray-pin-icon.png', (error, image) => {
+                if (error) throw error;
+                map.addImage('unselected-icon', image);
+                addSpotMarkers(spots.map(createMapMarkers));
+                map.loadImage('/img/blue-pin-icon.png', (error, image) => {
+                    if (error) throw error;
+                    map.addImage('selected-icon', image);
+                    if(event.spot) {
+                        selectSpot({features: [createMapMarkers(event.spot)]})
+                    }
+                })
+            })
+        })
+
         $(".form-modal").click(close)
+        $("#close-icon").click(close)
         $("#edit-event-form").click(prevent)
+
+        const minDate = new Date();
+        minDate.setDate(minDate.getDate() - 1);
         const options = {
             type: "datetime",
-            dateFormat: "yyyy-mm-dd",
-            timeFormat: "HH:mm",
-            color: 'primary'
+            dateFormat: "MM/dd/yyyy",
+            timeFormat: "H:mm",
+            displayMode: 'dialog',
+            color: 'primary',
+            validateLabel: 'OK',
+            minDate,
+            showTodayButton: false
         }
-        const calendars = bulmaCalendar.attach('[type="date"]', options);
+        const calendars = bulmaCalendar.attach('#start-end-time-input', options);
         // Loop on each calendar initialized
         calendars.forEach(calendar => {
             // Add listener to event for date is selected in picker
@@ -50,29 +327,11 @@
             calendar.on('select', date => {
                 // Set form values for start and end time based on whatever is selected from the datetime picker
                 // Use the javascript date object to covert times to Universal Standard Time (UST) in milliseconds
-                $("#startTime").val(new Date(calendar.startDate).getTime());
-                $("#endTime").val(new Date(calendar.endDate).getTime());
+                $("#startTime").val(new Date(calendar.startTime).getTime());
+                $("#endTime").val(new Date(calendar.endTime).getTime());
+                $("#start-end-time").removeClass("invalid");
             });
         });
     })
 </script>
-<!--${event} = event atr from controller -->
-<div class="form-modal">
-    <form id="edit-event-form" action="#" th:action="@{/events/create}" th:object="${event}" method="POST">
-        <input id="id" name="id" type="hidden" th:field="${event.id}"/>
-        <input id="startTime" type="hidden" th:field="${event.startTime}"/>
-        <input id="endTime" type="hidden" th:field="${event.endTime}"/>
-        <input id="spot" type="hidden" th:field="${event.spot}"/>
-
-        <label for="title">I Have An Event..</label>
-        <input id="title" name="title" type="text" th:field="${event.title}"/>
-
-        <label for="description">What is your event?</label>
-        <textarea id="description" name="description" th:field="${event.description}"></textarea>
-        <label>When does your event start and end?</label>
-        <input type="date" data-is-range="true"/>
-        <button type="submit">Submit</button>
-    </form>
-</div>
-<div th:replace="partials/events/list.html"></div>
 </html>

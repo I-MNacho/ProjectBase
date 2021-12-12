@@ -1,6 +1,9 @@
 /*body{*/
 /*    background-color: lightblue;*/
 /*}*/
+html, body {
+    box-sizing: border-box;
+}
 .everything-container{
     height: 100%;
 }
