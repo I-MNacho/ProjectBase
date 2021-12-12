@@ -1,10 +1,7 @@
 <span th:fragment="individual-spot">
-    <style>
-        #spot-actions {
-            display: flex;
-            gap: 16px;
-        }
-    </style>
+    <button type="button" class="close pull-right" aria-label="Close" onclick="showWelcomePage()">
+        <span aria-hidden="true">&times;</span>
+    </button>
 <!--<form th:action="@{/spots/create}" th:object="${spot}" method="POST" >-->
     <div id="individual-spot-view" class="justify-content-center">
         <h2 id="spot-title"></h2>

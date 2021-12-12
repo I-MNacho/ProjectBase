@@ -8,9 +8,8 @@
 
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
 <body>
-<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+<nav th:replace="partials/navbar"></nav>
 
-<h1>Log In</h1>
 <div th:if="${param.error}">
     Invalid Username and Password.
 </div>
@@ -19,11 +18,16 @@
 </div>
 
 <form th:action="@{/login}" method="post">
-    <label for="username">Username</label>
-    <input id="username" name="username" type="text"/>
-    <label for="password">Password</label>
-    <input id="password" name="password" type="password"/>
-    <input type="submit" value="Log In"/>
+    <div class="row d-flex justify-content-center text-center">
+        <div class="form-group col-4 border p-4 m-4">
+            <h1>Log In</h1>
+            <label for="username">Username</label>
+            <input class="form-control" id="username" name="username" type="text"/>
+            <label for="password">Password</label>
+            <input class="form-control" id="password" name="password" type="password"/><br>
+            <button style="width: 100%" class="btn btn-primary" type="submit">Log In</button>
+        </div>
+    </div>
 </form>
 
 
