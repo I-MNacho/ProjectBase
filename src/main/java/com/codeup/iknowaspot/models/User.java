@@ -30,6 +30,11 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Spot> spots;
 
+    // Many users can save many spots to their profile
+    // Uses set so that you don't accidentally save the same spot more than once
+    @ManyToMany
+    private Set<Spot> savedSpots;
+
     public User(User copy) {
         id = copy.id; // This line is SUPER important! Many things won't work if it's absent
         email = copy.email;
@@ -38,6 +43,7 @@ public class User {
         spots = copy.spots;
         bio = copy.bio;
         profilePhotoURL = copy.profilePhotoURL;
+        savedSpots = copy.savedSpots;
     }
 
     public User() {
@@ -82,6 +88,24 @@ public class User {
 
     public void setSpots(List<Spot> spots) {
         this.spots = spots;
+    }
+
+    public Set<Spot> getSavedSpots() {
+        return savedSpots;
+    }
+
+    public void setSavedSpots(Set<Spot> savedSpots) {
+        this.savedSpots = savedSpots;
+    }
+
+    public Set<Spot> addSpot(Spot spot) {
+        savedSpots.add(spot);
+        return savedSpots;
+    }
+
+    public Set<Spot> removeSpot(Spot spot) {
+        savedSpots.remove(spot);
+        return savedSpots;
     }
 
     public String getBio() {
