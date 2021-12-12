@@ -49,32 +49,36 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                /* Login configuration */
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/home") // user's home page, it can be any URL
-                .permitAll() // Anyone can go to the login page
-                /* Logout configuration */
-                .and()
-                .logout()
-                .logoutSuccessUrl("/home") // append a query string value
-                /* Pages that can be viewed without having to log in */
-                .and()
-                /* Pages that require authentication */
-                .authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers(
                         "/spots/create", // only authenticated users can create ads
+                        "/events/create",
+                        "/events/create/{spot_id}",
+                        "/events/edit/{id}",
+                        "/events/delete/{id}",
+                        "/events/save/{id}",
+                        "/events/rsvp/{id}",
+                        "/spots/save/{id}",
                         "/spots/{id}/edit", // only authenticated users can edit ads
                         "/profile", //only authenticated users can view profile
                         "/profile/edit" //only authenticated users can edit profile
                 )
                 .authenticated()
                 .and()
+                .formLogin()
+                .loginPage("/login")
+                .successHandler(new LoginRedirectHandler())
+                .defaultSuccessUrl("/home") // user's home page, it can be any URL
+                /* Logout configuration */
+                .and()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/spots", "/about", "/register") // anyone can see the home and the ads pages
+                .antMatchers("/events", "/home", "/spots", "/about", "/register") // anyone can see the home and the ads pages
                 .permitAll()
-
+                .and()
+                .logout()
+                .logoutSuccessUrl("/home") // append a query string value
+                /* Pages that can be viewed without having to log in */
+                .and()
         ;
     }
 }

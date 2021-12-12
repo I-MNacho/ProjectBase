@@ -3,6 +3,8 @@ package com.codeup.iknowaspot.models;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +38,11 @@ public class User {
     @ManyToMany
     private Set<Spot> savedSpots;
 
+    @ManyToMany
+    private Set<Event> savedEvents;
+
+    @ManyToMany
+    private Set<Event> attendingEvents;
 
     public User(User copy) {
         id = copy.id; // This line is SUPER important! Many things won't work if it's absent
@@ -46,6 +53,8 @@ public class User {
         bio = copy.bio;
         profilePhotoURL = copy.profilePhotoURL;
         savedSpots = copy.savedSpots;
+        savedEvents = copy.savedEvents;
+        attendingEvents = copy.attendingEvents;
     }
 
     public User() {
@@ -93,8 +102,8 @@ public class User {
     }
 
     public Set<Spot> getSavedSpots() {
-
-        return savedSpots; }
+        return savedSpots;
+    }
 
     public void setSavedSpots(Set<Spot> savedSpots) {
         this.savedSpots = savedSpots;
@@ -108,6 +117,26 @@ public class User {
     public Set<Spot> removeSpot(Spot spot) {
         savedSpots.remove(spot);
         return savedSpots;
+    }
+
+    public Set<Event> saveEvent(Event event) {
+        savedEvents.add(event);
+        return savedEvents;
+    }
+
+    public Set<Event> removeSavedEvent(Event event) {
+        savedEvents.remove(event);
+        return savedEvents;
+    }
+
+    public Set<Event> attendEvent(Event event) {
+        attendingEvents.add(event);
+        return attendingEvents;
+    }
+
+    public Set<Event> unAttendEvent(Event event) {
+        attendingEvents.remove(event);
+        return attendingEvents;
     }
 
     public String getBio() {

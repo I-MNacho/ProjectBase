@@ -3,6 +3,7 @@ package com.codeup.iknowaspot.models;
 import com.mysql.cj.protocol.ColumnDefinition;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
@@ -104,4 +105,5 @@ public class Event {
     public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
+
 }
