@@ -1,15 +1,15 @@
 package com.codeup.iknowaspot.models;
 
-import org.springframework.lang.Nullable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,12 +38,6 @@ public class User {
     @ManyToMany
     private Set<Spot> savedSpots;
 
-    @ManyToMany
-    private Set<Event> savedEvents;
-
-    @ManyToMany
-    private Set<Event> attendingEvents;
-
     public User(User copy) {
         id = copy.id; // This line is SUPER important! Many things won't work if it's absent
         email = copy.email;
@@ -53,8 +47,6 @@ public class User {
         bio = copy.bio;
         profilePhotoURL = copy.profilePhotoURL;
         savedSpots = copy.savedSpots;
-        savedEvents = copy.savedEvents;
-        attendingEvents = copy.attendingEvents;
     }
 
     public User() {
@@ -119,37 +111,17 @@ public class User {
         return savedSpots;
     }
 
-    public Set<Event> saveEvent(Event event) {
-        savedEvents.add(event);
-        return savedEvents;
-    }
-
-    public Set<Event> removeSavedEvent(Event event) {
-        savedEvents.remove(event);
-        return savedEvents;
-    }
-
-    public Set<Event> attendEvent(Event event) {
-        attendingEvents.add(event);
-        return attendingEvents;
-    }
-
-    public Set<Event> unAttendEvent(Event event) {
-        attendingEvents.remove(event);
-        return attendingEvents;
-    }
-
     public String getBio() {
-            return bio;
-        }
+        return bio;
+    }
 
     public void setBio(String bio){
             this.bio = bio;
         }
 
     public String getProfilePhotoURL () {
-            return profilePhotoURL;
-        }
+        return profilePhotoURL;
+    }
 
     public void setProfilePhotoURL (String profilePhotoURL){
             this.profilePhotoURL = profilePhotoURL;

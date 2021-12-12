@@ -90,7 +90,8 @@
         <div class="body">
             <div class="header-details">
                 <h3 class="title" th:text="${event.title}"></h3>
-                <a th:href="@{|/events/save/${event.id}|}" uk-icon="heart"></a>
+                <a th:href="@{|/events/unsave/${event.id}|}" th:if="${event.saved.contains(user)}"  uk-icon="icon: heart" title="Un-Favorite" style="background-color: pink"></a>
+                <a th:href="@{|/events/save/${event.id}|}" th:if="${!event.saved.contains(user)}"  uk-icon="heart" title="Favorite"></a>
             </div>
             <p th:text="${event.description}"></p>
             <h6>Starts</h6>
@@ -98,8 +99,8 @@
             <h6>Ends</h6>
             <span class="end"></span>
             <div class="footer-actions">
-                <a th:href="@{|/events/rsvp/${event.id}|}" class="btn btn-primary">Attend</a>
-<!--                <a th:if="${event.currentUserIsAttending == false}" th:href="@{|/events/rsvp/${event.id}|}" class="btn btn-secondary">Un-attend</a>-->
+                <a th:href="@{|/events/unrsvp/${event.id}|}" th:if="${event.attending.contains(user)}" class="btn btn-secondary">Un-Attend</a>
+                <a th:href="@{|/events/rsvp/${event.id}|}" th:if="${!event.attending.contains(user)}" class="btn btn-primary">Attend</a>
                 <a uk-icon="pencil" th:href="@{|/events/view/${event.id}|}" th:if="${#authentication.name == event.user.username}"></a>
                 <a uk-icon="trash" th:href="@{|/events/delete/${event.id}|}" th:if="${#authentication.name == event.user.username}"></a>
             </div>
