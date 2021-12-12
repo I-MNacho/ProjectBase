@@ -66,16 +66,15 @@ public class SpotController {
 //        return "spots/create";
 //    }
 
-    @GetMapping("/spots/{id}/update")
-    public String updateSpot(@PathVariable long id){
-        //spot id to be updated
-        spotsDao.getById(id);
-//        needs all info thats on the spot
+    @GetMapping("/spots/edit/{id}")
+    public String updateSpot(Model model, @PathVariable long id){
+        model.addAttribute("spot", spotsDao.getById(id));
+        return "home";
+    }
 
-
-//        needs to be able to keep same id
-
-
+    @PostMapping("/spots/edit")
+    public String updateSpot(@ModelAttribute Spot spot){
+        spotsDao.save(spot);
         return "home";
     }
 
