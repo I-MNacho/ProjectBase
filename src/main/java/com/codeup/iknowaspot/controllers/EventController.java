@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class EventController {
@@ -63,10 +64,16 @@ public class EventController {
         //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
         List<Event> events = eventsDao.findEventByEndTimeAfterOrderByStartTime(System.currentTimeMillis());
         List<Spot> spots = spotsDao.findAll();
+
         model.addAttribute("spots", spots);
         model.addAttribute("events", events);
-
-
+        try {
+            User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User author = usersDao.getById(principal.getId());
+            model.addAttribute("user", author);
+        } catch(Exception e) {
+            model.addAttribute("user", new User());
+        }
         //page shows to this bc its mapped here:  //
         return "events/index";
     }
@@ -144,8 +151,20 @@ public class EventController {
     public String saveEvent(@PathVariable long id) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
-        author.saveEvent(eventsDao.getById(id));
-        usersDao.save(author);
+        Event event = eventsDao.getById(id);
+        event.favorite(author);
+        eventsDao.save(event);
+        return "redirect:/events";
+    }
+
+    //save event
+    @GetMapping("/events/unsave/{id}")
+    public String unsaveEvent(@PathVariable long id) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        Event event = eventsDao.getById(id);
+        event.unfavorite(author);
+        eventsDao.save(event);
         return "redirect:/events";
     }
 
@@ -154,8 +173,20 @@ public class EventController {
     public String attendEvent(@PathVariable long id) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
-        author.attendEvent(eventsDao.getById(id));
-        usersDao.save(author);
+        Event event = eventsDao.getById(id);
+        event.attend(author);
+        eventsDao.save(event);
+        return "redirect:/events";
+    }
+
+    //save event
+    @GetMapping("/events/unrsvp/{id}")
+    public String unattendEvent(@PathVariable long id) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        Event event = eventsDao.getById(id);
+        event.unattend(author);
+        eventsDao.save(event);
         return "redirect:/events";
     }
 

@@ -46,7 +46,6 @@ public class Spot {
     public Spot() {
     }
 
-
     public Spot(String title, String description, Double latitude, Double longitude, User user, String tags, Set<Event> events) {
         this.title = title;
         this.description = description;
@@ -86,9 +85,9 @@ public class Spot {
         this.user = user;
     }
 
-//    public Set<User> getUser() {
+//  public Set<User> getUser() {
 //        return users;
-//    }
+//  }
 
     public double getLatitude() {
         return latitude;
