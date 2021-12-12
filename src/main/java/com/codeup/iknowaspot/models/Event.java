@@ -1,11 +1,15 @@
 package com.codeup.iknowaspot.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mysql.cj.protocol.ColumnDefinition;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Event {
 
     //variables
@@ -24,20 +28,26 @@ public class Event {
     private User user;
 
     @ManyToOne
-    @JoinColumn (name = "spot_id")
+    @JoinColumn(name="spot_id")
     private Spot spot;
 
-    @Column(columnDefinition = "VARCHAR(30)", nullable = true)
-    private String startTime;
+    @Column
+    private long startTime;
 
-    @Column(columnDefinition = "VARCHAR(30)", nullable = true)
-    private String endTime;
+    @Column
+    private long endTime;
+
+    @ManyToMany
+    private Set<User> attending = new HashSet<User>();
+
+    @ManyToMany
+    private Set<User> saved = new HashSet<User>();
 
     //constructors
     public Event() {
     }
 
-    public Event(long id, String title, String description, User user, Spot spot, String startTime, String endTime) {
+    public Event(long id, String title, String description, User user, Spot spot, long startTime, long endTime, Set<User> attending, Set<User> saved) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -45,9 +55,9 @@ public class Event {
         this.spot = spot;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.attending = attending;
+        this.saved = saved;
     }
-
-
     //getters and setters
     public long getId() {
         return id;
@@ -89,19 +99,56 @@ public class Event {
         this.spot = spot;
     }
 
-    public String getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
+
+    public Set<User> getSaved() {
+        return saved;
+    }
+
+    public void setSaved(Set<User> saved) {
+        this.saved = saved;
+    }
+
+    public Set<User> favorite(User user) {
+        saved.add(user);
+        return saved;
+    }
+
+    public Set<User> unfavorite(User user) {
+        saved.remove(user);
+        return saved;
+    }
+
+    public Set<User> getAttending() {
+        return attending;
+    }
+
+    public Set<User> attend(User user) {
+        attending.add(user);
+        return attending;
+    }
+
+    public Set<User> unattend(User user) {
+        attending.remove(user);
+        return attending;
+    }
+
+    public void setAttending(Set<User> attending) {
+        this.attending = attending;
+    }
+
 }

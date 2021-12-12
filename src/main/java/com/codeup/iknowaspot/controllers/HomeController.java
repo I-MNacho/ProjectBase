@@ -1,5 +1,6 @@
 package com.codeup.iknowaspot.controllers;
 import com.codeup.iknowaspot.models.Spot;
+import com.codeup.iknowaspot.repositories.EventRepository;
 import com.codeup.iknowaspot.repositories.SpotRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 class HomeController {
     private SpotRepository spotsDao;
+    private EventRepository eventsDao;
 
-    public HomeController(SpotRepository spotDao) {
+    public HomeController(SpotRepository spotDao, EventRepository eventsDao) {
         this.spotsDao = spotDao;
+        this.eventsDao = eventsDao;
     }
 
     @Value("${mapbox.api.token}")
@@ -33,10 +36,14 @@ class HomeController {
                 + "const FileStackAPIKey = `" + fileStackApiKey + "`";
 
     }
-
-    @GetMapping("/home")
+    @GetMapping({"/"})
+        public String getSplashPage(){
+            return "partials/splash";
+    }
+    @GetMapping({"/home"})
     public String getIndexPage(Model model) {
         model.addAttribute("spots", spotsDao.findAll());
+        model.addAttribute("events", eventsDao.findAll());
         Spot spot = new Spot();
         model.addAttribute("spot", spot);
         return "home";

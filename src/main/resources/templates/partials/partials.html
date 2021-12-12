@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head th:fragment="head">
     <meta charset="UTF-8" />
     <title>Home</title>
@@ -13,11 +13,11 @@
 <!--                    Username: <span th:text="${#authentication.principal.username}"/>-->
 <!--                    Email: <span th:text="${#authentication.principal.email}"/>-->
             </div>
-            <form>
-                <span class="d-inline-flex">
-                    <div th:replace="partials/search-bar.html"></div>
-                </span>
-            </form>
+<!--            <form>-->
+<!--                <span class="d-inline-flex">-->
+<!--                    <div th:replace="partials/search-bar.html"></div>-->
+<!--                </span>-->
+<!--            </form>-->
 
             <div class="nav navbar-nav navbar-right">
 <!--                Logged out user-->

@@ -3,136 +3,93 @@
 <head>
     <meta charset="UTF-8"/>
     <title>About Us</title>
+
     <div th:replace="partials/bootstrap-header.html"></div>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/968ac4e7b1.js" crossorigin="anonymous"></script>
-
-<style>
- .hidden {
-  display: none;
- }
- h1 {
-  color: hotpink;
- }
-</style>
-
+    <link rel="stylesheet" th:href="@{/css/about-us.css}">
 </head>
-
-
-
 <body>
 
-<script>
-
-    $(document).ready(function (){
-        $('#about-btn').click(function (e){
-            e.preventDefault();
-            $('#about').toggleClass('hidden')
-        })
-
-        $('#team-btn').click(function (e){
-            e.preventDefault();
-            $('#team').toggleClass('hidden')
-        })
-    })
-
-</script>
-
-
 <div>
-    <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+    <nav th:replace="partials/navbar.html :: navbar"></nav>
 </div>
 
+<script th:src="@{/js/about_us.js}"></script>
 
 
 
-    <div class="side-bar">
-        <nav class="navbar navbar-light bg-none fixed-top">
-            <div class="">
-                <a class="navbar-brand" href="#">Offcanvas navbar</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Get To Know Us!</h5>
-                        <div class="row">
-                            <div class="row offcanvas-body text-end">
-                                <div class="row btn-group-vertical">
-                                    <div>
-                                        <button type="button" id="about-btn" class="about btn btn-lg">About Us</button>
-                                    </div>
-                                    <div>
-                                        <button type="button" id="contact-btn" class="contact btn btn-lg">Contact</button>
-                                    </div>
-                                    <div>
-                                        <button type="button" id="team-btn" class="team btn btn-lg">Team</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </nav>
-    </div>
-
-
-
-
+<div class="row btn-group-vertical">
+    <button class="about-btn btn btn-lg"> About Us</button>
+    <button class="contact-btn btn btn-lg"> Contact Us</button>
+    <button class="team-btn btn btn-lg"> Team</button>
+</div>
 
 <div class="container">
-
-    <div id="about">
+    <div class="about-info">
         <h1>About Us?</h1>
-        <div>
-            <p>It's never about us, is it?</p>
-            <br>
-            <p>We are here for you! More importantly, our users and their experience is what matters most.</p>
-            <p>We are here for a good time and a long time, so buckle in and get to know this amazing quad squad.</p>
+        <p>It's never about us, is it?</p>
+        <br>
+        <p>We are here for you! More importantly, our users and their experience is what matters most.</p>
+        <p>We are here for a good time and a long time, so buckle in and get to know this amazing quad
+            squad.</p>
+    </div>
+
+    <div class="contact-info" id="team">
+        <div class="row">
+            <div id="Shelby" class="col-lg-4 col-md-4 developer-div">
+                <h3 class="developers">Shelby Davis</h3>
+                <form class="d-flex row-1 my-2 creator-trio">
+                    <a class="creator-icon" href="https://www.linkedin.com/in/shelby-davis-web-dev/"
+                       target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a class="creator-icon" href="https://github.com/sh3lbsd" target="_blank"><i
+                            class="fab fa-github-square"></i></a>
+                </form>
+            </div>
+
+            <div id="Albert" class="col-lg-4 col-md-4 developer-div">
+                <h3 class="developers">Albert Dominguez</h3>
+                <form class="d-flex row-1 my-2 creator-trio">
+                    <a class="creator-icon" href="https://www.linkedin.com/in/albert-dominguez/"
+                       target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a class="creator-icon" href="https://github.com/CozyLaptop" target="_blank"><i
+                            class="fab fa-github-square"></i></a>
+                </form>
+            </div>
+
+            <div id="Kristen" class="col-lg-4 col-md-4 developer-div">
+                <h3 class="developers">Kristen Wilson</h3>
+                <form class="d-flex row-1 my-2 creator-trio">
+                    <a class="creator-icon" href="https://www.linkedin.com/in/kristen-wilson614/"
+                       target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a class="creator-icon" href="https://github.com/Wils-Kris5" target="_blank"><i
+                            class="fab fa-github-square"></i></a>
+                </form>
+            </div>
+
+            <div id="Ignacio" class="col-lg-4 col-md-4 developer-div">
+                <h3 class="developers">Ignacio Mares</h3>
+                <form class="d-flex row-1 my-2 creator-trio">
+                    <a class="creator-icon" href="https://www.linkedin.com/in/ignaciomares/"
+                       target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a class="creator-icon" href="https://github.com/I-MNacho" target="_blank"><i
+                            class="fab fa-github-square"></i></a>
+                </form>
+            </div>
         </div>
     </div>
 
-<div id="team">
-    <div class="row">
-        <div id="Shelby" class="col-lg-4 col-md-4 developer-div">
-            <h3 class="developers">Shelby Davis</h3>
-            <form class="d-flex row-1 my-2 creator-trio">
-                <a class="creator-icon" href="https://www.linkedin.com/in/shelby-davis-web-dev/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a class="creator-icon" href="https://github.com/sh3lbsd" target="_blank"><i class="fab fa-github-square"></i></a>
-            </form>
-        </div>
+    <div>
 
-        <div id="Albert" class="col-lg-4 col-md-4 developer-div">
-            <h3 class="developers">Albert Dominguez</h3>
-            <form class="d-flex row-1 my-2 creator-trio">
-                <a class="creator-icon" href="https://www.linkedin.com/in/albert-dominguez/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a class="creator-icon" href="https://github.com/CozyLaptop" target="_blank"><i class="fab fa-github-square"></i></a>
-            </form>
-        </div>
-
-        <div id="Kristen" class="col-lg-4 col-md-4 developer-div">
-            <h3 class="developers">Kristen Wilson</h3>
-            <form class="d-flex row-1 my-2 creator-trio">
-                <a class="creator-icon" href="https://www.linkedin.com/in/kristen-wilson614/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a class="creator-icon" href="https://github.com/Wils-Kris5" target="_blank"><i class="fab fa-github-square"></i></a>
-            </form>
-        </div>
-
-        <div id="Ignacio" class="col-lg-4 col-md-4 developer-div">
-            <h3 class="developers">Ignacio Mares</h3>
-            <form class="d-flex row-1 my-2 creator-trio">
-                <a class="creator-icon" href="https://www.linkedin.com/in/ignaciomares/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a class="creator-icon" href="https://github.com/I-MNacho" target="_blank"><i class="fab fa-github-square"></i></a>
-            </form>
+        <div class="team-info">
+            <h2 class="team-names">Shelby Davis</h2>
+            <h2 class="team-names">Ignacio Mares</h2>
+            <h2 class="team-names">Kristen Wilson</h2>
+            <h2 class="team-names">Albert Dominguez</h2>
         </div>
 
     </div>
 </div>
-
-
-
-</div>
-
-
 
 
 <div th:replace="partials/bootstrap-footer.html"></div>

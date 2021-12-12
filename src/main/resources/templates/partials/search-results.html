@@ -1,0 +1,74 @@
+
+
+<!--ORIGINAL TABLE THAT FILTERS-->
+<!--<div class="container-cards col-8 col-xl-12 ">-->
+<!--    <div class="cards row ">-->
+<!--        <table>-->
+<!--            <thead>-->
+<!--            <tr class="header">-->
+<!--                <th style="width:33%;">Title</th>-->
+<!--                <th style="width:33%;">Description</th>-->
+<!--                <th style="width:33%;">Tags</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody id="myTable">-->
+<!--            <tr th:each="spot : ${spots}">-->
+<!--                <td><span th:text="${spot.title}"> Title </span></td>-->
+<!--                <td><span th:text="${spot.description}"> Description </span></td>-->
+<!--                <td><span th:text="${spot.tags}"> Tags </span></td>-->
+<!--                <td><a th:href="@{|spots/save/${spot.id}|  }"> Save </a></td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Tags</th>
+            <th scope="col">Favorite</th>
+            <th scope="col">Events</th>
+        </tr>
+        </thead>
+        <tbody id="myTable">
+        <tr th:each="spot : ${spots}">
+            <td><a th:href="@{|spots/${spot.id}|}"><span th:text="${spot.title}"></span></a></td>
+            <td><span th:text="${spot.description}"> Description </span></td>
+            <td><span th:text="${spot.tags}"> Tags </span></td>
+<!--            <td><span th:text="${spot.events}"> Events </span></td>-->
+            <td><a th:href="@{|spots/save/${spot.id}|  }"> Save </a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+<!--ATTEMPT AT CARDS WITH SEARCH RESULTS-->
+<!--<div th:each="spot : ${spots}">-->
+<!--    <div id="spotCards">-->
+<!--        <div class="card mb-3" style="max-width: 540px;">-->
+<!--            <div class="row no-gutters">-->
+<!--                <div class="col-md-8">-->
+<!--                    <div id="cardData" class="card-body">-->
+<!--                        <p th:text="${spot.title}"> Title </p>-->
+<!--                        <p th:text="${spot.description}"> Description </p>-->
+<!--                        <p th:text="${spot.tags}"> Tags </p>-->
+<!--                        <a th:href="@{|spots/save/${spot.id}|  }"> Save </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->

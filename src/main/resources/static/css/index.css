@@ -1,21 +1,25 @@
-body{
-    background-color: lightblue;
-}
 .everything-container{
-    height: 100%;
-}
-#map{
     height: 90vh;
+}
+
+#map{
+    height: 100%;
     border-radius: 10px;
     box-shadow: 2px 2px 5px #000000;
 }
-.card-col{
-    height: 90vh;
-    overflow: hidden scroll;
+.form-control:focus{
+    border-color:#CCC;
+    outline:0;
+    /*-webkit-box-shadow:none;*/
+    /*box-shadow:none;*/
 }
-h1{
-    font-size: 4vw;
-    text-shadow: 2px 2px 5px #000000;
+.card-col{
+    height: 100%;
+    /*overflow-y: auto;*/
+}
+.inside-card-col{
+    height: 100%;
+    overflow-y: auto;
 }
 .centered {
     display: flex;
