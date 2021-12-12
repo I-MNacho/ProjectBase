@@ -1,5 +1,6 @@
 package com.codeup.iknowaspot.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mysql.cj.protocol.ColumnDefinition;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "events")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Event {
 
     //variables

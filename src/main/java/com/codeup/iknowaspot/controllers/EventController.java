@@ -9,10 +9,7 @@ import com.codeup.iknowaspot.repositories.UserRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -58,7 +55,6 @@ public class EventController {
         this.spotsDao = spotsDao;
     }
 
-    //create event
     @GetMapping("/events")
     public String listEvent(Model model) {
         //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
@@ -74,6 +70,51 @@ public class EventController {
         } catch(Exception e) {
             model.addAttribute("user", new User());
         }
+        //page shows to this bc its mapped here:  //
+        return "events/index";
+    }
+
+    @GetMapping("/events/mine")
+    public String listMyEvents(Model model) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
+        List<Event> events = eventsDao.findAllByUser(author);
+        List<Spot> spots = spotsDao.findAll();
+
+        model.addAttribute("spots", spots);
+        model.addAttribute("events", events);
+        model.addAttribute("user", author);
+        //page shows to this bc its mapped here:  //
+        return "events/index";
+    }
+
+    @GetMapping("/events/favorites")
+    public String listMyFavoriteEvents(Model model) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
+        List<Event> events = eventsDao.findAllBySaved(author);
+        List<Spot> spots = spotsDao.findAll();
+
+        model.addAttribute("spots", spots);
+        model.addAttribute("events", events);
+        model.addAttribute("user", author);
+        //page shows to this bc its mapped here:  //
+        return "events/index";
+    }
+
+    @GetMapping("/events/attending")
+    public String listEventsAttending(Model model) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
+        List<Event> events = eventsDao.findAllByAttending(author);
+        List<Spot> spots = spotsDao.findAll();
+
+        model.addAttribute("spots", spots);
+        model.addAttribute("events", events);
+        model.addAttribute("user", author);
         //page shows to this bc its mapped here:  //
         return "events/index";
     }
@@ -141,53 +182,53 @@ public class EventController {
 
     //delete event
     @GetMapping("/events/delete/{id}")
-    public String deleteEvent(@PathVariable long id) {
+    public String deleteEvent(@PathVariable long id, @RequestHeader("Referer") String referer) {
         eventsDao.deleteById(id);
-        return "redirect:/events";
+        return "redirect:" + referer;
     }
 
     //save event
     @GetMapping("/events/save/{id}")
-    public String saveEvent(@PathVariable long id) {
+    public String saveEvent(@PathVariable long id, @RequestHeader("Referer") String referer) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
         Event event = eventsDao.getById(id);
         event.favorite(author);
         eventsDao.save(event);
-        return "redirect:/events";
+        return "redirect:" + referer;
     }
 
     //save event
     @GetMapping("/events/unsave/{id}")
-    public String unsaveEvent(@PathVariable long id) {
+    public String unsaveEvent(@PathVariable long id, @RequestHeader("Referer") String referer) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
         Event event = eventsDao.getById(id);
         event.unfavorite(author);
         eventsDao.save(event);
-        return "redirect:/events";
+        return "redirect:" + referer;
     }
 
     //save event
     @GetMapping("/events/rsvp/{id}")
-    public String attendEvent(@PathVariable long id) {
+    public String attendEvent(@PathVariable long id, @RequestHeader("Referer") String referer) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
         Event event = eventsDao.getById(id);
         event.attend(author);
         eventsDao.save(event);
-        return "redirect:/events";
+        return "redirect:" + referer;
     }
 
     //save event
     @GetMapping("/events/unrsvp/{id}")
-    public String unattendEvent(@PathVariable long id) {
+    public String unattendEvent(@PathVariable long id, @RequestHeader("Referer") String referer) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
         Event event = eventsDao.getById(id);
         event.unattend(author);
         eventsDao.save(event);
-        return "redirect:/events";
+        return "redirect:" + referer;
     }
 
 }

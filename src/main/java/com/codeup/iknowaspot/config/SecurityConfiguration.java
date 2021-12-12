@@ -53,6 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/spots/create", // only authenticated users can create ads
                         "/events/create",
+                        "/events/mine",
                         "/events/create/{spot_id}",
                         "/events/edit/{id}",
                         "/events/delete/{id}",
