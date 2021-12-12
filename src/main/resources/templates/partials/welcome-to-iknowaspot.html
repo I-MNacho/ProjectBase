@@ -1,8 +1,14 @@
-<h1 th:fragment="welcome-to-iknowaspot">Welcome to IKnowASpot!<br>
+<div th:fragment="welcome-to-iknowaspot">
+    <h1>Welcome to</h1>
+    <img th:src="@{images/iknowaspotlogo.png}" alt="I Know A Spot Logo">
     <h2>
-        Click on a map marker to view the details.<br>
+        Click on a map marker to view the details.
     </h2>
-    <h2>
-        Click on create a spot to add a new spot.<br>
-    </h2>
-</h1>
+    <h4 class="font-weight-bold">or</h4><br>
+    <div sec:authorize="isAuthenticated()">
+        <button class="btn btn-primary" onclick="showCreateASpotViewLoggedIn()">Create A Spot</button>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <button style="width: 50%" class="btn-lg btn-primary" onclick="showCreateASpotViewNotLoggedIn()">Create A Spot</button>
+    </div>
+</div>

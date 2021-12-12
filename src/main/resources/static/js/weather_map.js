@@ -11,12 +11,12 @@ const map = new mapboxgl.Map({
 });
 //This adds the geocoder function to the map
 //Remove default marker for proper functionality
-const geocoder = new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    marker: false,
-    mapboxgl: mapboxgl
-});
-document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+// const geocoder = new MapboxGeocoder({
+//     accessToken: mapboxgl.accessToken,
+//     marker: false,
+//     mapboxgl: mapboxgl
+// });
+// document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
 //On 'result' from the geocoder search box
 // This function takes a number between 0 and 360 and returns a
 // wind direction abbreviation. the MapBox API gives us a "wind degrees" datum

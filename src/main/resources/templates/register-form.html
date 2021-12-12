@@ -10,23 +10,22 @@
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
 
 <body>
-<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+<nav th:replace="partials/navbar"></nav>
 
-<h1>Create an account</h1>
-<form th:action="@{/register}" method="POST" th:object="${user}">
-
-    <label for="username">Username</label>
-    <input id="username" th:field="*{username}" />
-
-    <label for="email">Email</label>
-    <input id="email" th:field="*{email}" />
-
-    <label for="password">Password</label>
-    <input id="password" type="password" th:field="*{password}" />
-
-    <input value="Sign me up!" type="submit" />
-</form>
-
+<div class="row d-flex justify-content-center text-center">
+    <div class="form-group col-4 border p-4 m-4">
+        <h1>Create an account</h1>
+        <form th:action="@{/register}" method="POST" th:object="${user}">
+            <label for="username">Username</label>
+            <input class="form-control" id="username" th:field="*{username}" />
+            <label for="email">Email</label>
+            <input class="form-control" id="email" th:field="*{email}" />
+            <label for="password">Password</label>
+            <input class="form-control" id="password" type="password" th:field="*{password}" /><br>
+            <input style="width: 100%" class="btn btn-primary" value="Sign me up!" type="submit" />
+        </form>
+    </div>
+</div>
 
 
 <div th:replace="partials/bootstrap-footer.html"></div>
