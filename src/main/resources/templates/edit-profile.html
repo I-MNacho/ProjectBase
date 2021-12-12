@@ -8,10 +8,36 @@
     <script src="/js/image-upload.js"></script>
     <div th:replace="partials/bootstrap-header.html"></div>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" th:href="@{/css/custom-form.css}">
 </head>
 <body>
+<script>
+    $(document).ready(() => {
+        const profilePhoto = $("#profile-photo")
+        const profilePhotoInput = $("#profile-photo-input")
+        const noPhotoButton = $(".no-photo")
+        const uploadPhotoButton = $(".upload-photo-button")
+        if(profilePhoto.attr("src")) {
+            profilePhoto.removeClass("hidden")
+            uploadPhotoButton.removeClass("hidden")
+        } else {
+            noPhotoButton.removeClass("hidden")
+        }
+        function onUploadDone(result) {
+            const url = result.filesUploaded[0].url
+            profilePhoto.attr({src: url})
+            profilePhotoInput.val(url)
+            noPhotoButton.addClass("hidden")
+            uploadPhotoButton.removeClass("hidden")
+            profilePhoto.removeClass("hidden")
+        }
+        const picker = client.picker({onUploadDone})
+        uploadPhotoButton.click(() => picker.open())
+        noPhotoButton.click(() => picker.open())
+    })
+</script>
 <style>
-    .upload-button {
+    .no-photo {
         width: 200px;
         height: 200px;
         background: lightgrey;
@@ -24,60 +50,67 @@
         cursor: pointer;
     }
     form {
+        display: flex;
+        flex-direction: column;
+        align-content: flex-start;
+        align-items: flex-start;
+        justify-content: flex-start;
+        justify-items: flex-start;
+        gap: 12px;
         padding: 16px;
+        overflow: auto;
     }
     .hidden {
         display: none;
     }
 </style>
-<nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
-<form th:action="@{/profile/edit}" method="post" th:object="${user}" >
-    <input type="hidden" name="id" th:field="${user.id}">
-    <input type="hidden" name="password" th:field="${user.password}">
-    <input id="profile-photo-input" type="hidden" name="profilePhotoURL" th:field="${user.profilePhotoURL}">
-    <img id="profile-photo" th:src="${user.profilePhotoURL}" alt="No Profile Photo" width="200px" height="200px">
-    <div onclick="openFilePicker()" class="upload-button">
-        Upload Photo
-    </div>
-    <div class="contact-grids1 w3agile-6">
-        <div class="row">
-            <div class="col-md-6 col-sm-6 contact-form1 form-group">
-            </div>
-            <div class="col-md-6 col-sm-6 contact-form1 form-group">
-                <label> Username</label>
-                <input type="text"
-                       name="name"
-                       class="form-control"
-                       id="username"
-                       placeholder="Edit username"
-                       required
-                       th:value="${user.username}"
-                       th:field="${user.username}"/>
-            </div>
-            <div class="col-md-6 col-sm-6 contact-form1 form-group">
-                <label class="col-form-label">Email</label>
-                <input type="email"
-                       class="form-control"
-                       placeholder="Edit email"
-                       name="email"
-                       id="email"
-                       required
-                       th:field="${user.email}" />
-            </div>
-
-            <div class="col-md-6 col-sm-6 contact-form1 form-group">
-                <label class="col-form-label">Bio</label>
-                <textarea class="form-control"
-                          placeholder="Edit Bio"
-                          id="bio"
-                          rows="6"
-                          name="bio"
-                          required th:field="${user.bio}" ></textarea>
-                <p id="error_description"></p>
-            </div>
+<div class="page-container">
+    <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+    <form th:action="@{/profile/edit}" method="post" th:object="${user}" >
+        <input type="hidden" name="id" th:field="${user.id}">
+        <input type="hidden" name="password" th:field="${user.password}">
+        <input id="profile-photo-input" type="hidden" name="profilePhotoURL" th:field="${user.profilePhotoURL}">
+        <img id="profile-photo"
+             th:src="${user.profilePhotoURL}"
+             class="hidden"
+             width="200px"
+             height="200px">
+        <div class="no-photo hidden">
+            Upload Photo
         </div>
+        <div class="btn btn-primary upload-photo-button hidden">
+            Upload New Photo
+        </div>
+        <div class="form-field">
+            <label> Username</label>
+            <input type="text"
+                   name="name"
+                   id="username"
+                   placeholder="Edit username"
+                   required
+                   th:value="${user.username}"
+                   th:field="${user.username}"/>
+        </div>
+        <div class="form-field">
+            <label >Email</label>
+            <input type="email"
+                   placeholder="Edit email"
+                   name="email"
+                   id="email"
+                   required
+                   th:field="${user.email}" />
+        </div>
+        <div class="form-field">
+            <label class="col-form-label">Bio</label>
+            <textarea placeholder="Edit Bio"
+                      id="bio"
+                      rows="6"
+                      name="bio"
+                      required th:field="${user.bio}" ></textarea>
+        </div>
+        <p id="error_description"></p>
         <button type="submit" class="btn bg-primary text-white" >Save</button>
-    </div>
-</form>
+    </form>
+</div>
 </body>
 </html>

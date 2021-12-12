@@ -1,0 +1,102 @@
+.page-container {
+    /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
+    display: grid;
+    /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
+    grid-template-rows: min-content 1fr;
+    /*Body takes up full height of viewport*/
+    height: 100vh;
+}
+.form-modal {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+#edit-event-form {
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 16px;
+    box-sizing: border-box;
+    max-width: calc(100vw - 32px);
+    border: 1px solid lightgrey;
+}
+.map {
+    height: 250px;
+    width: 500px;
+    max-width: calc(100vw - 64px);
+    border-radius: 4px;
+}
+h3 {
+    margin: 0;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+label {
+    margin: 0;
+    font-weight: bold;
+}
+.search {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    border-bottom: 1px solid gray;
+    gap: 6px;
+    transition: transform 300ms;
+}
+.search:focus-within,
+.form-field input:focus,
+.form-field textarea:focus {
+    border-bottom: 2px solid #007BFF;
+    transform: scale(1.015);
+    padding: 0 4px;
+}
+.form-field {
+    display: flex;
+    gap: 1px;
+    flex-direction: column;
+    width: 100%;
+}
+.search input {
+    border: none;
+    flex: 1 0 auto;
+}
+.search input:focus-visible,
+.form-field input:focus-visible,
+.form-field textarea:focus-visible {
+    outline: none;
+}
+.form-field input, .form-field textarea {
+    border: none;
+    border-bottom: 1px solid gray;
+    transition: transform 300ms;
+}
+.form-field textarea {
+    height: 85px;
+    resize: none;
+}
+.invalid,
+.form-field input:invalid,
+.form-field textarea:invalid {
+    border-bottom: 2px solid #ff2a2a;
+}
