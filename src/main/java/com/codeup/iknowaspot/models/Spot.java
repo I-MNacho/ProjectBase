@@ -81,10 +81,6 @@ public class Spot {
         this.id = id;
     }
 
-    public User getUser(){
-        return user;
-    }
-
     public void setUser(User user){
         this.user = user;
     }
@@ -125,5 +121,12 @@ public class Spot {
         this.spotPhotoURL = spotPhotoURL;
     }
 
+//    public Set<Event> getEvents() { return events; }
+//
+//    public Set<Event> addEvent(Event event) {
+//        events.add(event);
+//        return events;
+//    }
+//
 //    public void setEvents(Set<Event> events) { this.events = events; }
 }
