@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit your Spot</title>
+    <div th:replace="partials/bootstrap-header.html"></div>
+</head>
+<body class="container-fluid text-center">
+<nav th:replace="partials/navbar"></nav>
+<h1>Edit Spot</h1>
+<form th:action="@{/spot/edit/}" th:object="${spot}" method="POST" >
+    <input id="spotId" name="spotId" type="hidden" th:field="${spot.id}"/>
+    <input id="latitude" name="latitude" type="hidden" th:field="${spot.latitude}"/>
+    <input id="longitude" name="longitude" type="hidden" th:field="${spot.longitude}"/>
+    <input id="photoUrl" name="photoUrl" type="hidden" th:field="${spot.spotPhotoURL}"/>
+    <label for="title">Title</label>
+    <input class="form-control" id="title" name="title" type="text" th:field="${spot.title}"/>
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" name="description" th:field="${spot.description}"></textarea>
+    <label for="title">Tags (separate with commas):</label>
+    <input class="form-control" id="tags" name="tags" type="text" th:field="${spot.tags}"/>
+
+    <button class="btn-lg btn-primary">Submit</button>
+    <!--basic form for submitting a spot and saving it to the database... more needs to be added-->
+</form>
+
+
+<div th:replace="partials/bootstrap-footer.html"></div>
+
+</body>
+</html>
