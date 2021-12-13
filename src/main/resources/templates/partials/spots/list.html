@@ -109,7 +109,7 @@
         color: pink;
     }
 </style>
-<div class="events-list-container container-fluid">
+<div class="events-list-container">
     <nav th:replace="partials/navbar.html :: navbar"></nav>
     <div class="grid">
         <div th:if="${spots.empty}">
@@ -136,10 +136,9 @@
 <!--        <a uk-icon="icon: plus; ratio: 1.5" th:href="@{|/spots/create|}"></a>-->
 <!--    </div>-->
     <script th:inline="javascript">
-        <!--    Create spots object from thymeleaf spot model-->
         $(document).ready(() => {
             const spots = [[${spots}]];
-            //For each event, add a map with a marker at the location of the event
+            initMap({})
             spots.forEach((spot)=> {
                 // Hardcoded to san antonio
                 const {longitude, latitude, title, description} = spot

@@ -49,7 +49,25 @@ public class SpotController {
         } catch(Exception e) {
             model.addAttribute("user", new User());
         }
-        return "/spots/list";
+        return "/spots/index";
+    }
+
+    @GetMapping("/spots/mine")
+    public String getMySpots(Model model) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        model.addAttribute("user", author);
+        model.addAttribute("spots", spotsDao.findAllByUser(author));
+        return "/spots/index";
+    }
+
+    @GetMapping("/spots/favorites")
+    public String getMyFavoriteSpots(Model model) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        model.addAttribute("user", author);
+        model.addAttribute("spots", spotsDao.findAllBySaved(author));
+        return "/spots/index";
     }
 
     @GetMapping("/spots/{id}")
@@ -112,13 +130,11 @@ public class SpotController {
         return "redirect:/spots";
     }
 
-
     //delete Spot
-    @PostMapping("spot/delete/{id}")
+    @GetMapping("spots/delete/{id}")
     public String deleteSpot(@PathVariable long id, @RequestHeader("Referer") String referer) {
         spotsDao.deleteById(id);
         return "redirect:" + referer;
     }
-
 
 }

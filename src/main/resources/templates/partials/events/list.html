@@ -120,8 +120,8 @@
         <div class="body">
             <div class="header-details">
                 <h3 class="title" th:text="${event.title}"></h3>
-                <a th:href="@{|/events/unsave/${event.id}|}" th:if="${event.saved.contains(user)}"  uk-icon="icon: heart" title="Un-Favorite">&heartsuit;</a>
-                <a th:href="@{|/events/save/${event.id}|}" th:if="${!event.saved.contains(user)}"  uk-icon="heart" title="Favorite">&heartsuit;</a>
+                <a th:href="@{|/events/unsave/${event.id}|}" th:if="${event.saved.contains(user)}" title="Un-Favorite">&heartsuit;</a>
+                <a th:href="@{|/events/save/${event.id}|}" th:if="${!event.saved.contains(user)}" title="Favorite">&heartsuit;</a>
             </div>
             <p th:text="${event.description}"></p>
             <h6>Starts</h6>
