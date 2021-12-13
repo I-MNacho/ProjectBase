@@ -1,18 +1,18 @@
-<nav class="mb-1 col-12" th:fragment="navbar" style="background-color: white; box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);">
+<nav class="mb-1 col-12" th:fragment="navbar" style="background-color: #9B45E4; box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);">
     <div class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" th:href="@{/home}">IKnowASpot</a> |
-                <a th:href="@{/spots}">Spots</a> |
-                <a th:href="@{/events}">Events</a> |
-                <a th:href="@{/aboutus}">About Us</a> |
+                <a class="navbar-brand font-weight-bold"  style="color: white;" th:href="@{/home}">IKnowASpot</a> |
+                <a style="color: white;" th:href="@{/spots}">Spots</a> |
+                <a style="color: white;" th:href="@{/events}">Events</a> |
+                <a style="color: white;" th:href="@{/aboutus}">About Us</a> |
             </div>
             <div class="nav navbar-nav navbar-right">
                 <!--                Logged out user-->
                 <div sec:authorize="isAnonymous()">
                     <div>
-                        <a th:href="@{/login}">Login</a> |
-                        <a th:href="@{/register}">Register</a>
+                        <a style="color: white;" th:href="@{/login}">Login</a> |
+                        <a style="color: white;" th:href="@{/register}">Register</a>
                     </div>
                 </div>
                 <!--                Logged in User-->
