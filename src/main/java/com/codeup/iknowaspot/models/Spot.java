@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +23,9 @@ public class Spot {
 
     @Column(columnDefinition = "TEXT NOT NULL")
     private String description;
+
+    @Column(columnDefinition = "TEXT NOT NULL")
+    private String address;
 
     @Column(columnDefinition = "TEXT NOT NULL")
     private String tags;
@@ -50,6 +52,7 @@ public class Spot {
     public Spot(String title, String description, Double latitude, Double longitude, User user, String tags, Set<User> saved) {
         this.title = title;
         this.description = description;
+        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.user = user;
@@ -74,6 +77,14 @@ public class Spot {
         this.description = description;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public long getId() {
         return id;
     }
@@ -84,8 +95,11 @@ public class Spot {
 
     public User getUser() { return user; }
 
+<<<<<<< HEAD
     public void setUser(User user){ this.user = user; }
 
+=======
+>>>>>>> aa38f30fd7abedaab95664743097b1a2ce5ce2ac
     public double getLatitude() {
         return latitude;
     }
