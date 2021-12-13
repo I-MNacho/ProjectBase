@@ -10,6 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
 <body class="container-fluid">
+<div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
 <nav th:replace="partials/navbar.html :: navbar"></nav>
 
 <div class="row no-gutters everything-container">
@@ -211,6 +212,7 @@ function showIndividualSpotView(e){
         if (seeIfUserMadeSpot(spot_id)){
             document.getElementById("youCreatedThisSpot").style.display = "block";
             document.getElementById("edit-spot-button").innerHTML = '<a href="/spots/edit/'+ spot_id + '" class="btn-sm btn-secondary">Edit</a>';
+            document.getElementById("delete-spot-button").innerHTML = '<a href="/spot/'+ spot_id + '/delete" class="btn-sm btn-secondary">Delete</a>';
         } else document.getElementById("youCreatedThisSpot").style.display = "none";
         if (seeIfUserSavedSpot(spot_id)){
             // document.getElementById("spot-save-button").innerText = `&hearts;`
@@ -226,7 +228,12 @@ function showIndividualSpotView(e){
     document.getElementById("spot-title").innerText = title;
     document.getElementById("spot-description").innerText = description;
     document.getElementById("spot-tags").innerText = "Tags: " + tags;
-    document.getElementById("individual-spot-photo").innerHTML = `<img width="50%" src="${photoUrl}">`;
+    if (photoUrl === ""){
+        document.getElementById("individual-spot-photo").style.display = "none";
+    } else {
+        document.getElementById("individual-spot-photo").style.display = "block";
+        document.getElementById("individual-spot-photo").innerHTML = `<img width="50%" src="${photoUrl}">`;
+    }
     document.getElementById("spot-events").innerHTML = getEventsFromSpotId(spot_id);
     try{
         document.getElementById("spot-schedule-event-button").href = `events/create/${spot_id}`;
@@ -367,7 +374,9 @@ function getCurrentLocation(){
     });
 
 }
-
+setTimeout(function() {
+    $('.alert').fadeOut('slow');
+}, 4000); // <-- time in milliseconds
 </script>
 </body>
 </html>
