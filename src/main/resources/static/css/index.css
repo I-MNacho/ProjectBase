@@ -29,6 +29,11 @@
     border-radius: 10px;
     box-shadow: 2px 3px 5px black;
 }
+#spot-save-button{
+    color: gray;
+    font-size: 30px;
+    text-decoration: none;
+}
 #map {
     -webkit-animation: fadeIn linear .75s;
     -moz-animation: fadeIn linear .75s;

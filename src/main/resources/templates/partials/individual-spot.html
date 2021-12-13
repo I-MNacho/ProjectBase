@@ -1,13 +1,16 @@
 <span th:fragment="individual-spot">
-    <button type="button" class="close pull-right" aria-label="Close" onclick="showWelcomePage()">
-        <span aria-hidden="true">&times;</span>
-    </button>
+    <span class="d-flex">
+        <a class="mr-auto" id="spot-save-button" title="Favorite this spot">&heartsuit;</a>
+        <button type="button" class="close pull-right" aria-label="Close" onclick="showWelcomePage()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </span>
 <!--<form th:action="@{/spots/create}" th:object="${spot}" method="POST" >-->
     <div id="individual-spot-view" class="justify-content-center">
         <h1 class="m-1" id="spot-title"></h1>
         <div id="spot-description"></div>
-        <div id="spot-tags" class="font-weight-bold"></div>
-        <div id="individual-spot-photo" class="font-weight-bold"></div>
+        <div id="spot-tags" class="font-weight-bold"></div><br>
+        <div id="individual-spot-photo" class="font-weight-bold"></div><br>
         <div style="background-color: lightgray; display: none" class="text-center p-2" id="youCreatedThisSpot">
             You created this spot<br>
             <span>
@@ -23,7 +26,6 @@
         </div>
         <div id="spot-actions" sec:authorize="isAuthenticated()">
             <a id="spot-schedule-event-button" class="btn btn-primary">Schedule Event</a><br>
-            <a id="spot-save-button" uk-icon="heart" title="Favorite this spot"></a>
         </div>
     </div>
     <!--basic form for submitting a spot and saving it to the database... more needs to be added-->

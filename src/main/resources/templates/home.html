@@ -56,9 +56,17 @@
 <!--    Create spots object from thymeleaf spot model-->
 const spots = [[${spots}]];
 const events = [[${events}]];
-const userId = [[${userId}]]
+const userId = [[${userId}]];
+const userSpots = [[${userSpots}]];
+const userSavedSpots = [[${userSavedSpots}]]
+var individualSpotPopup;
+console.log("All spots: ")
 console.log(spots);
-console.log("User Id is: " + userId)
+console.log("User's saved spots: ")
+console.log(userSavedSpots)
+// console.log("User spots are: ");
+// console.log(userSpots);
+// console.log("User Id is: " + userId)
 
 var spotsGeoJson = [];
 //Function for creating map data with the Thymeleaf spot model
@@ -116,6 +124,11 @@ function updateMapWithSearchSpots(){
 }
 //Function for closing the right-side view and bringing back the welcome page
 function showWelcomePage(){
+    //Deletes the createASpotMarker and individualSpotMarker if it exists
+    try{
+    createASpotMarker.remove();
+    individualSpotPopup.remove();
+    } catch (e){}
     document.getElementById("welcome").style.display = "block";
     document.getElementById("create-a-spot").style.display = "none";
     document.getElementById("individual-spot").style.display = "none";
@@ -154,6 +167,7 @@ map.on('mouseenter', 'spots', function () {
 map.on('mouseleave', 'spots', function () {
     map.getCanvas().style.cursor = '';
 });
+
 //When clicking a spot, it will change the right-side view to view all the details
 map.on('click', 'spots', (e) => {
 // Copy details of the spot that was clicked on
@@ -167,7 +181,7 @@ map.on('click', 'spots', (e) => {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
     //Show a popup
-    new mapboxgl.Popup()
+    individualSpotPopup = new mapboxgl.Popup()
         .setLngLat(coordinates)
         .setHTML(`<h5 class="m-2">${title}</h5>`)
         .addTo(map);
@@ -181,11 +195,17 @@ function showIndividualSpotView(e){
     // Set data in spot view for spot
     const {spot_id, title, description, tags, photoUrl} = e.features[0].properties;
     try{
-        if (userId.toString() === spot_id){
+        if (seeIfUserMadeSpot(spot_id)){
             document.getElementById("youCreatedThisSpot").style.display = "block";
-        }
+        } else document.getElementById("youCreatedThisSpot").style.display = "none";
+        if (seeIfUserSavedSpot(spot_id)){
+            // document.getElementById("spot-save-button").innerText = `&hearts;`
+            document.getElementById("spot-save-button").style.color = "red";
+        } else{
+            // document.getElementById("spot-save-button").innerText = `&#9825;`
+            document.getElementById("spot-save-button").style.color = "gray";}
     } catch (e){
-
+    //    Will catch the error if user is not logged in
     }
 
     console.log(e.features[0].properties)
@@ -199,6 +219,24 @@ function showIndividualSpotView(e){
     } catch{
         console.log("Cannot create spot_id if not logged in")
     }
+}
+function seeIfUserMadeSpot(spot_id){
+    var userMadeSpot = false;
+    userSpots.forEach(userSpot=>{
+        if (spot_id.toString() === userSpot.id.toString()){
+            userMadeSpot = true;
+        }
+    })
+    return userMadeSpot;
+}
+function seeIfUserSavedSpot(spot_id){
+    var userSavedSpot = false;
+    userSavedSpots.forEach(savedSpot=>{
+        if (spot_id.toString() === savedSpot.id.toString()){
+            userSavedSpot = true;
+        }
+    });
+    return userSavedSpot;
 }
 //Gets spot events on spot marker click
 function getEventsFromSpotId(spot_id){
