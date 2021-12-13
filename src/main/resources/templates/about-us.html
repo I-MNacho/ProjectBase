@@ -7,82 +7,165 @@
     <div th:replace="partials/bootstrap-header.html"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/968ac4e7b1.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" th:href="@{/css/about-us.css}">
+
 </head>
 
 <nav th:replace="partials/navbar.html :: navbar"></nav>
 
 <body class="container-fluid">
 
-<div class="">
-    <div class="about-info">
-        <h1>About Us?</h1>
-        <p>It's never about us, is it?</p>
-        <br>
-        <p>We are here for you! More importantly, our users and their experience is what matters most.</p>
-        <p>We are here for a good time and a long time, so buckle in and get to know this amazing quad
-            squad.</p>
+<div>
+    <h3 class="ml-3 mb-3 mt-3">Get To Know The Team</h3>
+</div>
+
+
+<div class="row m-3 d-flex justify-content-between">
+
+    <div class="card row" style="width: 18rem; height: auto">
+        <img src="/images/Albert.png" class="card-img-top" alt="...">
+        <div class="card-body row">
+            <h3 class="mb-3">Albert Dominguez</h3>
+            <div>
+                <p>
+                    Full Stack Developer with experience in front-end languages, as well as back-end languages such as
+                    Java, C#, Spring MVC, and MySQL. I am looking forward to leveraging my fast-learning capabilities,
+                    critical thinking, and problem solving skills to create secure, fast, easy-to-read, and efficient
+                    code. Past experience includes customer service, management, and sales.
+                </p>
+            </div>
+            <form class="d-flex row-1 my-2 creator-trio">
+                <div class="" style="margin-top: auto">
+                    <h2 class="mr-3">
+                        <a class="creator-icon" href="https://www.linkedin.com/in/albert-dominguez/"
+                           target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </h2>
+                </div>
+                <div style="margin-top: auto">
+                    <h2>
+                        <div>
+                            <a class="creator-icon" href="https://github.com/CozyLaptop"
+                               target="_blank">
+                                <i style="color: black;" class="fab fa-github-square"></i>
+                            </a>
+                        </div>
+                    </h2>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div class="contact-info" id="team">
-        <div class="row">
-            <div id="Shelby" class="col-lg-4 col-md-4 developer-div">
-                <img src="/images/Shelby.jpeg" class="d-block w-100" alt="...">
-                <h3 class="developers">Shelby Davis</h3>
-                <form class="d-flex row-1 my-2 creator-trio">
-                    <a class="creator-icon w-25 h-25" href="https://www.linkedin.com/in/shelby-davis-web-dev/"
-                       target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a class="creator-icon w-25 h-25" href="https://github.com/sh3lbsd" target="_blank"><i
-                            class="fab fa-github-square"></i></a>
-                </form>
+    <div class="card" style="width: 18rem; height: auto">
+        <img src="/images/Ignacio_Mares_photo.jpg" class="card-img-top" alt="...">
+        <div class="card-body row">
+            <h3 class="mb-4">Ignacio Mares</h3>
+            <div>
+                <p>
+                    Passionate Full-Stack Software Developer and former Sales Manager with experience in conflict
+                    resolution, leadership, communication, teamwork, client side resolution and planning. Experienced
+                    manager and team-lead with strong organizational and people skills. My natural curiosity to learn
+                    and detail-oriented nature has given me appreciation for technology and has inspired the transition
+                    into full-time web and software development.
+                </p>
             </div>
 
-            <div id="Albert" class="col-lg-4 col-md-4 developer-div">
-                <h3 class="developers">Albert Dominguez</h3>
-                <form class="d-flex row-1 my-2 creator-trio">
-                    <a class="creator-icon" href="https://www.linkedin.com/in/albert-dominguez/"
-                       target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a class="creator-icon" href="https://github.com/CozyLaptop" target="_blank"><i
-                            class="fab fa-github-square"></i></a>
-                </form>
-            </div>
+            <form class="d-flex row-1 my-2 creator-trio position-relative bottom-0 start-0">
+                <div  style="margin-top: auto">
+                    <h2 class="mr-3">
+                        <a class="creator-icon" href="https://www.linkedin.com/in/ignaciomares/"
+                           target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </h2>
+                </div>
+                <div style="margin-top: auto">
+                    <h2>
+                        <div>
+                            <a class="creator-icon" href="https://github.com/I-MNacho"
+                               target="_blank">
+                                <i style="color: black;" class="fab fa-github-square"></i>
+                            </a>
+                        </div>
+                    </h2>
+                </div>
 
-            <div id="Kristen" class="col-lg-4 col-md-4 developer-div">
-                <img src="/images/Kristen.jpeg" class="d-block w-100" alt="...">
-                <h3 class="developers">Kristen Wilson</h3>
-                <form class="d-flex row-1 my-2 creator-trio">
-                    <a class="creator-icon" href="https://www.linkedin.com/in/kristen-wilson614/"
-                       target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a class="creator-icon" href="https://github.com/Wils-Kris5" target="_blank"><i
-                            class="fab fa-github-square"></i></a>
-                </form>
-            </div>
+            </form>
+        </div>
+    </div>
 
-            <div id="Ignacio" class="col-lg-4 col-md-4 developer-div">
-                <img src="/images/Ignacio_Mares_photo.jpg" class="d-block w-100" alt="...">
-                <h3 class="developers">Ignacio Mares</h3>
-                <form class="d-flex row-1 my-2 creator-trio">
-                    <a class="creator-icon" href="https://www.linkedin.com/in/ignaciomares/"
-                       target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a class="creator-icon" href="https://github.com/I-MNacho" target="_blank"><i
-                            class="fab fa-github-square"></i></a>
+    <div class="card" style="width: 18rem; height: auto">
+        <img src="/images/Kristen.jpeg" class="card-img-top" alt="...">
+        <div class="card-body row">
+            <h3 class="">Kristen Wilson</h3>
+            <div class="mb-3">
+                <p>Aspiring programmer looking to prove her coding and software design skills through an entry-level
+                    position that can offer her career growth support. The desire to have a career in creativity and
+                    problem-solving that provides growth and mobility led to a focus in web development. Eager and
+                    motivated to apply her expertise in Java.
+                </p>
+            </div>
+            <div>
+                <form class="d-flex row-1 my-2 creator-trio position-relative bottom-0 start-0">
+                    <div style="margin-top: auto">
+                        <h2 class="mr-3">
+                            <a class="creator-icon" href="https://www.linkedin.com/in/kristen-wilson614/"
+                               target="_blank">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        </h2>
+                    </div>
+                    <div style="margin-top: auto">
+                        <h2>
+                            <div>
+                                <a class="creator-icon" href="https://github.com/Wils-Kris5"
+                                   target="_blank">
+                                    <i style="color: black;" class="fab fa-github-square"></i>
+                                </a>
+                            </div>
+                        </h2>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-<!--    <div>-->
-
-<!--        <div class="team-info">-->
-<!--            <h2 class="team-names">Shelby Davis</h2>-->
-<!--            <h2 class="team-names">Ignacio Mares</h2>-->
-<!--            <h2 class="team-names">Kristen Wilson</h2>-->
-<!--            <h2 class="team-names">Albert Dominguez</h2>-->
-<!--        </div>-->
-
-<!--    </div>-->
+    <div class="card" style="width: 18rem; height: auto">
+        <img src="/images/Shelby.jpeg" class="card-img-top" alt="...">
+        <div class="card-body row">
+            <h3 class="mb-5">Shelby Davis</h3>
+            <div>
+                <p>
+                    Inquisitive Software Developer with a degree in communication and experience in public relations. My
+                    marketing background helped to develop me as a communicator, advocate, and critical thinker. As the
+                    industry shifted due to the pandemic, my personal network helped me to discover how I could leverage
+                    my creative talents as a web developer. Looking to leverage my technical and creative skills to
+                    create dynamic websites that drive traffic and engagement.
+                </p>
+            </div>
+            <form class="d-flex align-items-end row-1 my-2 creator-trio position-relative bottom-0 start-0">
+                <div style="margin-top: auto">
+                    <h2 class="mr-3">
+                        <a class="creator-icon" href="https://www.linkedin.com/in/shelby-davis-web-dev/"
+                           target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </h2>
+                </div>
+                <div style="margin-top: auto">
+                    <h2>
+                        <div>
+                            <a class="creator-icon" href="https://github.com/sh3lbsd"
+                               target="_blank">
+                                <i style="color: black;" class="fab fa-github-square"></i>
+                            </a>
+                        </div>
+                    </h2>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-
 
 <div th:replace="partials/bootstrap-footer.html"></div>
 
