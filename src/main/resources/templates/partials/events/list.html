@@ -5,7 +5,7 @@
         /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
         display: grid;
         /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
-        grid-template-rows: min-content 1fr;
+        grid-template-rows: min-content min-content 1fr;
         /*Body takes up full height of viewport*/
         height: 100vh;
     }
@@ -28,6 +28,7 @@
         grid-template-columns: 250px 1fr;
         border-radius: 8px;
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        height: 100%;
     }
     .event-card .footer-actions {
         display: flex;
@@ -111,6 +112,7 @@
 </style>
 <div class="events-list-container container-fluid">
 <nav th:replace="partials/navbar.html :: navbar"></nav>
+<h3>Events</h3>
 <div class="grid">
     <div th:if="${events.empty}">
         <p colspan="2"> No Events Available </p>
