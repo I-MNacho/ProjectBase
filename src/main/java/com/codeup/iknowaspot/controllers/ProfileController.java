@@ -32,14 +32,14 @@ public class ProfileController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userInDb = userRepository.getById(user.getId());
         model.addAttribute("user", userInDb);
-        return "/profile";
+        return "profile";
     }
 
     @GetMapping("/profile/view/{id}")
     public String profilePage(Model model, @PathVariable long id) {
         User userInDb = userRepository.getById(id);
         model.addAttribute("user", userInDb);
-        return "/profile";
+        return "profile";
     }
 
     @GetMapping("/profile/edit")
