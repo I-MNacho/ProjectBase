@@ -95,11 +95,8 @@ public class Spot {
 
     public User getUser() { return user; }
 
-<<<<<<< HEAD
     public void setUser(User user){ this.user = user; }
 
-=======
->>>>>>> aa38f30fd7abedaab95664743097b1a2ce5ce2ac
     public double getLatitude() {
         return latitude;
     }
