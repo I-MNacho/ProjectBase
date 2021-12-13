@@ -1,14 +1,14 @@
 <div th:fragment="welcome-to-iknowaspot">
-    <h1>Welcome to</h1>
-    <img th:src="@{images/iknowaspotlogo.png}" alt="I Know A Spot Logo">
-    <h2>
+    <h1 class="m-1">Welcome to</h1>
+    <img class="m-1" th:src="@{images/iknowaspotlogo.png}" alt="I Know A Spot Logo">
+    <h2 class="m-1">
         Click on a map marker to view the details.
     </h2>
-    <h4 class="font-weight-bold">or</h4><br>
+    <h4 class="font-weight-bold m-2">or</h4>
     <div sec:authorize="isAuthenticated()">
-        <button class="btn btn-primary" onclick="showCreateASpotViewLoggedIn()">Create A Spot</button>
+        <button style="width: 80%" class="btn btn-primary" onclick="showCreateASpotViewLoggedIn()">Create A Spot</button>
     </div>
     <div sec:authorize="isAnonymous()">
-        <button style="width: 50%" class="btn-lg btn-primary" onclick="showCreateASpotViewNotLoggedIn()">Create A Spot</button>
+        <button style="width: 80%" class="btn-lg btn-primary" onclick="showCreateASpotViewNotLoggedIn()">Create A Spot</button>
     </div>
 </div>

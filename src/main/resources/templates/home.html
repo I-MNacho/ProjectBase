@@ -50,11 +50,23 @@
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
 <script src="/keys.js"></script>
 <script src="/js/weather_map.js"></script>
+<script src="/js/image-upload.js"></script>
+<script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
 <script th:inline="javascript">
 <!--    Create spots object from thymeleaf spot model-->
 const spots = [[${spots}]];
 const events = [[${events}]];
+const userId = [[${userId}]];
+const userSpots = [[${userSpots}]];
+const userSavedSpots = [[${userSavedSpots}]]
+var individualSpotPopup;
+console.log("All spots: ")
 console.log(spots);
+console.log("User's saved spots: ")
+console.log(userSavedSpots)
+// console.log("User spots are: ");
+// console.log(userSpots);
+// console.log("User Id is: " + userId)
 
 var spotsGeoJson = [];
 //Function for creating map data with the Thymeleaf spot model
@@ -67,7 +79,8 @@ function updateMap(spots) {
                title: spot.title,
                description: spot.description,
                photo: spot.profilePhotoURL,
-               tags: spot.tags
+               tags: spot.tags,
+               photoUrl: spot.spotPhotoURL
            },
            geometry: {
                type: "Point",
@@ -96,7 +109,7 @@ function updateMapWithSearchSpots(){
     spots.forEach(spot=> {
         if (spot.title.toLowerCase().includes(searchValue)||spot.tags.toLowerCase().includes(searchValue)||spot.description.toLowerCase().includes(searchValue)){
             spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
-                '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
+                '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'", "photoUrl" : "'+spot.spotPhotoURL+'"},' +
                 '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
         }
     });
@@ -123,6 +136,11 @@ function updateMapWithSearchSpots(){
 }
 //Function for closing the right-side view and bringing back the welcome page
 function showWelcomePage(){
+    //Deletes the createASpotMarker and individualSpotMarker if it exists
+    try{
+    createASpotMarker.remove();
+    individualSpotPopup.remove();
+    } catch (e){}
     document.getElementById("welcome").style.display = "block";
     document.getElementById("create-a-spot").style.display = "none";
     document.getElementById("individual-spot").style.display = "none";
@@ -161,6 +179,7 @@ map.on('mouseenter', 'spots', function () {
 map.on('mouseleave', 'spots', function () {
     map.getCanvas().style.cursor = '';
 });
+
 //When clicking a spot, it will change the right-side view to view all the details
 map.on('click', 'spots', (e) => {
 // Copy details of the spot that was clicked on
@@ -174,9 +193,9 @@ map.on('click', 'spots', (e) => {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
     //Show a popup
-    new mapboxgl.Popup()
+    individualSpotPopup = new mapboxgl.Popup()
         .setLngLat(coordinates)
-        .setHTML(`<h5>${title}</h5>`)
+        .setHTML(`<h5 class="m-2">${title}</h5>`)
         .addTo(map);
     showIndividualSpotView(e);
 });
@@ -186,16 +205,50 @@ function showIndividualSpotView(e){
     document.getElementById("create-a-spot").style.display = "none";
     document.getElementById("individual-spot").style.display = "block";
     // Set data in spot view for spot
-    const {spot_id, title, description, tags} = e.features[0].properties;
+    const {spot_id, title, description, tags, photoUrl} = e.features[0].properties;
+    try{
+        if (seeIfUserMadeSpot(spot_id)){
+            document.getElementById("youCreatedThisSpot").style.display = "block";
+        } else document.getElementById("youCreatedThisSpot").style.display = "none";
+        if (seeIfUserSavedSpot(spot_id)){
+            // document.getElementById("spot-save-button").innerText = `&hearts;`
+            document.getElementById("spot-save-button").style.color = "red";
+        } else{
+            // document.getElementById("spot-save-button").innerText = `&#9825;`
+            document.getElementById("spot-save-button").style.color = "gray";}
+    } catch (e){
+    //    Will catch the error if user is not logged in
+    }
+
+    console.log(e.features[0].properties)
     document.getElementById("spot-title").innerText = title;
     document.getElementById("spot-description").innerText = description;
     document.getElementById("spot-tags").innerText = "Tags: " + tags;
+    document.getElementById("individual-spot-photo").innerHTML = `<img width="50%" src="${photoUrl}">`;
     document.getElementById("spot-events").innerHTML = getEventsFromSpotId(spot_id);
     try{
         document.getElementById("spot-schedule-event-button").href = `events/create/${spot_id}`;
     } catch{
         console.log("Cannot create spot_id if not logged in")
     }
+}
+function seeIfUserMadeSpot(spot_id){
+    var userMadeSpot = false;
+    userSpots.forEach(userSpot=>{
+        if (spot_id.toString() === userSpot.id.toString()){
+            userMadeSpot = true;
+        }
+    })
+    return userMadeSpot;
+}
+function seeIfUserSavedSpot(spot_id){
+    var userSavedSpot = false;
+    userSavedSpots.forEach(savedSpot=>{
+        if (spot_id.toString() === savedSpot.id.toString()){
+            userSavedSpot = true;
+        }
+    });
+    return userSavedSpot;
 }
 //Gets spot events on spot marker click
 function getEventsFromSpotId(spot_id){
@@ -208,7 +261,6 @@ function getEventsFromSpotId(spot_id){
     if (foundEvents === ""){
         return "No events found<br><hr>"
     }
-    console.log(foundEvents)
     return foundEvents;
 }
 //When click on create a spot button, show the view for create a spot and disable other views
@@ -316,7 +368,5 @@ function getCurrentLocation(){
 }
 
 </script>
-<script src="/js/image-upload.js"></script>
-<script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
 </body>
 </html>
