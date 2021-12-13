@@ -22,12 +22,14 @@
         align-items: flex-start;
         overflow: auto;
     }
-    .card {
+    .event-card {
         display: grid;
         /*Has two columns: 1 is 250px and the other takes up the remaining space*/
         grid-template-columns: 250px 1fr;
+        border-radius: 8px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     }
-    .card .footer-actions {
+    .event-card .footer-actions {
         display: flex;
         /*Footer items are at the right side*/
         justify-content: flex-end;
@@ -35,22 +37,22 @@
         align-content: center;
         gap: 8px;
     }
-    .card .map {
+    .event-card .map {
         width: 100%;
         height: 100%;
         border-radius: 6px;
     }
-    .card .body {
+    .event-card .body {
         padding: 16px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         gap: 12px;
     }
-    .card .body h3 {
+    .event-card .body h3 {
         margin: 0;
     }
-    .card .body h6 {
+    .event-card .body h6 {
         margin: 0;
     }
     h2 {
@@ -79,14 +81,32 @@
         justify-content: space-between;
     }
     @media only screen and (max-width: 500px) {
-        .card {
+        .event-card {
             display: flex;
             flex-wrap: wrap;
+            width: 100%;
         }
-        .card .map {
-            width: calc(100vw - 32px);
+        .event-card .map {
+            width: 100%;
             height: 300px;
         }
+        .event-card .body {
+            width: 100%;
+        }
+        .grid {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    .heart-icon {
+        font-size: 30px;
+        text-decoration: none;
+    }
+    .gray {
+        color: gray;
+    }
+    .red {
+        color: red;
     }
 </style>
 <div class="events-list-container container-fluid">
@@ -95,13 +115,13 @@
     <div th:if="${events.empty}">
         <p colspan="2"> No Events Available </p>
     </div>
-    <div th:id="${event.id}" th:each="event : ${events}" class="card">
+    <div th:id="${event.id}" th:each="event : ${events}" class="event-card">
         <div class="map"></div>
         <div class="body">
             <div class="header-details">
                 <h3 class="title" th:text="${event.title}"></h3>
-                <a th:href="@{|/events/unsave/${event.id}|}" th:if="${event.saved.contains(user)}"  uk-icon="icon: heart" title="Un-Favorite" style="background-color: pink"></a>
-                <a th:href="@{|/events/save/${event.id}|}" th:if="${!event.saved.contains(user)}"  uk-icon="heart" title="Favorite"></a>
+                <a th:href="@{|/events/unsave/${event.id}|}" th:if="${event.saved.contains(user)}" title="Un-Favorite" class="heart-icon red">&heartsuit;</a>
+                <a th:href="@{|/events/save/${event.id}|}" th:if="${!event.saved.contains(user)}" title="Favorite" class="heart-icon gray">&heartsuit;</a>
             </div>
             <p th:text="${event.description}"></p>
             <h6>Starts</h6>

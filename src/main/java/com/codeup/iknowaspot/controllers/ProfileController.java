@@ -10,10 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,14 +31,16 @@ public class ProfileController {
     public String profilePage(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userInDb = userRepository.getById(user.getId());
-        List<Event> usersEvents = eventRepository.findAllByUser(userInDb);
-        model.addAttribute("events", usersEvents);
-        model.addAttribute("spots", userInDb.getSpots());
-        model.addAttribute("savedSpots", userInDb.getSavedSpots());
         model.addAttribute("user", userInDb);
         return "/profile";
     }
 
+    @GetMapping("/profile/view/{id}")
+    public String profilePage(Model model, @PathVariable long id) {
+        User userInDb = userRepository.getById(id);
+        model.addAttribute("user", userInDb);
+        return "/profile";
+    }
 
     @GetMapping("/profile/edit")
     public String showEditPage(Model model) {

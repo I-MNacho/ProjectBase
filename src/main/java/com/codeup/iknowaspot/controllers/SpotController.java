@@ -43,7 +43,32 @@ public class SpotController {
     @GetMapping("/spots")
     public String index(Model model) {
         model.addAttribute("spots", spotsDao.findAll());
-        return "/spots/index";
+        try {
+            User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User author = usersDao.getById(principal.getId());
+            model.addAttribute("user", author);
+        } catch(Exception e) {
+            model.addAttribute("user", new User());
+        }
+        return "/spots/list";
+    }
+
+    @GetMapping("/spots/mine")
+    public String getMySpots(Model model) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        model.addAttribute("user", author);
+        model.addAttribute("spots", spotsDao.findAllByUser(author));
+        return "/spots/list";
+    }
+
+    @GetMapping("/spots/favorites")
+    public String getMyFavoriteSpots(Model model) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        model.addAttribute("user", author);
+        model.addAttribute("spots", spotsDao.findAllBySaved(author));
+        return "/spots/list";
     }
 
     @GetMapping("/spots/{id}")
@@ -54,18 +79,6 @@ public class SpotController {
         model.addAttribute("spot", spot);
         return "/spots/one-spot";
     }
-
-
-    //create spot mapping
-    // takes latitude and longitude as url parameters to create Spot model
-//    @GetMapping("/spots/create")
-//    public String createSpot(@RequestParam(name="lat") Double lat, @RequestParam(name="lng") Double lng, Model model) {
-//        Spot spot = new Spot();
-//        spot.setLatitude(lat);
-//        spot.setLongitude(lng);
-//        model.addAttribute("spot", spot);
-//        return "spots/create";
-//    }
 
     @GetMapping("/spots/edit/{id}")
     public String updateSpot(Model model, @PathVariable long id){
@@ -83,23 +96,23 @@ public class SpotController {
     }
 
     @GetMapping("/spots/save/{id}")
-    public String saveSpot(@PathVariable long id){
+    public String saveSpot(@PathVariable long id, @RequestHeader("Referer") String referer){
         Spot spot = spotsDao.getById(id);
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
-        author.addSpot(spot);
-        usersDao.save(author);
-        return "redirect:/profile";
+        spot.favorite(author);
+        spotsDao.save(spot);
+        return "redirect:" + referer;
     }
 
     @GetMapping("/spots/unsave/{id}")
-    public String unsaveSpot(@PathVariable long id){
+    public String unsaveSpot(@PathVariable long id, @RequestHeader("Referer") String referer){
         Spot spot = spotsDao.getById(id);
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
-        author.removeSpot(spot);
-        usersDao.save(author);
-        return "redirect:/profile";
+        spot.unfavorite(author);
+        spotsDao.save(spot);
+        return "redirect:" + referer;
     }
 
     //inserting spot
@@ -121,14 +134,12 @@ public class SpotController {
         return "redirect:/spots";
     }
 
-
     //delete Spot
     @GetMapping("spot/{id}/delete")
     public String deleteSpot(@PathVariable long id, RedirectAttributes redirAttrs) {
         redirAttrs.addFlashAttribute("success", "Successfully deleted spot.");
         spotsDao.deleteById(id);
-        return "redirect:/home";
+        return "redirect:" + referer;
     }
-
 
 }

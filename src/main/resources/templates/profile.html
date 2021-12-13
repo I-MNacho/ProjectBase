@@ -44,7 +44,7 @@
             }
         </style>
         <div class="page-container">
-            <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+            <nav th:replace="partials/navbar.html :: navbar"></nav>
         <!--add more user text-->
             <div class="profile-page">
                 <div class="profile-details">
@@ -53,13 +53,13 @@
                     <div class="profile-info">
                         <div>
                             <strong>Username</strong>
-                            <div sec:authentication="name"></div>
+                            <div th:text="${user.username}"></div>
                         </div>
                         <div>
                             <strong>Email</strong>
                             <div th:text="${user.email}"></div>
                         </div>
-                        <a href="/profile/edit">Edit Profile</a>
+                        <a href="/profile/edit" th:if="${#authentication.name == user.username}">Edit Profile</a>
                     </div>
                 </div>
                 <strong>Bio</strong>
@@ -68,6 +68,10 @@
                     <a href="/events/mine" class="btn btn-primary">My Events</a>
                     <a href="/events/favorites" class="btn btn-primary">Favorite Events</a>
                     <a href="/events/attending" class="btn btn-primary">Events I'm Attending</a>
+                </div>
+                <div class="tab-bar">
+                    <a href="/spots/mine" class="btn btn-primary">My Spots</a>
+                    <a href="/spots/favorites" class="btn btn-primary">Favorite Spots</a>
                 </div>
             </div>
         </div>

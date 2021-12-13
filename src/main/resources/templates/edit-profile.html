@@ -71,7 +71,7 @@
     }
 </style>
 <div class="page-container">
-    <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
+    <nav th:replace="partials/navbar.html :: navbar"></nav>
     <form th:action="@{/profile/edit}" method="post" th:object="${user}" >
         <input type="hidden" name="id" th:field="${user.id}">
         <input type="hidden" name="password" th:field="${user.password}">
