@@ -49,7 +49,7 @@ public class SpotController {
         } catch(Exception e) {
             model.addAttribute("user", new User());
         }
-        return "/spots/index";
+        return "/spots/list";
     }
 
     @GetMapping("/spots/{id}")
