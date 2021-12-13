@@ -21,9 +21,8 @@ VALUES ("Family BBQ Spot!", "Great place to take the family on the weekend for a
 INSERT INTO spots (title, description, tags, latitude, longitude, spot_photourl, user_id)
 VALUES ("Best Spot for Ribs!", "Little Hole in the wall bbq joint, with tender, off-the-bone ribs.", "bbq, ribs, food", 29.5209699,-98.6030328, "https://lh5.googleusercontent.com/p/AF1QipOBYnj-fdPLFRj27ScprGZmB3arl15-H58TUdrb=w411-h240-k-no", 1);
 
-
 INSERT INTO spots (title, description, tags, latitude, longitude, spot_photourl, user_id)
-VALUES ("Street Taco Spot!","Straightforward food truck offering classic Mexican bites, including tacos & tortas.", "street, tacos, tortas, mexican", 29.4508462,-98.5214042, "https://lh5.googleusercontent.com/p/AF1QipPznvWHCsecFb5J92rr_6FoFV5CX7GZqSZ4VTQI=w408-h417-k-no", 1);
+VALUES ("Street Taco Spot!", "Straightforward food truck offering classic Mexican bites, including tacos & tortas.", "street, tacos, tortas, mexican", 29.4508462,-98.5214042, "https://lh5.googleusercontent.com/p/AF1QipPznvWHCsecFb5J92rr_6FoFV5CX7GZqSZ4VTQI=w408-h417-k-no", 4);
 
 INSERT INTO spots (title, description, tags, latitude, longitude, spot_photourl, user_id)
 VALUES ("Coffee and Pinball Spot!", "Unique coffee shop with pinball machines, board games and books. It’s a great place to work and take small relaxing breaks!", "pinball, board-games, books, coffee ", 29.5209423,-98.6030329, "https://lh5.googleusercontent.com/p/AF1QipPXJ4PcCdDKE50U6Aif62wlOu-hn0utf4pdoJ9R=w408-h408-k-no", 1);
