@@ -24,6 +24,9 @@ public class Spot {
     @Column(columnDefinition = "TEXT NOT NULL")
     private String description;
 
+    @Column(columnDefinition = "TEXT NULL")
+    private String address;
+
     @Column(columnDefinition = "TEXT NOT NULL")
     private String tags;
 
@@ -71,6 +74,14 @@ public class Spot {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public long getId() {

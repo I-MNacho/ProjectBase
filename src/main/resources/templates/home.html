@@ -276,16 +276,7 @@ function seeIfUserSavedSpot(spot_id){
 }
 //Gets spot events on spot marker click
 function getEventsFromSpotId(spot_id){
-    var foundEvents = "";
-    events.forEach(event=>{
-       if (parseInt(event.spot.id) === parseInt(spot_id)){
-           foundEvents += (event.title + "<br>" + event.description + "<br><hr>");
-       }
-    });
-    if (foundEvents === ""){
-        return "No events found<br><hr>"
-    }
-    return foundEvents;
+    return `<a href="/events/spot/${spot_id}" class="btn text-primary">View Events</a>`
 }
 //When click on create a spot button, show the view for create a spot and disable other views
 function showCreateASpotViewLoggedIn(){
