@@ -106,7 +106,7 @@
         color: gray;
     }
     .red {
-        color: pink;
+        color: red;
     }
 </style>
 <div class="events-list-container">
@@ -138,7 +138,6 @@
     <script th:inline="javascript">
         $(document).ready(() => {
             const spots = [[${spots}]];
-            initMap({})
             spots.forEach((spot)=> {
                 // Hardcoded to san antonio
                 const {longitude, latitude, title, description} = spot
