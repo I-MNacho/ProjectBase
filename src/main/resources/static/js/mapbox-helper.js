@@ -139,3 +139,10 @@ function addMapWithLocation({container, center=[-98.491142, 29.424349], popup, z
     map.addMarker({center, popup})
     return map;
 }
+
+function reverseGeocodeFromCreateASpotButton({latitude, longitude}) {
+    const baseUrl = 'https://api.mapbox.com';
+    const endPoint = '/geocoding/v5/mapbox.places/';
+    return fetch(baseUrl + endPoint + longitude + "," + latitude + '.json' + "?" + 'access_token=' + MapboxAPIKey)
+        .then(res=>res.json()).then(res=>res.features[0])
+}

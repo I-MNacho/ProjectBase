@@ -109,6 +109,10 @@
     .red {
         color: red;
     }
+    .start-end-time {
+        display: flex;
+        gap: 10px;
+    }
 </style>
 <div class="events-list-container container-fluid">
 <nav th:replace="partials/navbar.html :: navbar"></nav>
@@ -121,18 +125,42 @@
         <div class="map"></div>
         <div class="body">
             <div class="header-details">
-                <h3 class="title" th:text="${event.title}"></h3>
+                <h3 th:text="${event.title}"></h3>
                 <a th:href="@{|/events/unsave/${event.id}|}" th:if="${event.saved.contains(user)}" title="Un-Favorite" class="heart-icon red">&heartsuit;</a>
                 <a th:href="@{|/events/save/${event.id}|}" th:if="${!event.saved.contains(user)}" title="Favorite" class="heart-icon gray">&heartsuit;</a>
             </div>
             <p th:text="${event.description}"></p>
-            <h6>Starts</h6>
-            <span class="start"></span>
-            <h6>Ends</h6>
-            <span class="end"></span>
+            <div class="start-end-time">
+                <div>
+                    <h6>Starts</h6>
+                    <span class="start"></span>
+                </div>
+                <div>
+                    <h6>Ends</h6>
+                    <span class="end"></span>
+                </div>
+            </div>
+            <strong th:text="${event.attending.size() + ' attending'}"></strong>
+            <a class="google-maps-link" rel="noreferrer" target="_blank">Directions</a>
+            <a th:href="@{|/events/unrsvp/${event.id}|}" th:if="${event.attending.contains(user)}" class="btn text-secondary">Un-Attend</a>
+            <a th:href="@{|/events/rsvp/${event.id}|}" th:if="${!event.attending.contains(user)}" class="btn text-primary">Attend</a>
+            <div class="accordion">
+                <h3 th:text="${event.spot.title}"></h3>
+                <img th:src="${event.spot.spotPhotoURL}" width="100%">
+                <div class="header-details">
+                    <a th:href="@{|/spots/unsave/${event.spot.id}|}" th:if="${event.spot.saved.contains(user)}" title="Un-Favorite" class="btn text-secondary">Add to favorite spots</a>
+                    <a th:href="@{|/spots/save/${event.spot.id}|}" th:if="${!event.spot.saved.contains(user)}" title="Favorite" class="btn text-primary">Remove from favorites</a>
+                    <a th:href="@{|/profile/view/${event.spot.user.id}|}" th:text="${event.spot.user.username}" th:if="${#authentication.name != event.spot.user.username}"></a>
+                    <a uk-icon="pencil" th:href="@{|/spots/edit/${event.spot.id}|}" th:if="${#authentication.name == event.spot.user.username}"></a>
+                </div>
+                <p th:text="${event.spot.description}"></p>
+                <p th:text="${event.spot.tags}"></p>
+                <div class="footer-actions">
+                    <a th:href="@{|/events/spot/${event.spot.id}|}" class="btn text-primary">View more events at this spot</a>
+                </div>
+            </div>
             <div class="footer-actions">
-                <a th:href="@{|/events/unrsvp/${event.id}|}" th:if="${event.attending.contains(user)}" class="btn btn-secondary">Un-Attend</a>
-                <a th:href="@{|/events/rsvp/${event.id}|}" th:if="${!event.attending.contains(user)}" class="btn btn-primary">Attend</a>
+                <a th:href="@{|/profile/view/${event.user.id}|}" th:text="${event.user.username}" th:if="${#authentication.name != event.user.username}"></a>
                 <a uk-icon="pencil" th:href="@{|/events/view/${event.id}|}" th:if="${#authentication.name == event.user.username}"></a>
                 <a uk-icon="trash" th:href="@{|/events/delete/${event.id}|}" th:if="${#authentication.name == event.user.username}"></a>
             </div>
@@ -158,6 +186,9 @@
                 title,
                 description
             }
+            reverseGeocodeFromCreateASpotButton({latitude, longitude}).then(({place_name}) => {
+                eventElement.querySelector(".google-maps-link").href = `https://maps.google.com/?q=${place_name}`;
+            })
             addMapWithLocation({container, center, popup})
             eventElement.querySelector(".start").innerHTML = convertToLocalTime(event.startTime);
             eventElement.querySelector(".end").innerHTML =  convertToLocalTime(event.endTime);
