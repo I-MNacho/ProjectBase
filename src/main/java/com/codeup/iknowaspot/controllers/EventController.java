@@ -89,6 +89,22 @@ public class EventController {
         return "events/index";
     }
 
+    @GetMapping("/events/spot/{spot_id}")
+    public String listEventsForSpot(Model model, @PathVariable long spot_id) {
+        //sb wires uses eventsDao to list all events in the database & assign it to the events atrb.
+        List<Event> events = eventsDao.findAllBySpot(spotsDao.getById(spot_id));
+        model.addAttribute("events", events);
+        try {
+            User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User author = usersDao.getById(principal.getId());
+            model.addAttribute("user", author);
+        } catch(Exception e) {
+            model.addAttribute("user", new User());
+        }
+        //page shows to this bc its mapped here:  //
+        return "events/index";
+    }
+
     @GetMapping("/events/favorites")
     public String listMyFavoriteEvents(Model model) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
