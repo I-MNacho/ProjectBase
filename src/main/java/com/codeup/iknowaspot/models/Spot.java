@@ -25,9 +25,6 @@ public class Spot {
     private String description;
 
     @Column(columnDefinition = "TEXT NOT NULL")
-    private String address;
-
-    @Column(columnDefinition = "TEXT NOT NULL")
     private String tags;
 
     @Column(columnDefinition = "DOUBLE")
@@ -52,7 +49,6 @@ public class Spot {
     public Spot(String title, String description, Double latitude, Double longitude, User user, String tags, Set<User> saved) {
         this.title = title;
         this.description = description;
-        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.user = user;
@@ -75,14 +71,6 @@ public class Spot {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public long getId() {
