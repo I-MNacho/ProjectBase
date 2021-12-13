@@ -60,9 +60,20 @@ var spotsGeoJson = [];
 //Function for creating map data with the Thymeleaf spot model
 function updateMap(spots) {
     spots.forEach(spot=> {
-        spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
-            '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'"},' +
-            '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
+       spotsGeoJson.push({
+           type: "Feature",
+           properties: {
+               spot_id: spot.id,
+               title: spot.title,
+               description: spot.description,
+               photo: spot.profilePhotoURL,
+               tags: spot.tags
+           },
+           geometry: {
+               type: "Point",
+               coordinates: [spot.longitude, spot.latitude]
+           }
+       })
     });
 }
 updateMap(spots);
