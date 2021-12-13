@@ -78,6 +78,16 @@
         align-content: center;
         justify-content: space-between;
     }
+    @media only screen and (max-width: 500px) {
+        .card {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .card .map {
+            width: calc(100vw - 32px);
+            height: 300px;
+        }
+    }
 </style>
 <div class="events-list-container">
 <nav th:replace="partials/navbar.html :: navbar"></nav>

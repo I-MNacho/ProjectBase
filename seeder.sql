@@ -1,3 +1,5 @@
+use iKnowASpot_db;
+
 INSERT INTO spots (title, description, tags, latitude, longitude, spot_photourl, user_id)
 VALUES ("Beginner Hike Spot!", "A great place to take your family and relax.", "park, family, nature, beginner", 30.4147425, -97.7291051, "https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAap_uEArzb6_NDvg56MZvma2l_DnUjHQU8k2LvCJQqVMp1OVc7wzBydLWcbPZ4muIJXFKUvRN3Pzl-jySDeZxNlDGKCmdxHkO4FCmCAWEgc1LmLfy6Ia4J7q167ihAnZq4_ltWw8VvyhNY1pGPDr1qKHwGL9TtFu7Owq8ujnGXLu4EsKXI_0&3u1440&5m1&2e1&callback=none&key=AIzaSyDmuxiq8TwkxLdab3wjpsYYfnvMkVGqPlU&token=90583", 1);
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head lang="en">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Your profile</title>
         <div th:replace="partials/bootstrap-header.html"></div>
     </head>
@@ -16,6 +17,9 @@
             .profile-page {
                 padding: 16px;
                 overflow: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
             }
             .profile-details {
                 display: flex;
@@ -26,6 +30,18 @@
                 flex-direction: column;
                 justify-content: space-between;
             }
+            .no-photo {
+                width: 200px;
+                height: 200px;
+                background: lightgrey;
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                align-items: center;
+                justify-items: center;
+                text-align: center;
+                cursor: pointer;
+            }
         </style>
         <div class="page-container">
             <nav th:replace="partials/basic-navbar.html :: basic-navbar"></nav>
@@ -33,6 +49,7 @@
             <div class="profile-page">
                 <div class="profile-details">
                     <img id="profile-photo" th:src="${user.profilePhotoURL}" th:if="${user.profilePhotoURL != null}" width="200px" height="200px">
+                    <div class="no-photo" th:if="${user.profilePhotoURL == null}">No Photo</div>
                     <div class="profile-info">
                         <div>
                             <strong>Username</strong>
