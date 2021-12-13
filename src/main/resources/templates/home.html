@@ -9,9 +9,10 @@
     <div th:replace="partials/uikit-header.html"></div>
     <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
-<body class="container container-fluid">
+<body class="container-fluid">
+<nav th:replace="partials/navbar.html :: navbar"></nav>
+
 <div class="row no-gutters everything-container">
-    <nav th:replace="partials/navbar.html :: navbar"></nav>
 <!--    <div th:replace="partials/splash.html"></div>-->
     <div class="col-7">
         <div class="ml-2 mt-2 input-group" style="position: absolute; z-index: 2; width: 95%">
