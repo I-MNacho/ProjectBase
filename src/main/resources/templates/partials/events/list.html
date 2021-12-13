@@ -84,11 +84,29 @@
         .event-card {
             display: flex;
             flex-wrap: wrap;
+            width: 100%;
         }
         .event-card .map {
-            width: calc(100vw - 32px);
+            width: 100%;
             height: 300px;
         }
+        .event-card .body {
+            width: 100%;
+        }
+        .grid {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    .heart-icon {
+        font-size: 30px;
+        text-decoration: none;
+    }
+    .gray {
+        color: gray;
+    }
+    .red {
+        color: pink;
     }
 </style>
 <div class="events-list-container container-fluid">
@@ -102,8 +120,8 @@
         <div class="body">
             <div class="header-details">
                 <h3 class="title" th:text="${event.title}"></h3>
-                <a th:href="@{|/events/unsave/${event.id}|}" th:if="${event.saved.contains(user)}"  uk-icon="icon: heart" title="Un-Favorite" style="background-color: pink"></a>
-                <a th:href="@{|/events/save/${event.id}|}" th:if="${!event.saved.contains(user)}"  uk-icon="heart" title="Favorite"></a>
+                <a th:href="@{|/events/unsave/${event.id}|}" th:if="${event.saved.contains(user)}"  uk-icon="icon: heart" title="Un-Favorite">&heartsuit;</a>
+                <a th:href="@{|/events/save/${event.id}|}" th:if="${!event.saved.contains(user)}"  uk-icon="heart" title="Favorite">&heartsuit;</a>
             </div>
             <p th:text="${event.description}"></p>
             <h6>Starts</h6>

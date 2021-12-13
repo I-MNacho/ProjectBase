@@ -42,6 +42,13 @@ public class SpotController {
     @GetMapping("/spots")
     public String index(Model model) {
         model.addAttribute("spots", spotsDao.findAll());
+        try {
+            User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User author = usersDao.getById(principal.getId());
+            model.addAttribute("user", author);
+        } catch(Exception e) {
+            model.addAttribute("user", new User());
+        }
         return "/spots/index";
     }
 
@@ -53,18 +60,6 @@ public class SpotController {
         model.addAttribute("spot", spot);
         return "/spots/one-spot";
     }
-
-
-    //create spot mapping
-    // takes latitude and longitude as url parameters to create Spot model
-//    @GetMapping("/spots/create")
-//    public String createSpot(@RequestParam(name="lat") Double lat, @RequestParam(name="lng") Double lng, Model model) {
-//        Spot spot = new Spot();
-//        spot.setLatitude(lat);
-//        spot.setLongitude(lng);
-//        model.addAttribute("spot", spot);
-//        return "spots/create";
-//    }
 
     @GetMapping("/spots/edit/{id}")
     public String updateSpot(Model model, @PathVariable long id){
@@ -79,23 +74,23 @@ public class SpotController {
     }
 
     @GetMapping("/spots/save/{id}")
-    public String saveSpot(@PathVariable long id){
+    public String saveSpot(@PathVariable long id, @RequestHeader("Referer") String referer){
         Spot spot = spotsDao.getById(id);
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
-        author.addSpot(spot);
-        usersDao.save(author);
-        return "redirect:/profile";
+        spot.favorite(author);
+        spotsDao.save(spot);
+        return "redirect:" + referer;
     }
 
     @GetMapping("/spots/unsave/{id}")
-    public String unsaveSpot(@PathVariable long id){
+    public String unsaveSpot(@PathVariable long id, @RequestHeader("Referer") String referer){
         Spot spot = spotsDao.getById(id);
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
-        author.removeSpot(spot);
-        usersDao.save(author);
-        return "redirect:/profile";
+        spot.unfavorite(author);
+        spotsDao.save(spot);
+        return "redirect:" + referer;
     }
 
     //inserting spot
@@ -119,10 +114,10 @@ public class SpotController {
 
 
     //delete Spot
-    @PostMapping("spot/{id}/delete")
-    public String deleteSpot(@PathVariable long id) {
+    @PostMapping("spot/delete/{id}")
+    public String deleteSpot(@PathVariable long id, @RequestHeader("Referer") String referer) {
         spotsDao.deleteById(id);
-        return "redirect:/home";
+        return "redirect:" + referer;
     }
 
 

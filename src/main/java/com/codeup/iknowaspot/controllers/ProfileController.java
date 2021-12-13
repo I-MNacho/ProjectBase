@@ -34,10 +34,6 @@ public class ProfileController {
     public String profilePage(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userInDb = userRepository.getById(user.getId());
-        List<Event> usersEvents = eventRepository.findAllByUser(userInDb);
-        model.addAttribute("events", usersEvents);
-        model.addAttribute("spots", userInDb.getSpots());
-        model.addAttribute("savedSpots", userInDb.getSavedSpots());
         model.addAttribute("user", userInDb);
         return "/profile";
     }
