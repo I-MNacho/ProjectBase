@@ -49,7 +49,7 @@ public class SpotController {
         } catch(Exception e) {
             model.addAttribute("user", new User());
         }
-        return "/spots/index";
+        return "/spots/list";
     }
 
     @GetMapping("/spots/mine")
@@ -58,7 +58,7 @@ public class SpotController {
         User author = usersDao.getById(principal.getId());
         model.addAttribute("user", author);
         model.addAttribute("spots", spotsDao.findAllByUser(author));
-        return "/spots/index";
+        return "/spots/list";
     }
 
     @GetMapping("/spots/favorites")
@@ -67,7 +67,7 @@ public class SpotController {
         User author = usersDao.getById(principal.getId());
         model.addAttribute("user", author);
         model.addAttribute("spots", spotsDao.findAllBySaved(author));
-        return "/spots/index";
+        return "/spots/list";
     }
 
     @GetMapping("/spots/{id}")
