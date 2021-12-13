@@ -53,13 +53,13 @@
                     <div class="profile-info">
                         <div>
                             <strong>Username</strong>
-                            <div sec:authentication="name"></div>
+                            <div th:text="${user.username}"></div>
                         </div>
                         <div>
                             <strong>Email</strong>
                             <div th:text="${user.email}"></div>
                         </div>
-                        <a href="/profile/edit">Edit Profile</a>
+                        <a href="/profile/edit" th:if="${#authentication.name == user.username}">Edit Profile</a>
                     </div>
                 </div>
                 <strong>Bio</strong>
