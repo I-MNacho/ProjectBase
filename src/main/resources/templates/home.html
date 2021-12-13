@@ -109,12 +109,25 @@ function updateMapWithSearchSpots(){
     spotsGeoJson = [];
     var searchValue = searchBarHome.value.toLowerCase();
     spots.forEach(spot=> {
-        if (spot.title.toLowerCase().includes(searchValue)||spot.tags.toLowerCase().includes(searchValue)||spot.description.toLowerCase().includes(searchValue)){
-            spotsGeoJson.push(JSON.parse('{"type": "Feature", ' +
-                '"properties": { "spot_id": "'+spot.id+'", "title" : "'+spot.title+'", "description" : "'+spot.description+'", "tags" : "'+spot.tags+'", "photoUrl" : "'+spot.spotPhotoURL+'"},' +
-                '"geometry": {"type": "Point", "coordinates": ['+spot.longitude+','+ spot.latitude+']}}'));
+        if (spot.title.toLowerCase().includes(searchValue) || spot.tags.toLowerCase().includes(searchValue) || spot.description.toLowerCase().includes(searchValue)) {
+            spotsGeoJson.push({
+                type: "Feature",
+                properties: {
+                    spot_id: spot.id,
+                    title: spot.title,
+                    description: spot.description,
+                    photo: spot.profilePhotoURL,
+                    tags: spot.tags,
+                    photoUrl: spot.spotPhotoURL
+                },
+                geometry: {
+                    type: "Point",
+                    coordinates: [spot.longitude, spot.latitude]
+                }
+            })
         }
     });
+
     //Removes layer with current spots and replaces them with new spots
     map.removeLayer("spots");
     map.removeSource("spots")
