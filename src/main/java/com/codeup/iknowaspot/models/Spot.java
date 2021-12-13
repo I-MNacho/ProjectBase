@@ -1,15 +1,18 @@
 package com.codeup.iknowaspot.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "spots")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Spot {
 
     @Id
@@ -34,19 +37,17 @@ public class Spot {
     @Column(columnDefinition = "VARCHAR(500)")
     private String spotPhotoURL;
 
-//    @OneToMany(mappedBy="spot")
-//    private Set<Event> events;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "spot")
-//    private List<Tag> tags;
-
     @ManyToOne
     @JoinColumn (name = "user_id")
     private User user;
 
+    @ManyToMany
+    private Set<User> saved = new HashSet<User>();
+
     public Spot() {
     }
 
-    public Spot(String title, String description, Double latitude, Double longitude, User user, String tags, Set<Event> events) {
+    public Spot(String title, String description, Double latitude, Double longitude, User user, String tags, Set<User> saved) {
         this.title = title;
         this.description = description;
         this.latitude = latitude;
@@ -54,7 +55,7 @@ public class Spot {
         this.user = user;
         this.tags = tags;
         this.spotPhotoURL = spotPhotoURL;
-//        this.events = events;
+        this.saved = saved;
     }
 
     public String getTitle() {
@@ -81,13 +82,9 @@ public class Spot {
         this.id = id;
     }
 
-    public void setUser(User user){
-        this.user = user;
-    }
+    public User getUser() { return user; }
 
-//  public Set<User> getUser() {
-//        return users;
-//  }
+    public void setUser(User user){ this.user = user; }
 
     public double getLatitude() {
         return latitude;
@@ -121,12 +118,21 @@ public class Spot {
         this.spotPhotoURL = spotPhotoURL;
     }
 
-//    public Set<Event> getEvents() { return events; }
-//
-//    public Set<Event> addEvent(Event event) {
-//        events.add(event);
-//        return events;
-//    }
-//
-//    public void setEvents(Set<Event> events) { this.events = events; }
+    public Set<User> getSaved() {
+        return saved;
+    }
+
+    public void setSaved(Set<User> saved) {
+        this.saved = saved;
+    }
+
+    public Set<User> favorite(User user) {
+        saved.add(user);
+        return saved;
+    }
+
+    public Set<User> unfavorite(User user) {
+        saved.remove(user);
+        return saved;
+    }
 }

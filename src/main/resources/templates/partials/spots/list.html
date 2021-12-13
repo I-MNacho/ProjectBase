@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <style>
-    .spots-list-container {
+    .events-list-container {
         /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
         display: grid;
         /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
@@ -22,12 +22,14 @@
         align-items: flex-start;
         overflow: auto;
     }
-    .card {
+    .event-card {
         display: grid;
         /*Has two columns: 1 is 250px and the other takes up the remaining space*/
         grid-template-columns: 250px 1fr;
+        border-radius: 8px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     }
-    .card .footer-actions {
+    .event-card .footer-actions {
         display: flex;
         /*Footer items are at the right side*/
         justify-content: flex-end;
@@ -35,22 +37,22 @@
         align-content: center;
         gap: 8px;
     }
-    .card .map {
+    .event-card .map {
         width: 100%;
         height: 100%;
         border-radius: 6px;
     }
-    .card .body {
+    .event-card .body {
         padding: 16px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         gap: 12px;
     }
-    .card .body h3 {
+    .event-card .body h3 {
         margin: 0;
     }
-    .card .body h6 {
+    .event-card .body h6 {
         margin: 0;
     }
     h2 {
@@ -78,26 +80,55 @@
         align-content: center;
         justify-content: space-between;
     }
+    @media only screen and (max-width: 500px) {
+        .event-card {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .event-card .map {
+            width: 100%;
+            height: 300px;
+        }
+        .event-card .body {
+            width: 100%;
+        }
+        .grid {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    .heart-icon {
+        font-size: 30px;
+        text-decoration: none;
+    }
+    .gray {
+        color: gray;
+    }
+    .red {
+        color: pink;
+    }
 </style>
-<div class="spots-list-container container-fluid">
+<div class="events-list-container">
     <nav th:replace="partials/navbar.html :: navbar"></nav>
     <div class="grid">
         <div th:if="${spots.empty}">
             <p colspan="2"> No spots Available </p>
         </div>
-        <div th:id="${spot.id}" th:each="spot : ${spots}" class="card">
+        <div th:id="${spot.id}" th:each="spot : ${spots}" class="event-card">
             <div class="map"></div>
             <div class="body">
                 <div class="header-details">
                     <h3 class="title" th:text="${spot.title}"></h3>
-<!--                    <a th:href="@{|/spots/unsave/${spot.id}|}" th:if="${spot.saved.contains(user)}"  uk-icon="icon: heart" title="Un-Favorite" style="background-color: pink"></a>-->
-<!--                    <a th:href="@{|/spots/save/${spot.id}|}" th:if="${!spot.saved.contains(user)}"  uk-icon="heart" title="Favorite"></a>-->
+                    <a th:href="@{|/spots/unsave/${spot.id}|}" th:if="${spot.saved.contains(user)}" title="Un-Favorite" class="red heart-icon">&heartsuit;</a>
+                    <a th:href="@{|/spots/save/${spot.id}|}" th:if="${!spot.saved.contains(user)}" title="Favorite" class="gray heart-icon">&heartsuit;</a>
                 </div>
+                <img th:src="${spot.spotPhotoURL}" width="100%">
                 <p th:text="${spot.description}"></p>
-<!--                <div class="footer-actions">-->
-<!--                    <a uk-icon="pencil" th:href="@{|/spots/view/${spot.id}|}" th:if="${#authentication.name == spot.user.username}"></a>-->
-<!--                    <a uk-icon="trash" th:href="@{|/spots/delete/${spot.id}|}" th:if="${#authentication.name == spot.user.username}"></a>-->
-<!--                </div>-->
+                <div class="footer-actions">
+                    <a uk-icon="pencil" th:href="@{|/spots/view/${spot.id}|}" th:if="${#authentication.name == spot.user.username}"></a>
+                    <a uk-icon="trash" th:href="@{|/spots/delete/${spot.id}|}" th:if="${#authentication.name == spot.user.username}"></a>
+                </div>
             </div>
         </div>
     </div>
@@ -105,24 +136,23 @@
 <!--        <a uk-icon="icon: plus; ratio: 1.5" th:href="@{|/spots/create|}"></a>-->
 <!--    </div>-->
     <script th:inline="javascript">
-        <!--    Create spots object from thymeleaf spot model-->
-        // $(document).ready(() => {
-        //     const spots = [[${spots}]];
-        //     //For each event, add a map with a marker at the location of the event
-        //     spots.forEach((spot)=> {
-        //         // Hardcoded to san antonio
-        //         const {longitude, latitude, title, description} = spot
-        //         const center = [longitude, latitude];
-        //         // Get card with event id and find the div with the class "map" inside that card
-        //         const spotElement = document.getElementById(spot.id)
-        //         const container = spotElement.querySelector(".map");
-        //         const popup = {
-        //             title,
-        //             description
-        //         }
-        //         addMapWithLocation({container, center, popup})
-        //     });
-        // })
+        $(document).ready(() => {
+            const spots = [[${spots}]];
+            initMap({})
+            spots.forEach((spot)=> {
+                // Hardcoded to san antonio
+                const {longitude, latitude, title, description} = spot
+                const center = [longitude, latitude];
+                // Get card with event id and find the div with the class "map" inside that card
+                const spotElement = document.getElementById(spot.id)
+                const container = spotElement.querySelector(".map");
+                const popup = {
+                    title,
+                    description
+                }
+                addMapWithLocation({container, center, popup})
+            });
+        })
     </script>
 </div>
 </html>
