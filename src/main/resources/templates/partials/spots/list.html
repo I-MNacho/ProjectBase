@@ -137,6 +137,7 @@
                 <p th:text="${spot.description}"></p>
                 <p th:text="${spot.tags}"></p>
                 <div class="footer-actions">
+                    <a th:href="@{|/events/spot/${spot.id}|}" class="btn text-primary">Events</a>
                     <a th:href="@{|/profile/view/${spot.user.id}|}" th:text="${spot.user.username}"></a>
                     <a uk-icon="pencil" th:href="@{|/spots/edit/${spot.id}|}" th:if="${#authentication.name == spot.user.username}"></a>
                     <a uk-icon="trash" th:href="@{|/spots/delete/${spot.id}|}" th:if="${#authentication.name == spot.user.username}"></a>

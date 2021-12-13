@@ -12,4 +12,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllBySaved(User user);
     List<Event> findAllByAttending(User user);
     List<Event> findEventByEndTimeAfterOrderByStartTime(long datetime);
+    List<Event> findAllBySpot(Spot spot);
 }
