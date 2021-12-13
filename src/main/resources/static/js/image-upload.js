@@ -1,6 +1,5 @@
+const client = filestack.init(FileStackAPIKey);
 function openFilePicker() {
-    const client = filestack.init(FileStackAPIKey);
-
     function onUploadDone(result) {
         console.log(result)
         const url = result.filesUploaded[0].url
