@@ -87,7 +87,8 @@ public class SpotController {
     }
 
     @PostMapping("/spot/edit")
-    public String updateSpot(@ModelAttribute Spot spot){
+    public String updateSpot(@ModelAttribute Spot spot, RedirectAttributes redirAttrs){
+        redirAttrs.addFlashAttribute("success", "Successfully edited spot.");
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
         spot.setUser(author);
@@ -96,7 +97,8 @@ public class SpotController {
     }
 
     @GetMapping("/spots/save/{id}")
-    public String saveSpot(@PathVariable long id, @RequestHeader("Referer") String referer){
+    public String saveSpot(@PathVariable long id, @RequestHeader("Referer") String referer, RedirectAttributes redirAttrs){
+        redirAttrs.addFlashAttribute("success", "Successfully saved spot.");
         Spot spot = spotsDao.getById(id);
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
@@ -106,7 +108,8 @@ public class SpotController {
     }
 
     @GetMapping("/spots/unsave/{id}")
-    public String unsaveSpot(@PathVariable long id, @RequestHeader("Referer") String referer){
+    public String unsaveSpot(@PathVariable long id, @RequestHeader("Referer") String referer, RedirectAttributes redirAttrs){
+        redirAttrs.addFlashAttribute("success", "Successfully unsaved spot.");
         Spot spot = spotsDao.getById(id);
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User author = usersDao.getById(principal.getId());
@@ -117,7 +120,7 @@ public class SpotController {
 
     //inserting spot
     @PostMapping("/spots/create")
-    public String insert(@ModelAttribute Spot spot) {
+    public String insert(@ModelAttribute Spot spot, RedirectAttributes redirAttrs) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         spot.setUser(usersDao.getById(user.getId()));
         spotsDao.save(spot);
@@ -130,18 +133,23 @@ public class SpotController {
             System.out.println("Description is empty.");
             return "home";
         }
-
+        redirAttrs.addFlashAttribute("success", "Successfully created spot.");
         return "redirect:/spots";
     }
 
     //delete Spot
     @GetMapping("spot/{id}/delete")
-    public String deleteSpot(@PathVariable long id) {
-        Spot spot = spotsDao.getById((long) id);
-        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public String deleteSpotFromHome(@PathVariable long id, RedirectAttributes redirAttrs) {
+        redirAttrs.addFlashAttribute("success", "Successfully deleted spot.");
         spotsDao.deleteById(id);
-        spotsDao.save(spot);
+        return "redirect:/home";
+    }
+    @GetMapping("/spots/delete/{id}")
+    public String deleteSpotFromList(@PathVariable long id, RedirectAttributes redirAttrs) {
+        redirAttrs.addFlashAttribute("success", "Successfully deleted spot.");
+        spotsDao.deleteById(id);
         return "redirect:/spots";
     }
+
 
 }

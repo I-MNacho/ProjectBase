@@ -112,7 +112,8 @@
 </style>
 
 
-
+<body class="container-fluid">
+<div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
 <div class="events-list-container">
     <nav th:replace="partials/navbar.html :: navbar"></nav>
     <h3>All Spots</h3>
@@ -165,6 +166,11 @@
                 addMapWithLocation({container, center, popup})
             });
         })
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 4000); // <-- time in milliseconds
     </script>
 </div>
+</body>
+
 </html>

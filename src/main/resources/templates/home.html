@@ -208,6 +208,7 @@ function showIndividualSpotView(e){
     document.getElementById("individual-spot").style.display = "block";
     // Set data in spot view for spot
     const {spot_id, title, description, tags, photoUrl} = e.features[0].properties;
+    document.getElementById("spot-save-button").href = "/spots/save/" + spot_id;
     try{
         if (seeIfUserMadeSpot(spot_id)){
             document.getElementById("youCreatedThisSpot").style.display = "block";
@@ -217,9 +218,11 @@ function showIndividualSpotView(e){
         if (seeIfUserSavedSpot(spot_id)){
             // document.getElementById("spot-save-button").innerText = `&hearts;`
             document.getElementById("spot-save-button").style.color = "red";
+            document.getElementById("spot-save-button").href = "/spots/save/" + spot_id;
         } else{
             // document.getElementById("spot-save-button").innerText = `&#9825;`
             document.getElementById("spot-save-button").style.color = "gray";}
+        document.getElementById("spot-save-button").href = "/spots/unsave/" + spot_id;
     } catch (e){
     //    Will catch the error if user is not logged in
     }
