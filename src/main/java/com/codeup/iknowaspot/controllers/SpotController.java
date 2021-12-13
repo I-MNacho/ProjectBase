@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class SpotController {
@@ -134,8 +135,9 @@ public class SpotController {
     }
 
     //delete Spot
-    @GetMapping("spots/delete/{id}")
-    public String deleteSpot(@PathVariable long id, @RequestHeader("Referer") String referer) {
+    @GetMapping("spot/{id}/delete")
+    public String deleteSpot(@PathVariable long id, RedirectAttributes redirAttrs) {
+        redirAttrs.addFlashAttribute("success", "Successfully deleted spot.");
         spotsDao.deleteById(id);
         return "redirect:" + referer;
     }
