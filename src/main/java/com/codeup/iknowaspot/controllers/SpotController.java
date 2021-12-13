@@ -82,13 +82,16 @@ public class SpotController {
     @GetMapping("/spots/edit/{id}")
     public String updateSpot(Model model, @PathVariable long id){
         model.addAttribute("spot", spotsDao.getById(id));
-        return "home";
+        return "spots/edit";
     }
 
-    @PostMapping("/spots/edit")
+    @PostMapping("/spot/edit")
     public String updateSpot(@ModelAttribute Spot spot){
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User author = usersDao.getById(principal.getId());
+        spot.setUser(author);
         spotsDao.save(spot);
-        return "home";
+        return "redirect:/home";
     }
 
     @GetMapping("/spots/save/{id}")
