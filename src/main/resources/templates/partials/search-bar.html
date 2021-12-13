@@ -3,8 +3,8 @@
 
 
 
-<input type="text" id="myInput" placeholder="Search By Tag">
-<input id="submit" type="submit"/>
+<input type="text" id="myInput" placeholder="Search Anything Here">
+<!--<input id="submit" type="submit"/>-->
 
 
 <script th:inline="javascript">
@@ -14,7 +14,7 @@
 
         $("#myInput").on("keyup", function() {
             var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function() {
+            $(".event-card").filter(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });

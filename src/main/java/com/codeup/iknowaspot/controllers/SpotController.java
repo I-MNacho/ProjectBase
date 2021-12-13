@@ -136,10 +136,12 @@ public class SpotController {
 
     //delete Spot
     @GetMapping("spot/{id}/delete")
-    public String deleteSpot(@PathVariable long id, RedirectAttributes redirAttrs) {
-        redirAttrs.addFlashAttribute("success", "Successfully deleted spot.");
+    public String deleteSpot(@PathVariable long id) {
+        Spot spot = spotsDao.getById((long) id);
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         spotsDao.deleteById(id);
-        return "redirect:" + referer;
+        spotsDao.save(spot);
+        return "redirect:/spots";
     }
 
 }

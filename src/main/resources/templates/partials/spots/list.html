@@ -5,7 +5,7 @@
         /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
         display: grid;
         /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
-        grid-template-rows: min-content 1fr;
+        grid-template-rows: min-content min-content min-content 1fr;
         /*Body takes up full height of viewport*/
         height: 100vh;
     }
@@ -110,12 +110,20 @@
         color: red;
     }
 </style>
+
+
+
 <div class="events-list-container">
     <nav th:replace="partials/navbar.html :: navbar"></nav>
+    <h3>All Spots</h3>
+    <div th:replace="partials/search-bar.html"></div>
+
     <div class="grid">
         <div th:if="${spots.empty}">
             <p colspan="2"> No spots Available </p>
         </div>
+<!--        <div th:replace="partials/search-bar.html"></div>-->
+
         <div th:id="${spot.id}" th:each="spot : ${spots}" class="event-card">
             <div class="map"></div>
             <div class="body">
@@ -126,6 +134,7 @@
                 </div>
                 <img th:src="${spot.spotPhotoURL}" width="100%">
                 <p th:text="${spot.description}"></p>
+                <p th:text="${spot.tags}"></p>
                 <div class="footer-actions">
                     <a th:href="@{|/profile/view/${spot.user.id}|}" th:text="${spot.user.username}"></a>
                     <a uk-icon="pencil" th:href="@{|/spots/edit/${spot.id}|}" th:if="${#authentication.name == spot.user.username}"></a>
@@ -133,6 +142,8 @@
                 </div>
             </div>
         </div>
+<!--        <div th:replace="partials/search-bar.html"></div>-->
+
     </div>
 <!--    <div class="action-button">-->
 <!--        <a uk-icon="icon: plus; ratio: 1.5" th:href="@{|/spots/create|}"></a>-->
