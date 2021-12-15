@@ -75,7 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 /* Logout configuration */
                 .and()
                 .authorizeRequests()
-                .antMatchers("/events", "/home", "/spots", "/about", "/register") // anyone can see the home and the ads pages
+                .antMatchers("/public/favicon.ico", "/events", "/home", "/spots", "/about", "/register") // anyone can see the home and the ads pages
                 .permitAll()
                 .and()
                 .logout()
