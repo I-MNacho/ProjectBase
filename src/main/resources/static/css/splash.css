@@ -14,13 +14,19 @@
   right: 0;
   backdrop-filter: blur(10px);
 }
+img{
+  max-height: 50vh;
+  height: 100%; !important;
+  width: 100%;
+  object-fit: cover;
+}
 
 .splash .header {
-  width: 100%;
+  /*width: 100%;*/
   display: flex;
   justify-content: flex-end;
 }
 
-h4 {
-  margin: 20px;
-}
+/*h4 {*/
+/*  margin: 20px;*/
+/*}*/
