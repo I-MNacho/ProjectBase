@@ -21,7 +21,7 @@
     bottom: 0;
     right: 0;
     box-sizing: border-box;
-    z-index: 1000;
+    z-index: 5000;
 }
 #edit-event-form {
     background: white;

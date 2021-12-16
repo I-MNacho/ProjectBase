@@ -5,7 +5,7 @@
         /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
         display: grid;
         /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
-        grid-template-rows: min-content min-content 1fr;
+        grid-template-rows: min-content min-content max-content;
         /*Body takes up full height of viewport*/
         height: 100vh;
     }
@@ -145,7 +145,7 @@
             <a class="google-maps-link" rel="noreferrer" target="_blank" title="Click to view directions">Directions</a>
             <a th:href="@{|/events/unrsvp/${event.id}|}" th:if="${event.attending.contains(user)}" class="btn text-secondary">Un-Attend</a>
             <a th:href="@{|/events/rsvp/${event.id}|}" th:if="${!event.attending.contains(user)}" class="btn text-primary">Attend</a>
-            <div class="accordion">
+            <div>
                 <h3 th:text="${event.spot.title}"></h3>
                 <img th:src="${event.spot.spotPhotoURL}" width="100%">
                 <div class="header-details">

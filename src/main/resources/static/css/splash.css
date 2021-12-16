@@ -14,13 +14,21 @@
   right: 0;
   backdrop-filter: blur(10px);
 }
-
-.splash .header {
+.carousel img{
+  max-height: 50vh;
+  height: 100%; !important;
   width: 100%;
+  object-fit: cover;
+}
+.main{
+  height: 100vh;
+}
+.splash .header {
+  /*width: 100%;*/
   display: flex;
   justify-content: flex-end;
 }
 
-h4 {
-  margin: 20px;
-}
+/*h4 {*/
+/*  margin: 20px;*/
+/*}*/

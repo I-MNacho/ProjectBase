@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Register Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <div th:replace="partials/bootstrap-header.html"></div>
@@ -13,7 +15,7 @@
 <nav th:replace="partials/navbar"></nav>
 
 <div class="row d-flex justify-content-center text-center">
-    <div class="form-group col-4 border p-4 m-4">
+    <div class="form-group border p-4 mt-4">
         <h1>Create an account</h1>
         <form th:action="@{/register}" method="POST" th:object="${user}">
             <label for="username">Username</label>

@@ -5,7 +5,7 @@
         /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
         display: grid;
         /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
-        grid-template-rows: min-content min-content 1fr;
+        grid-template-rows: min-content min-content max-content;
         /*Body takes up full height of viewport*/
         height: 100vh;
     }
@@ -153,9 +153,9 @@
 <!--        <div th:replace="partials/search-bar.html"></div>-->
 
     </div>
-<!--    <div class="action-button">-->
-<!--        <a uk-icon="icon: plus; ratio: 1.5" th:href="@{|/spots/create|}"></a>-->
-<!--    </div>-->
+    <div class="action-button">
+        <a uk-icon="icon: plus; ratio: 1.5" th:href="@{/home}"></a>
+    </div>
     <script th:inline="javascript">
         $(document).ready(() => {
             const spots = [[${spots}]];

@@ -1,5 +1,6 @@
 package com.codeup.iknowaspot.controllers;
 
+import com.codeup.iknowaspot.models.Event;
 import com.codeup.iknowaspot.models.Spot;
 import com.codeup.iknowaspot.models.User;
 import com.codeup.iknowaspot.repositories.SpotRepository;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class SpotController {
@@ -82,18 +85,24 @@ public class SpotController {
 
     @GetMapping("/spots/edit/{id}")
     public String updateSpot(Model model, @PathVariable long id){
+        List<Spot> spots = spotsDao.findAll();
+        model.addAttribute("spots", spots);
         model.addAttribute("spot", spotsDao.getById(id));
+        try {
+            User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User author = usersDao.getById(principal.getId());
+            model.addAttribute("user", author);
+        } catch(Exception e) {
+            model.addAttribute("user", new User());
+        }
         return "spots/edit";
     }
 
-    @PostMapping("/spot/edit")
+    @PostMapping("/spots/edit")
     public String updateSpot(@ModelAttribute Spot spot, RedirectAttributes redirAttrs){
         redirAttrs.addFlashAttribute("success", "Successfully edited spot.");
-        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User author = usersDao.getById(principal.getId());
-        spot.setUser(author);
         spotsDao.save(spot);
-        return "redirect:/home";
+        return "redirect:/spots";
     }
 
     @GetMapping("/spots/save/{id}")

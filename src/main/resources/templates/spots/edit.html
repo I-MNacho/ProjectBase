@@ -1,33 +1,168 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Edit your Spot</title>
-    <div th:replace="partials/bootstrap-header.html"></div>
-</head>
-<body class="container-fluid">
-<nav th:replace="partials/navbar"></nav>
-<div class="row d-flex justify-content-center text-center">
-    <div class="form-group col-8 border p-4 m-4">
-        <h1>Edit Spot</h1>
-        <form th:action="@{/spot/edit/}" th:object="${spot}" method="POST" >
-            <input id="spotId" name="spotId" type="hidden" th:field="${spot.id}"/>
-            <input id="latitude" name="latitude" type="hidden" th:field="${spot.latitude}"/>
-            <input id="longitude" name="longitude" type="hidden" th:field="${spot.longitude}"/>
-            <input id="photoUrl" name="photoUrl" type="hidden" th:field="${spot.spotPhotoURL}"/>
-            <input name="address" type="hidden" th:field="${spot.address}"/>
-            <label for="title">New Title</label>
-            <input class="form-control" id="title" name="title" type="text" th:field="${spot.title}"/>
-            <label for="description">New Description</label>
-            <textarea style="resize: none" rows="4" class="form-control" id="description" name="description" th:field="${spot.description}"></textarea>
-            <label for="title">New Tags (separate with commas):</label>
-            <input class="form-control" id="tags" name="tags" type="text" th:field="${spot.tags}"/><br>
-            <button class="btn-lg btn-primary">Submit</button>
-        </form>
-    </div>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="partials/events/headers.html"></head>
+<!--${event} = event atr from controller -->
+<div class="form-modal">
+    <form id="edit-event-form" action="#" th:action="@{/spots/edit}" th:object="${spot}" method="POST">
+        <div class="form-header" tabindex="1">
+            <h3 >Edit your Spot</h3>
+            <a id="close-icon" uk-icon="close"></a>
+        </div>
+        <div class="errors"></div>
+        <input id="spotId" name="spotId" type="hidden" th:field="${spot.id}"/>
+        <input id="latitude" name="latitude" type="hidden" th:field="${spot.latitude}"/>
+        <input id="longitude" name="longitude" type="hidden" th:field="${spot.longitude}"/>
+        <input id="photoUrl" name="photoUrl" type="hidden" th:field="${spot.spotPhotoURL}"/>
+        <input name="address" type="hidden" th:field="${spot.address}"/>
+        <input type="hidden" th:field="${spot.user}"/>
+        <label>Location</label>
+        <div class="map"></div>
+        <div class="form-field">
+            <label for="title">Spot Title</label>
+            <input id="title" name="title" type="text" th:field="${spot.title}"  maxlength="200" required/>
+        </div>
+        <div class="form-field">
+            <label for="description">Describe your spot</label>
+            <textarea id="description" name="description" th:field="${spot.description}" maxlength="500" required></textarea>
+        </div>
+        <div class="form-field">
+            <label for="description">Edit tags</label>
+            <textarea id="tags" name="tags" th:field="${spot.tags}" maxlength="500"></textarea>
+        </div>
+        <button id="submit" class="btn btn-primary">Save</button>
+    </form>
 </div>
-<div th:replace="partials/bootstrap-footer.html"></div>
+<div th:replace="partials/spots/list.html"></div>
+<script th:inline="javascript">
+    $(document).ready(() => {
+        const spots = [[${spots}]];
+        const spot = [[${spot}]];
 
-</body>
+        const eventElement = document.getElementById("edit-event-form")
+        const container = eventElement.querySelector(".map");
+        const map = addMap({container})
+
+        $("#edit-event-form").submit(function(){
+            if(!$("#description")) {
+                document.getElementById("description").setCustomValidity("Please enter a description")
+                return false;
+            }
+            if(!$("#title")) {
+                document.getElementById("title").setCustomValidity("Please enter a title")
+                return false;
+            }
+            return true;
+        })
+
+        function close() {
+            $(".form-modal").animate({ opacity: 0 }, 500, () => {
+                $(".form-modal").css({display: 'none'})
+            });
+        }
+        function prevent(e) {
+            e.stopPropagation();
+        }
+
+        function createMapMarkers({id, title, description, tags, longitude, latitude}) {
+            return {
+                id,
+                type: "Feature",
+                properties: {
+                    title,
+                    description,
+                    tags
+                },
+                geometry: {
+                    type: "Point",
+                    coordinates: [longitude, latitude]
+                }
+            }
+        }
+
+        function selectSpot(e) {
+            const {
+                id,
+                geometry: { coordinates }
+            } = e.features[0];
+            // Set form value for spot and remove invalid attributes
+            $("#spot").val(id);
+            $("#spot-search").attr({ placeholder: "Search by title, description, tags"})
+            $(".search").removeClass("invalid")
+            // Center this spot
+            map.flyTo({ center: coordinates });
+            // Change image to blue to show that this spot is selected
+            map.setLayoutProperty('spots', 'icon-image',
+                [
+                    'match',
+                    ['id'],
+                    id, 'selected-icon', 'unselected-icon'
+                ]
+            )
+            try {
+                map.removeLayer("circle");
+                map.removeSource("circle");
+            } catch(e) {}
+            map.addSource("circle", {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [e.features[0]]
+                }
+            })
+            map.addLayer({
+                id: 'circle',
+                type: 'circle',
+                source: 'circle',
+                paint: {
+                    'circle-radius': 50,
+                    'circle-color': '#007BFF',
+                    'circle-stroke-color': '#007BFF',
+                    'circle-stroke-width': 2,
+                    'circle-opacity': 0.085
+                }
+            });
+        }
+
+        function addSpotMarkers(spotMarkers) {
+            map.addSource("spots", {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": spotMarkers
+                }
+            })
+            map.addLayer({
+                'id': 'spots',
+                'type': 'symbol',
+                'source': 'spots',
+                'layout': {
+                    'text-field': ['get', 'title'],
+                    'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+                    'text-radial-offset': 1,
+                    'text-justify': 'auto',
+                    'icon-image': 'unselected-icon', // reference the image
+                    'icon-size': 0.15,
+                    'icon-allow-overlap': true
+                }
+            });
+        }
+
+        map.on('load', () => {
+            map.loadImage('/images/gray-pin-icon.png', (error, image) => {
+                if (error) throw error;
+                map.addImage('unselected-icon', image);
+                addSpotMarkers(spots.map(createMapMarkers));
+                map.loadImage('/images/blue-pin-icon.png', (error, image) => {
+                    if (error) throw error;
+                    map.addImage('selected-icon', image);
+                    selectSpot({ features: [createMapMarkers(spot)] })
+                })
+            })
+        })
+
+        $(".form-modal").click(close)
+        $("#close-icon").click(close)
+        $("#edit-event-form").click(prevent)
+    })
+</script>
 </html>
