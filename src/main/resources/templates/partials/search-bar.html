@@ -1,22 +1,23 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
-
-<input type="text" id="myInput" placeholder="Search Anything Here">
-<!--<input id="submit" type="submit"/>-->
-
+<link rel="stylesheet" th:href="@{/css/custom-form.css}">
+<style>
+    .search {
+        display: flex;
+        justify-content: center;
+        margin: 20px;
+    }
+</style>
+<div class="search">
+    <a uk-icon="search"></a>
+    <input id="search-input" type="text" placeholder="Search by title, description, tags"/>
+</div>
 
 <script th:inline="javascript">
-    var spots = [[${spots}]];
-
-    // console.log(spots);
-
-        $("#myInput").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $(".event-card").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
+    $("#search-input").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $(".event-card").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
-
+    });
 </script>

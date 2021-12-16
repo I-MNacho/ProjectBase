@@ -23,9 +23,10 @@
         overflow: auto;
     }
     .event-card {
-        display: grid;
+        display: flex;
         /*Has two columns: 1 is 250px and the other takes up the remaining space*/
-        grid-template-columns: 250px 1fr;
+        flex-direction: column;
+        justify-content: space-between;
         border-radius: 8px;
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
         height: 100%;
@@ -49,6 +50,7 @@
         flex-direction: column;
         justify-content: space-between;
         gap: 12px;
+        height: 100%;
     }
     .event-card .body h3 {
         margin: 0;
@@ -114,15 +116,14 @@
         gap: 10px;
     }
 </style>
-<div class="events-list-container container-fluid">
+<div class="events-list-container">
 <nav th:replace="partials/navbar.html :: navbar"></nav>
-<h3>Events</h3>
+<div th:replace="partials/search-bar.html"></div>
 <div class="grid">
     <div th:if="${events.empty}">
         <p colspan="2"> No Events Available </p>
     </div>
     <div th:id="${event.id}" th:each="event : ${events}" class="event-card">
-        <div class="map"></div>
         <div class="body">
             <div class="header-details">
                 <h3 th:text="${event.title}"></h3>
@@ -141,15 +142,15 @@
                 </div>
             </div>
             <strong th:text="${event.attending.size() + ' attending'}"></strong>
-            <a class="google-maps-link" rel="noreferrer" target="_blank">Directions</a>
+            <a class="google-maps-link" rel="noreferrer" target="_blank" title="Click to view directions">Directions</a>
             <a th:href="@{|/events/unrsvp/${event.id}|}" th:if="${event.attending.contains(user)}" class="btn text-secondary">Un-Attend</a>
             <a th:href="@{|/events/rsvp/${event.id}|}" th:if="${!event.attending.contains(user)}" class="btn text-primary">Attend</a>
             <div class="accordion">
                 <h3 th:text="${event.spot.title}"></h3>
                 <img th:src="${event.spot.spotPhotoURL}" width="100%">
                 <div class="header-details">
-                    <a th:href="@{|/spots/unsave/${event.spot.id}|}" th:if="${event.spot.saved.contains(user)}" title="Un-Favorite" class="btn text-secondary">Add to favorite spots</a>
-                    <a th:href="@{|/spots/save/${event.spot.id}|}" th:if="${!event.spot.saved.contains(user)}" title="Favorite" class="btn text-primary">Remove from favorites</a>
+                    <a th:href="@{|/spots/unsave/${event.spot.id}|}" th:if="${event.spot.saved.contains(user)}" title="Un-Favorite" class="btn text-primary">Add to favorite spots</a>
+                    <a th:href="@{|/spots/save/${event.spot.id}|}" th:if="${!event.spot.saved.contains(user)}" title="Favorite" class="btn text-secondary">Remove spot from favorites</a>
                     <a th:href="@{|/profile/view/${event.spot.user.id}|}" th:text="${event.spot.user.username}" th:if="${#authentication.name != event.spot.user.username}"></a>
                     <a uk-icon="pencil" th:href="@{|/spots/edit/${event.spot.id}|}" th:if="${#authentication.name == event.spot.user.username}"></a>
                 </div>
@@ -178,18 +179,12 @@
         events.forEach((event)=> {
             // Hardcoded to san antonio
             const {longitude, latitude, title, description} = event.spot
-            const center = [longitude, latitude];
             // Get card with event id and find the div with the class "map" inside that card
             const eventElement = document.getElementById(event.id)
-            const container = eventElement.querySelector(".map");
-            const popup = {
-                title,
-                description
-            }
             reverseGeocodeFromCreateASpotButton({latitude, longitude}).then(({place_name}) => {
                 eventElement.querySelector(".google-maps-link").href = `https://maps.google.com/?q=${place_name}`;
+                eventElement.querySelector(".google-maps-link").text = place_name;
             })
-            addMapWithLocation({container, center, popup})
             eventElement.querySelector(".start").innerHTML = convertToLocalTime(event.startTime);
             eventElement.querySelector(".end").innerHTML =  convertToLocalTime(event.endTime);
         });

@@ -1,11 +1,12 @@
-.everything-container{
-    height: 90vh;
-}
-
 #map{
     height: 100%;
-    border-radius: 10px;
-    box-shadow: 2px 2px 5px #000000;
+}
+.page-container {
+    display: grid;
+    /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
+    grid-template-rows: min-content 1fr;
+    /*Body takes up full height of viewport*/
+    height: 100vh;
 }
 .form-control:focus{
     border-color:#CCC;
@@ -26,8 +27,12 @@
     justify-content: center;
 }
 .card{
-    border-radius: 10px;
-    box-shadow: 2px 3px 5px black;
+    border-radius: 6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+#main-view {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    height: 100%;
 }
 #spot-save-button{
     color: gray;

@@ -5,7 +5,7 @@
         /*https://css-tricks.com/snippets/css/complete-guide-grid/*/
         display: grid;
         /*Navbar takes up minimum space and the rest of the page takes up as much space as it can*/
-        grid-template-rows: min-content min-content min-content 1fr;
+        grid-template-rows: min-content min-content 1fr;
         /*Body takes up full height of viewport*/
         height: 100vh;
     }
@@ -16,16 +16,17 @@
         gap: 16px;
         padding: 12px;
         /*Try to take up as much space as possible up to 450px*/
-        grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
         /*Rows only fill as much space as they need*/
         grid-template-rows: min-content;
         align-items: flex-start;
         overflow: auto;
     }
     .event-card {
-        display: grid;
+        display: flex;
         /*Has two columns: 1 is 250px and the other takes up the remaining space*/
-        grid-template-columns: 250px 1fr;
+        flex-direction: column;
+        justify-content: space-between;
         border-radius: 8px;
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
         height: 100%;
@@ -50,6 +51,7 @@
         flex-direction: column;
         justify-content: space-between;
         gap: 12px;
+        height: 100%;
     }
     .event-card .body h3 {
         margin: 0;
@@ -113,11 +115,10 @@
 </style>
 
 
-<body class="container-fluid">
+<body>
 <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
 <div class="events-list-container">
     <nav th:replace="partials/navbar.html :: navbar"></nav>
-    <h3>All Spots</h3>
     <div th:replace="partials/search-bar.html"></div>
 
     <div class="grid">
@@ -127,7 +128,6 @@
 <!--        <div th:replace="partials/search-bar.html"></div>-->
 
         <div th:id="${spot.id}" th:each="spot : ${spots}" class="event-card">
-            <div class="map"></div>
             <div class="body">
                 <div class="header-details">
                     <h3 class="title" th:text="${spot.title}"></h3>
@@ -136,9 +136,12 @@
                 </div>
                 <img th:src="${spot.spotPhotoURL}" width="100%">
                 <p th:text="${spot.description}"></p>
-                <p th:text="${spot.tags}"></p>
+                <a class="google-maps-link" rel="noreferrer" target="_blank" title="Click for directions">Directions</a>
+                <div>
+                    <label>Tags</label>
+                    <div th:text="${spot.tags}"></div>
+                </div>
                 <div class="footer-actions">
-                    <a class="google-maps-link" rel="noreferrer" target="_blank">Directions</a>
                     <a th:href="@{|/events/create/${spot.id}|}" class="btn text-primary">Schedule Event</a>
                     <a th:href="@{|/events/spot/${spot.id}|}" class="btn text-primary">View Events</a>
                     <a th:href="@{|/profile/view/${spot.user.id}|}" th:text="${spot.user.username}" th:if="${#authentication.name != spot.user.username}"></a>
@@ -162,14 +165,9 @@
                 const center = [longitude, latitude];
                 // Get card with event id and find the div with the class "map" inside that card
                 const spotElement = document.getElementById(spot.id)
-                const container = spotElement.querySelector(".map");
-                const popup = {
-                    title,
-                    description
-                }
-                addMapWithLocation({container, center, popup})
                 reverseGeocodeFromCreateASpotButton({latitude, longitude}).then(({place_name}) => {
                     spotElement.querySelector(".google-maps-link").href = `https://maps.google.com/?q=${place_name}`;
+                    spotElement.querySelector(".google-maps-link").innerText = place_name;
                 })
             });
         })

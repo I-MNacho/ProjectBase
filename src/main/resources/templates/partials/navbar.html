@@ -1,41 +1,154 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="navbar" style="box-shadow: 0 3px 7px -3px rgba(0,0,0,.15); background-color: #e3f2fd;">
-    <a class="navbar-brand" th:href="@{/home}">IKnowASpot</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a th:href="@{/spots}" class="nav-link">Spots</a>
+<nav class="ikas-nav" th:fragment="navbar">
+    <style>
+        .ikas-nav {
+            display: flex;
+            align-items: center;
+            align-content: center;
+            padding-left: 12px;
+            padding-right: 12px;
+            height: 60px;
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 10000;
+            box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);
+            background-color: #e3f2fd;
+        }
+        .ikas-nav .navbar-brand {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            align-content: center;
+            height: 100%;
+        }
+        .ikas-navburger {
+            display: none
+        }
+        .ikas-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            align-content: center;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            text-align: left;
+        }
+        .ikas-nav li {
+            list-style: none;
+        }
+        .ikas-nav .nav-link {
+            transition: .3s;
+            color: #605c5c;
+        }
+        .ikas-nav .nav-link.active {
+            font-weight: bold;
+            color: #1e87f0;
+        }
+        .ikas-collapse {
+            width: 100%;
+            display: flex;
+            height: 100%;
+        }
+        @media only screen and (max-width: 650px) {
+            .ikas-navburger {
+                display: block;
+                cursor: pointer;
+            }
+            .ikas-nav-logo {
+                flex: 1;
+            }
+            .ikas-collapse {
+                display: none;
+                height: 0;
+                width: 100%;
+                flex-direction: column;
+                transition: 0.3s;
+                position: absolute;
+                gap: 12px;
+                top: 60px;
+                left: 0;
+                justify-content: flex-start;
+                background-color: #e3f2fd;
+                box-shadow: 0 3px 7px -3px rgba(0,0,0,.15);
+            }
+            .ikas-collapse ul {
+                flex-direction: column;
+                align-items: flex-start;
+                align-content: flex-start;
+            }
+        }
+    </style>
+    <script>
+        $(document).ready(() => {
+            const path = location.pathname;
+            if(path.includes("spots")) {
+                $("#spots-link").addClass("active")
+            } else if(path.includes("events")) {
+                $("#events-link").addClass("active")
+            } else if(path.includes("aboutus")) {
+                $("#about-link").addClass("active")
+            } else if(path.includes("profile")) {
+                $("#profile-link").addClass("active")
+            }
+            $(".ikas-navburger").click(() => {
+                $(".ikas-navburger").css({ 'pointer-events': 'none' })
+                if($(".ikas-collapse").height() === 0) {
+                    $(".ikas-collapse").css({
+                        height: 'auto',
+                        display: 'flex'
+                    })
+                    const autoHeight = $('.ikas-collapse').height();
+                    $('.ikas-collapse').height(0).animate({ height: autoHeight }, 300, "swing", () => {
+                        $(".ikas-navburger").css({ 'pointer-events': 'all' })
+                    });
+                } else {
+                    $('.ikas-collapse').animate({ height: 0 }, 300, "swing",  function() {
+                        $('.ikas-collapse').css({ display: 'none' })
+                        $(".ikas-navburger").css({ 'pointer-events': 'all' })
+                    });
+                }
+            })
+        })
+    </script>
+    <a class="ikas-nav-logo navbar-brand" th:href="@{/home}">IKnowASpot</a>
+    <div class="ikas-navburger">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+        </svg>
+    </div>
+    <div class="ikas-collapse">
+        <ul style="flex: 1;">
+            <li>
+                <a id="spots-link" th:href="@{/spots}" class="nav-link">Spots</a>
             </li>
-            <li class="nav-item">
-                <a th:href="@{/events}" class="nav-link">Events</a>
+            <li>
+                <a id="events-link" th:href="@{/events}" class="nav-link">Events</a>
             </li>
-            <li class="nav-item">
-                <a th:href="@{/aboutus}" class="nav-link">About Us</a>
+            <li>
+                <a id="about-link" th:href="@{/aboutus}" class="nav-link">About Us</a>
             </li>
         </ul>
-        <div sec:authorize="isAnonymous()">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a th:href="@{/login}" class="nav-link">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a th:href="@{/register}" class="nav-link">Register</a>
-                </li>
-            </ul>
-        </div>
-        <div sec:authorize="isAuthenticated()">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a th:href="@{/profile}" class="nav-link">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <form th:action="@{/logout}" th:method="post">
-                        <button class="btn btn-outline-danger my-2 my-sm-0">Logout</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
+        <ul sec:authorize="isAnonymous()">
+            <li>
+                <a th:href="@{/login}" class="nav-link">Login</a>
+            </li>
+            <li>
+                <a th:href="@{/register}" class="nav-link">Register</a>
+            </li>
+        </ul>
+        <ul sec:authorize="isAuthenticated()">
+            <li>
+                <a id="profile-link" th:href="@{/profile}" class="nav-link">Profile</a>
+            </li>
+            <li>
+                <form th:action="@{/logout}" th:method="post">
+                    <button id="logout-link" class="nav-link btn text-danger">Logout</button>
+                </form>
+            </li>
+        </ul>
     </div>
 </nav>
