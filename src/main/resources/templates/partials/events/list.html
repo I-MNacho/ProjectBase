@@ -149,8 +149,8 @@
                 <h3 th:text="${event.spot.title}"></h3>
                 <img th:src="${event.spot.spotPhotoURL}" width="100%">
                 <div class="header-details">
-                    <a th:href="@{|/spots/unsave/${event.spot.id}|}" th:if="${event.spot.saved.contains(user)}" title="Un-Favorite" class="btn text-primary">Add to favorite spots</a>
-                    <a th:href="@{|/spots/save/${event.spot.id}|}" th:if="${!event.spot.saved.contains(user)}" title="Favorite" class="btn text-secondary">Remove spot from favorites</a>
+                    <a th:href="@{|/spots/unsave/${event.spot.id}|}" th:if="${event.spot.saved.contains(user)}" title="Un-Favorite" class="btn text-primary">Remove spot from favorites</a>
+                    <a th:href="@{|/spots/save/${event.spot.id}|}" th:if="${!event.spot.saved.contains(user)}" title="Favorite" class="btn text-secondary">Add spot to favorites</a>
                     <a th:href="@{|/profile/view/${event.spot.user.id}|}" th:text="${event.spot.user.username}" th:if="${#authentication.name != event.spot.user.username}"></a>
                     <a uk-icon="pencil" th:href="@{|/spots/edit/${event.spot.id}|}" th:if="${#authentication.name == event.spot.user.username}"></a>
                 </div>
