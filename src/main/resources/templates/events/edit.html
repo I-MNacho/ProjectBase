@@ -12,6 +12,8 @@
       <input id="startTime" type="hidden" th:field="${event.startTime}" required/>
       <input id="endTime" type="hidden" th:field="${event.endTime}" required/>
       <input id="spot" type="hidden" th:field="${event.spot}" required/>
+      <input type="hidden" th:field="${event.attending}" required/>
+      <input type="hidden" th:field="${event.saved}" required/>
       <input type="hidden" th:field="${event.user}"/>
       <label>Pick a spot for your event</label>
       <div class="search">
