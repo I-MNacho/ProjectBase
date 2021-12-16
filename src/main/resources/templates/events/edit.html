@@ -236,8 +236,16 @@
          calendar.on('select', date => {
             // Set form values for start and end time based on whatever is selected from the datetime picker
             // Use the javascript date object to covert times to Universal Standard Time (UST) in milliseconds
-            $("#startTime").val(new Date(calendar.startTime).getTime());
-            $("#endTime").val(new Date(calendar.endTime).getTime());
+            const startDate = new Date(calendar.startDate)
+            const startTime = new Date(calendar.startTime)
+            startDate.setHours(startTime.getHours())
+            startDate.setMinutes(startTime.getMinutes())
+            $("#startTime").val(startDate.getTime());
+            const endDate = new Date(calendar.endDate)
+            const endTime = new Date(calendar.endTime)
+            endDate.setHours(endTime.getHours())
+            endDate.setMinutes(endTime.getMinutes())
+            $("#endTime").val(endDate.getTime());
             $("#start-end-time").removeClass("invalid");
          });
       });
