@@ -246,5 +246,4 @@ public class EventController {
         eventsDao.save(event);
         return "redirect:" + referer;
     }
-
 }
